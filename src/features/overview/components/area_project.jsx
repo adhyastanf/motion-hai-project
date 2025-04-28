@@ -7,13 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGetListProject } from '@/hooks/use-query';
 import { useToast } from '@/hooks/use-toast';
-import { authClient } from '@/lib/client/auth-client';
 import { generateSlug } from '@/lib/format';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { data } from 'autoprefixer';
 import { PlusSquareIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -26,7 +23,6 @@ const formSchema = z.object({
 
 export function AreaProject() {
   const { toast } = useToast();
-  const router = useRouter();
 
   const { data: projects, isLoading } = useGetListProject();
 
@@ -45,20 +41,20 @@ export function AreaProject() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createProject,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if(data.error){
+        return toast({
+          title: 'Something went wrong',
+          description: data.error ?? 'Something went wrong.',
+          variant: 'destructive',
+        });
+      }
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       toast({
         title: 'Your workspace has created',
       });
       setModal(false);
       form.reset();
-    },
-    onError: (error) => {
-      toast({
-        title: 'Something went wrong',
-        description: error.message ?? 'Something went wrong.',
-        variant: 'destructive',
-      });
     },
   });
 
@@ -82,7 +78,7 @@ export function AreaProject() {
           <PlusSquareIcon size={40} />
           <h1>Create Project</h1>
         </Button>
-        <ProjectItem data={projects} isLoading={isLoading} />
+        <ProjectItem data={projects?.data} isLoading={isLoading} />
       </CardContent>
     </Card>
   );
@@ -95,7 +91,7 @@ function ProjectItem({ data, isLoading = false }) {
 
   return (
     <>
-      {data?.map((project) => {
+      {data.map((project) => {
         const initials = project.name
           .split(' ')
           .map((word) => word[0])

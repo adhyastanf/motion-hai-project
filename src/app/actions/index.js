@@ -1,7 +1,6 @@
 'use server'
 
 import { auth } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 export async function createProject({ name, slug }) {
@@ -13,10 +12,9 @@ export async function createProject({ name, slug }) {
                 slug
             }
         })
-      // revalidatePath("/");
       return { success: true };
     } catch (error) {
-      console.error("Failed to delete post:", error);
-      return { success: false, error: "Failed to delete post" };
+      console.error("Failed to delete post:", error.message);
+      return { success: false, error: error.message || "Failed to create project" };
     }
   }
