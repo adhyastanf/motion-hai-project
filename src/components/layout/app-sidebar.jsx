@@ -20,7 +20,9 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
+import { useGetListProject } from '@/hooks/use-query';
 import { authClient, signOut } from '@/lib/client/auth-client';
+import { useQuery } from '@tanstack/react-query';
 import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, CreditCard, GalleryVerticalEnd, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -50,10 +52,12 @@ export default function AppSidebar({ session, projects }) {
     });
   }
 
+  const { data } = useGetListProject(projects)
+
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <OrgSwitcher projects={projects} defaultProject={projects[0]} onProjectSwitch={handleSwitchProject} />
+        <OrgSwitcher projects={data} defaultProject={data[0]} onProjectSwitch={handleSwitchProject} />
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>

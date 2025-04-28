@@ -13,7 +13,7 @@ export async function createProject({ name, slug }) {
                 slug
             }
         })
-      revalidatePath("/");
+      // revalidatePath("/");
       return { success: true };
     } catch (error) {
       console.error("Failed to delete post:", error);
