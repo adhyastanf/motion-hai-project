@@ -1,10 +1,12 @@
 import { authClient } from '@/lib/client/auth-client';
 import { useQuery } from '@tanstack/react-query';
 
-export function useGetListProject(initialData) {
+export function useGetListProject() {
   return useQuery({
     queryKey: ['projects'],
-    queryFn: async () => await authClient.organization.list(),
-    initialData: { data: initialData, error: null },
+    queryFn: async () => {
+      const res = await authClient.organization.list()
+      return res.data
+    },
   });
 }

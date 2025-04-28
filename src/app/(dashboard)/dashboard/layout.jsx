@@ -24,7 +24,16 @@ export default async function DashboardLayout({ children }) {
     headers: await headers(),
   });
 
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['projects'],
+    queryFn: async () => await auth.api.listOrganizations({
+      headers : await headers()
+    }),
+  });
+
   return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <KBar>
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar session={session} projects={projects} />
@@ -36,5 +45,6 @@ export default async function DashboardLayout({ children }) {
           </SidebarInset>
         </SidebarProvider>
       </KBar>
+    </HydrationBoundary>
   );
 }

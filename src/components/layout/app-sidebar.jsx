@@ -52,12 +52,12 @@ export default function AppSidebar({ session, projects }) {
     });
   }
 
-  const { data } = useGetListProject(projects)
+  const { data } = useGetListProject()
 
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <OrgSwitcher projects={data?.data} defaultProject={data?.data[0]} onProjectSwitch={handleSwitchProject} />
+        <OrgSwitcher projects={data} defaultProject={data} onProjectSwitch={handleSwitchProject} />
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>

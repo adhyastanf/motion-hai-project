@@ -24,7 +24,7 @@ const formSchema = z.object({
 export function AreaProject() {
   const { toast } = useToast();
 
-  const { data: projects, isLoading } = useGetListProject();
+  const { data: projects } = useGetListProject();
 
   const [modal, setModal] = useState(false);
 
@@ -42,7 +42,7 @@ export function AreaProject() {
   const { mutate, isPending } = useMutation({
     mutationFn: createProject,
     onSuccess: (data) => {
-      if(data.error){
+      if (data.error) {
         return toast({
           title: 'Something went wrong',
           description: data.error ?? 'Something went wrong.',
@@ -78,17 +78,13 @@ export function AreaProject() {
           <PlusSquareIcon size={40} />
           <h1>Create Project</h1>
         </Button>
-        <ProjectItem data={projects?.data} isLoading={isLoading} />
+        <ProjectItem data={projects} />
       </CardContent>
     </Card>
   );
 }
 
-function ProjectItem({ data, isLoading = false }) {
-  if (isLoading) {
-    return <p>Loading....</p>;
-  }
-
+function ProjectItem({ data }) {
   return (
     <>
       {data.map((project) => {
