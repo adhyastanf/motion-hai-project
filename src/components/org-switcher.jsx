@@ -4,10 +4,18 @@ import { Check, ChevronsUpDown, GalleryVerticalEnd } from 'lucide-react';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function OrgSwitcher({ projects, defaultProject, onProjectSwitch }) {
-  const [selectedProject, setSelectedProject] = useState(defaultProject || (projects.length > 0 ? projects[0] : undefined));
+  const [selectedProject, setSelectedProject] = useState( defaultProject || (projects.length > 0 ? projects[0] : undefined));
+
+  useEffect(() => {
+    if (projects.length > 0) {
+      setSelectedProject(projects[0]);
+    } else {
+      setSelectedProject(undefined);
+    }
+  }, [projects]);
 
   const handleProjectSwitch = (project) => {
     setSelectedProject(project);
@@ -19,6 +27,7 @@ export function OrgSwitcher({ projects, defaultProject, onProjectSwitch }) {
   if (!selectedProject) {
     return null;
   }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
