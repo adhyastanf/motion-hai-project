@@ -65,7 +65,7 @@ const ProfileCreateForm = ({
     ]
   };
 
-  const form = useForm<ProfileFormValues>({
+  const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues,
     mode: 'onChange'

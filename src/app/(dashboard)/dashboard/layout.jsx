@@ -3,6 +3,7 @@ import AppSidebar from '@/components/layout/app-sidebar';
 import Header from '@/components/layout/header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth } from '@/lib/auth';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { apiKey } from 'better-auth/plugins';
 import { cookies, headers } from 'next/headers';
 
@@ -16,20 +17,24 @@ export default async function DashboardLayout({ children }) {
   const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';
 
   const session = await auth.api.getSession({
-    headers : await headers()
+    headers: await headers(),
+  });
+
+  const projects = await auth.api.listOrganizations({
+    headers: await headers(),
   });
 
   return (
-    <KBar>
-      <SidebarProvider defaultOpen={defaultOpen}>
-        <AppSidebar session={session} />
-        <SidebarInset>
-          <Header session={session}/>
-          {/* page main content */}
-          {children}
-          {/* page main content ends */}
-        </SidebarInset>
-      </SidebarProvider>
-    </KBar>
+      <KBar>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <AppSidebar session={session} projects={projects} />
+          <SidebarInset>
+            <Header session={session} />
+            {/* page main content */}
+            {children}
+            {/* page main content ends */}
+          </SidebarInset>
+        </SidebarProvider>
+      </KBar>
   );
 }

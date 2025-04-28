@@ -4,14 +4,12 @@ import { headers } from 'next/headers';
 
 export default async function Dashboard() {
   const session = await auth.api.getSession({
-    headers : await headers()
+    headers: await headers(),
   });
-
-  console.log(session?.user.id)
 
   if (!session?.user) {
     return redirect('/signIn');
-  } else {
-    redirect('/dashboard/overview');
   }
+
+  return redirect('/dashboard/overview');
 }

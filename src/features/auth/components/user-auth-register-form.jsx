@@ -53,7 +53,7 @@ export default function UserAuthRegisterForm() {
         name,
         email,
         password,
-        callbackURL: '/signIn',
+        // callbackURL: '/dashboard',
       },
       {
         onRequest: () => {
@@ -61,11 +61,11 @@ export default function UserAuthRegisterForm() {
             title: 'Please wait...',
           });
         },
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           toast({
             title: 'You has Registered',
           });
-          router.push('/signIn')
+          router.push('/dashboard')
           form.reset();
         },
         onError: (ctx) => {

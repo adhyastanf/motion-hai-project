@@ -40,15 +40,15 @@ export default function UserAuthLoginForm() {
       {
         email,
         password,
-        callbackURL: '/dashboard',
+        // callbackURL: '/dashboard',
       },
-      {
+      { 
         onRequest: () => {
           toast({
             title: 'Please wait...',
           });
         },
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           toast({
             title: 'You has login',
           });

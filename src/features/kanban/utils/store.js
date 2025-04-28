@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 import { persist } from 'zustand/middleware';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { Column } from '../components/board-column';
@@ -34,7 +34,7 @@ export const useTaskStore = create()(
         set((state) => ({
           tasks: [
             ...state.tasks,
-            { id: uuid(), title, description, status: 'TODO' }
+            { id: nanoid(), title, description, status: 'TODO' }
           ]
         })),
       updateCol: (id, newName) =>

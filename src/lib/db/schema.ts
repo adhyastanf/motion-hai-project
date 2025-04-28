@@ -71,7 +71,7 @@ export const members = mysqlTable('members', {
   userId: varchar('user_id', { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  role: text('role', {enum : ['owner', 'member']}).notNull(),
+  role: text('role').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 

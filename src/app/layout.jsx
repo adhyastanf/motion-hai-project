@@ -1,10 +1,8 @@
 import Providers from '@/components/layout/providers';
-
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Lato } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
-import { auth } from '../lib/auth';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata = {
