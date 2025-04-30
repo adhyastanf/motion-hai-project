@@ -23,7 +23,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Product } from '@/constants/mock-api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { z } from 'zod';
+
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -66,7 +67,7 @@ export default function ProductForm({
     description: initialData?.description || ''
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     values: defaultValues
   });

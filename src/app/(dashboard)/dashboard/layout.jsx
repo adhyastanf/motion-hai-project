@@ -3,8 +3,6 @@ import AppSidebar from '@/components/layout/app-sidebar';
 import Header from '@/components/layout/header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth } from '@/lib/auth';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { apiKey } from 'better-auth/plugins';
 import { cookies, headers } from 'next/headers';
 
 export const metadata = {
@@ -24,16 +22,7 @@ export default async function DashboardLayout({ children }) {
     headers: await headers(),
   });
 
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ['projects'],
-    queryFn: async () => await auth.api.listOrganizations({
-      headers : await headers()
-    }),
-  });
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
       <KBar>
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar session={session} projects={projects} />
@@ -45,6 +34,5 @@ export default async function DashboardLayout({ children }) {
           </SidebarInset>
         </SidebarProvider>
       </KBar>
-    </HydrationBoundary>
   );
 }

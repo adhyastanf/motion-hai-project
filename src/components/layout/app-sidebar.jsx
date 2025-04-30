@@ -17,16 +17,13 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-  useSidebar,
+  useSidebar
 } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
-import { useGetListProject } from '@/hooks/use-query';
-import { authClient, signOut } from '@/lib/client/auth-client';
-import { useQuery } from '@tanstack/react-query';
+import { signOut } from '@/lib/client/auth-client';
 import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, CreditCard, GalleryVerticalEnd, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
 
@@ -36,7 +33,7 @@ export const company = {
   plan: 'Enterprise',
 };
 
-export default function AppSidebar({ session, projects }) {
+export default function AppSidebar({ session }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, isMobile } = useSidebar();
@@ -46,18 +43,10 @@ export default function AppSidebar({ session, projects }) {
     router.refresh();
   }
 
-  async function handleSwitchProject(projectId) {
-    await authClient.organization.setActive({
-      organizationId: projectId,
-    });
-  }
-
-  const { data } = useGetListProject()
-
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <OrgSwitcher projects={data} defaultProject={data} onProjectSwitch={handleSwitchProject} />
+        {/* <OrgSwitcher projects={projects} defaultProject={defaultProject} onProjectSwitch={handleSwitchProject} /> */}
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>

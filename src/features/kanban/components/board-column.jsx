@@ -3,7 +3,7 @@ import { useDndContext } from '@dnd-kit/core';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
-import { GripVertical } from 'lucide-react';
+// import { IconGripVertical } from '@tabler/icons-react';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -16,59 +16,44 @@ export function BoardColumn({ column, tasks, isOverlay }) {
     return tasks.map((task) => task.id);
   }, [tasks]);
 
-  const {
-    setNodeRef,
-    attributes,
-    listeners,
-    transform,
-    transition,
-    isDragging
-  } = useSortable({
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: column.id,
     data: {
       type: 'Column',
-      column
+      column,
     },
     attributes: {
-      roleDescription: `Column: ${column.title}`
-    }
+      roleDescription: `Column: ${column.title}`,
+    },
   });
 
   const style = {
     transition,
-    transform: CSS.Translate.toString(transform)
+    transform: CSS.Translate.toString(transform),
   };
 
-  const variants = cva(
-    'h-[75vh] max-h-[75vh] w-[350px] max-w-full bg-secondary flex flex-col shrink-0 snap-center',
-    {
-      variants: {
-        dragging: {
-          default: 'border-2 border-transparent',
-          over: 'ring-2 opacity-30',
-          overlay: 'ring-2 ring-primary'
-        }
-      }
-    }
-  );
+  const variants = cva('h-[75vh] max-h-[75vh] w-[350px] max-w-full bg-secondary flex flex-col shrink-0 snap-center', {
+    variants: {
+      dragging: {
+        default: 'border-2 border-transparent',
+        over: 'ring-2 opacity-30',
+        overlay: 'ring-2 ring-primary',
+      },
+    },
+  });
 
   return (
     <Card
       ref={setNodeRef}
       style={style}
       className={variants({
-        dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
+        dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
       })}
     >
       <CardHeader className='space-between flex flex-row items-center border-b-2 p-4 text-left font-semibold'>
-        <Button
-          variant={'ghost'}
-          {...attributes}
-          {...listeners}
-          className='text-primary/50 relative -ml-2 h-auto cursor-grab p-1'
-        >
+        <Button variant={'ghost'} {...attributes} {...listeners} className='text-primary/50 relative -ml-2 h-auto cursor-grab p-1'>
           <span className='sr-only'>{`Move column: ${column.title}`}</span>
-          <GripVertical />
+          {/* <IconGripVertical /> */}
         </Button>
         {/* <span className="mr-auto mt-0!"> {column.title}</span> */}
         {/* <Input
@@ -97,21 +82,19 @@ export function BoardContainer({ children }) {
     variants: {
       dragging: {
         default: '',
-        active: 'snap-none'
-      }
-    }
+        active: 'snap-none',
+      },
+    },
   });
 
   return (
     <ScrollArea className='w-full rounded-md whitespace-nowrap'>
       <div
         className={variations({
-          dragging: dndContext.active ? 'active' : 'default'
+          dragging: dndContext.active ? 'active' : 'default',
         })}
       >
-        <div className='flex flex-row items-start justify-center gap-4'>
-          {children}
-        </div>
+        <div className='flex flex-row items-start justify-center gap-4'>{children}</div>
       </div>
       <ScrollBar orientation='horizontal' />
     </ScrollArea>

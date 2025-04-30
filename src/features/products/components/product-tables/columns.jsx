@@ -5,39 +5,33 @@ import { CellAction } from './cell-action';
 export const columns = [
   {
     accessorKey: 'photo_url',
-    header: 'IMAGE',
+    header: 'Image',
     cell: ({ row }) => {
       return (
         <div className='relative aspect-square'>
-          <Image
-            src={row.getValue('photo_url')}
-            alt={row.getValue('name')}
-            fill
-            className='rounded-lg'
-          />
+          <Image src={row.getValue('photo_url')} alt={row.getValue('name')} fill className='rounded-lg' />
         </div>
       );
-    }
+    },
   },
   {
     accessorKey: 'name',
-    header: 'NAME'
+    header: 'Name',
   },
   {
     accessorKey: 'category',
-    header: 'CATEGORY'
+    header: 'Category',
   },
   {
     accessorKey: 'price',
-    header: 'PRICE'
+    header: 'Price',
   },
   {
     accessorKey: 'description',
-    header: 'DESCRIPTION'
+    header: 'Description',
   },
-
   {
     id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
-  }
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
 ];

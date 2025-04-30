@@ -1,40 +1,20 @@
 'use client';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
-
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useTaskStore } from '../utils/store';
-import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
-export function ColumnActions({
-  title,
-  id
-}) {
-  const [open, setIsOpen] = React.useState(false);
+export function ColumnActions({ title, id }) {
   const [name, setName] = React.useState(title);
   const updateCol = useTaskStore((state) => state.updateCol);
   const removeCol = useTaskStore((state) => state.removeCol);
   const [editDisable, setIsEditDisable] = React.useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef(null);
 
   return (
     <>
@@ -46,13 +26,7 @@ export function ColumnActions({
           toast(`${title} updated to ${name}`);
         }}
       >
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className='mt-0! mr-auto text-base disabled:cursor-pointer disabled:border-none disabled:opacity-100'
-          disabled={editDisable}
-          ref={inputRef}
-        />
+        <Input value={name} onChange={(e) => setName(e.target.value)} className='mt-0! mr-auto text-base disabled:cursor-pointer disabled:border-none disabled:opacity-100' disabled={editDisable} ref={inputRef} />
       </form>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -74,10 +48,7 @@ export function ColumnActions({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem
-            onSelect={() => setShowDeleteDialog(true)}
-            className='text-red-600'
-          >
+          <DropdownMenuItem onSelect={() => setShowDeleteDialog(true)} className='text-red-600'>
             Delete Section
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -85,12 +56,8 @@ export function ColumnActions({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure want to delete column?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              NOTE: All tasks related to this category will also be deleted.
-            </AlertDialogDescription>
+            <AlertDialogTitle>Are you sure want to delete column?</AlertDialogTitle>
+            <AlertDialogDescription>NOTE: All tasks related to this category will also be deleted.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>

@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGetListProject } from '@/hooks/use-query';
 import { useToast } from '@/hooks/use-toast';
+import { authClient } from '@/lib/client/auth-client';
 import { generateSlug } from '@/lib/format';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import { PlusSquareIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -23,9 +25,7 @@ const formSchema = z.object({
 
 export function AreaProject() {
   const { toast } = useToast();
-
-  const { data: projects } = useGetListProject();
-
+  const router = useRouter()
   const [modal, setModal] = useState(false);
 
   const form = useForm({
@@ -36,30 +36,36 @@ export function AreaProject() {
   });
 
   const disabledForm = Boolean(form.watch('project'));
-
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: createProject,
-    onSuccess: (data) => {
-      if (data.error) {
-        return toast({
-          title: 'Something went wrong',
-          description: data.error ?? 'Something went wrong.',
-          variant: 'destructive',
-        });
-      }
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
-      toast({
-        title: 'Your workspace has created',
-      });
-      setModal(false);
-      form.reset();
-    },
-  });
-
   async function onSubmit(values) {
-    mutate({ name: values.project, slug: generateSlug(values.project) });
+    await authClient.organization.create(
+      {
+        name:values.project,
+        slug:generateSlug(values.project)
+      },
+      { 
+        onRequest: () => {
+          toast({
+            title: 'Please wait...',
+          });
+        },
+        onSuccess: () => {
+          toast({
+            title: 'You has create project',
+          });
+          // queryClient.invalidateQueries(['projects'])
+          router.refresh()
+          form.reset();
+          setModal(false)
+        },
+        onError: (ctx) => {
+          toast({
+            title: 'Something went wrong',
+            description: ctx.error.message ?? 'Something went wrong.',
+            variant: 'destructive',
+          });
+        },
+      }
+    )
   }
 
   return (
@@ -73,12 +79,12 @@ export function AreaProject() {
         </CardDescription>
       </CardHeader>
       <CardContent className='flex flex-col gap-3'>
-        <ModalCreateProject open={modal} onClose={() => setModal(false)} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
+        <ModalCreateProject open={modal} onClose={() => setModal(false)} form={form} onConfirm={onSubmit} isLoading={form.formState.isSubmitting} disabled={disabledForm} />
         <Button className='flex gap-5 items-center self-start' variant='ghost' onClick={() => setModal(true)}>
           <PlusSquareIcon size={40} />
           <h1>Create Project</h1>
         </Button>
-        <ProjectItem data={projects} />
+        <ProjectItem data={projects} isLoading={isLoading} />
       </CardContent>
     </Card>
   );

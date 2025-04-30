@@ -17,11 +17,9 @@ import {
   TableRow
 } from '@/components/ui/table';
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
-  PaginationState,
   useReactTable
 } from '@tanstack/react-table';
 import { ArrowLeft, ArrowRight, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
