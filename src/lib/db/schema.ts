@@ -89,20 +89,43 @@ export const invitations = mysqlTable('invitations', {
     .references(() => users.id, { onDelete: 'cascade' }),
 });
 
-export const tasks = mysqlTable('tasks', {
+export const projects = mysqlTable('projects', {
   id: varchar('id', { length: 36 }).primaryKey(),
-  title: text('title').notNull(),
+  name: text('name').notNull(),
   description: text('description'),
   organizationId: varchar('organization_id', { length: 36 })
     .notNull()
-    .references(() => organizations.id, { onDelete: 'cascade' }),
+    .references(() => organizations.id, { onDelete: 'cascade' }), // Menghubungkan dengan organisasi
   statusId: varchar('status_id', { length: 36 })
-    .notNull()
-    .references(() => taskStatuses.id, { onDelete: 'cascade' }),
-  priority: text('priority'),
+    // .notNull()
+    .references(() => projectStatuses.id, { onDelete: 'set null' }),
   createdBy: varchar('created_by', { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+  dateFrom: datetime('date_from'), // Tanggal mulai proyek
+  dateTo: datetime('date_to'), // Tanggal selesai proyek
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
+});
+
+export const projectStatuses = mysqlTable('project_statuses', {
+  id: varchar('id', { length: 36 }).primaryKey(),
+  name: text('name').notNull(), // Nama status proyek, misalnya: "Not Started", "In Progress", "Completed"
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+});
+
+export const tasks = mysqlTable('tasks', {
+  id: varchar('id', { length: 36 }).primaryKey(),
+  projectId: varchar('project_id', { length: 36 })
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  description: text('description'),
+  statusId: varchar('status_id', { length: 36 })
+    // .notNull()
+    .references(() => taskStatuses.id, { onDelete: 'set null' }),
+  priority: text('priority'),
+  dueDate: datetime('due_date'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 });
@@ -110,9 +133,6 @@ export const tasks = mysqlTable('tasks', {
 export const taskStatuses = mysqlTable('task_statuses', {
   id: varchar('id', { length: 36 }).primaryKey(),
   name: text('name').notNull(),
-  organizationId: varchar('organization_id', { length: 36 })
-    .notNull()
-    .references(() => organizations.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
@@ -150,47 +170,136 @@ export const activityLogs = mysqlTable('activity_logs', {
   ipAddress: varchar('ip_address', { length: 45 }),
 });
 
-export const organizationRelations = relations(organizations, ({ many }) => ({
-  members: many(members),
-  activityLogs: many(activityLogs),
-  invitations: many(invitations),
-  tasks: many(tasks),
-  taskStatuses: many(taskStatuses),
-}));
-
+// Users
 export const usersRelations = relations(users, ({ many }) => ({
+  sessions: many(sessions),
+  accounts: many(accounts),
   members: many(members),
-  invitationsSent: many(invitations),
-  invitations: many(invitations),
-  createdTasks: many(tasks, { relationName: 'createdBy' }),
+  invitations: many(invitations, { relationName: 'inviter' }),
+  createdProjects: many(projects, { relationName: 'createdBy' }),
+  activityLogs: many(activityLogs),
 }));
 
+// Sessions
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
+}));
+
+// Accounts
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  user: one(users, {
+    fields: [accounts.userId],
+    references: [users.id],
+  }),
+}));
+
+// Verifications (no relations)
+
+// Organizations
+export const organizationsRelations = relations(organizations, ({ many }) => ({
+  members: many(members),
+  invitations: many(invitations),
+  projects: many(projects),
+  activityLogs: many(activityLogs),
+}));
+
+// Members
+export const membersRelations = relations(members, ({ one, many }) => ({
+  user: one(users, {
+    fields: [members.userId],
+    references: [users.id],
+  }),
+  organization: one(organizations, {
+    fields: [members.organizationId],
+    references: [organizations.id],
+  }),
+  taskAssignees: many(taskAssignees),
+  taskComments: many(taskComments),
+}));
+
+// Invitations
 export const invitationsRelations = relations(invitations, ({ one }) => ({
-  team: one(organizations, {
+  organization: one(organizations, {
     fields: [invitations.organizationId],
     references: [organizations.id],
   }),
-  invitedBy: one(users, {
+  inviter: one(users, {
     fields: [invitations.inviterId],
     references: [users.id],
   }),
 }));
 
-export const teamMembersRelations = relations(members, ({ one, many }) => ({
-  user: one(users, {
-    fields: [members.userId],
-    references: [users.id],
-  }),
-  team: one(organizations, {
-    fields: [members.organizationId],
+// Projects
+export const projectsRelations = relations(projects, ({ one, many }) => ({
+  organization: one(organizations, {
+    fields: [projects.organizationId],
     references: [organizations.id],
   }),
-  assignedTasks: many(taskAssignees),
-  taskComments: many(taskComments),
+  status: one(projectStatuses, {
+    fields: [projects.statusId],
+    references: [projectStatuses.id],
+  }),
+  createdByUser: one(users, {
+    fields: [projects.createdBy],
+    references: [users.id],
+  }),
+  tasks: many(tasks),
 }));
 
+// Project Statuses
+export const projectStatusesRelations = relations(projectStatuses, ({ many }) => ({
+  projects: many(projects),
+}));
+
+// Tasks
+export const tasksRelations = relations(tasks, ({ one, many }) => ({
+  project: one(projects, {
+    fields: [tasks.projectId],
+    references: [projects.id],
+  }),
+  status: one(taskStatuses, {
+    fields: [tasks.statusId],
+    references: [taskStatuses.id],
+  }),
+  assignees: many(taskAssignees),
+  comments: many(taskComments),
+}));
+
+// Task Statuses
+export const taskStatusesRelations = relations(taskStatuses, ({ many }) => ({
+  tasks: many(tasks),
+}));
+
+// Task Assignees
+export const taskAssigneesRelations = relations(taskAssignees, ({ one }) => ({
+  task: one(tasks, {
+    fields: [taskAssignees.taskId],
+    references: [tasks.id],
+  }),
+  member: one(members, {
+    fields: [taskAssignees.memberId],
+    references: [members.id],
+  }),
+}));
+
+// Task Comments
+export const taskCommentsRelations = relations(taskComments, ({ one }) => ({
+  task: one(tasks, {
+    fields: [taskComments.taskId],
+    references: [tasks.id],
+  }),
+  member: one(members, {
+    fields: [taskComments.memberId],
+    references: [members.id],
+  }),
+}));
+
+// Activity Logs
 export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
-  team: one(organizations, {
+  organization: one(organizations, {
     fields: [activityLogs.organizationId],
     references: [organizations.id],
   }),
@@ -200,49 +309,3 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
   }),
 }));
 
-export const taskRelations = relations(tasks, ({ one, many }) => ({
-  organization: one(organizations, {
-    fields: [tasks.organizationId],
-    references: [organizations.id],
-  }),
-  status: one(taskStatuses, {
-    fields: [tasks.statusId],
-    references: [taskStatuses.id],
-  }),
-  createdBy: one(users, {
-    fields: [tasks.createdBy],
-    references: [users.id],
-  }),
-  assignees: many(taskAssignees),
-  comments: many(taskComments),
-}));
-
-export const taskStatusRelations = relations(taskStatuses, ({ one, many }) => ({
-  organization: one(organizations, {
-    fields: [taskStatuses.organizationId],
-    references: [organizations.id],
-  }),
-  tasks: many(tasks),
-}));
-
-export const taskAssigneeRelations = relations(taskAssignees, ({ one }) => ({
-  task: one(tasks, {
-    fields: [taskAssignees.taskId],
-    references: [tasks.id],
-  }),
-  members: one(members, {
-    fields: [taskAssignees.memberId],
-    references: [members.id],
-  }),
-}));
-
-export const taskCommentRelations = relations(taskComments, ({ one }) => ({
-  task: one(tasks, {
-    fields: [taskComments.taskId],
-    references: [tasks.id],
-  }),
-  members: one(members, {
-    fields: [taskComments.memberId],
-    references: [members.id],
-  }),
-}));

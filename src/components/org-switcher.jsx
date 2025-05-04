@@ -10,7 +10,7 @@ export function OrgSwitcher({ projects }) {
   const params = useParams();
   const router = useRouter();
 
-  const defaultProject = projects.find((org) => org.id === params.projectId);
+  const defaultProject = projects.find((org) => org.id === params.orgId);
 
   const handleProjectSwitch = async (project) => {
     await authClient.organization.setActive({

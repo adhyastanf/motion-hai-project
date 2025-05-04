@@ -3,7 +3,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { openAPI, organization } from 'better-auth/plugins';
 import { db } from './db/drizzle';
 
-import { accounts, sessions, users, verifications, organizations, members, invitations, tasks, taskStatuses, taskAssignees, taskComments, activityLogs } from './db/schema';
+import { projects, projectStatuses, accounts, sessions, users, verifications, organizations, members, invitations, tasks, taskStatuses, taskAssignees, taskComments, activityLogs } from './db/schema';
 
 export const auth = betterAuth({
   plugins: [openAPI(), organization()],
@@ -22,6 +22,8 @@ export const auth = betterAuth({
       organizations,
       members,
       invitations,
+      projects,
+      projectStatuses,
       tasks,
       taskStatuses,
       taskAssignees,
