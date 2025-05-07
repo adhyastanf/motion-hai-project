@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { getCoreRowModel, useReactTable, flexRender, getExpandedRowModel } from '@tanstack/react-table';
-
-import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
+import ButtonCreateTask from '@/features/list-project/components/list-project-tables/button-create-task';
+import { flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table';
+import React from 'react';
+import SelectField from '../select-options';
 
 const STATUS_OPTIONS = [
   {
@@ -32,36 +31,36 @@ const ASSIGNEE_OPTIONS = [
 ];
 
 export default function TaskTable({ data, columns }) {
-  const [tasks, setTasks] = useState(data);
 
   const handleStatusChange = (taskId, subtaskId, newStatus) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              subtasks: task.subtasks.map((sub) => (sub.id === subtaskId ? { ...sub, status: newStatus } : sub)),
-            }
-          : task
-      )
-    );
+    // setTasks((prev) =>
+    //   prev.map((task) =>
+    //     task.id === taskId
+    //       ? {
+    //           ...task,
+    //           subtasks: task.subtasks.map((sub) => (sub.id === subtaskId ? { ...sub, status: newStatus } : sub)),
+    //         }
+    //       : task
+    //   )
+    // );
   };
 
   const handleAssigneeChange = (taskId, subtaskId, newAssigneeId) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              subtasks: task.subtasks.map((sub) => (sub.id === subtaskId ? { ...sub, assignee: newAssigneeId } : sub)),
-            }
-          : task
-      )
-    );
+    console.log('task , ', taskId)
+    // setTasks((prev) =>
+    //   prev.map((task) =>
+    //     task.id === taskId
+    //       ? {
+    //           ...task,
+    //           subtasks: task.subtasks.map((sub) => (sub.id === subtaskId ? { ...sub, assignee: newAssigneeId } : sub)),
+    //         }
+    //       : task
+    //   )
+    // );
   };
 
   const table = useReactTable({
-    data: tasks,
+    data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
@@ -110,19 +109,19 @@ export default function TaskTable({ data, columns }) {
                           <TableCell />
                           <TableCell className='pl-8'>{sub.title}</TableCell>
                           <TableCell>
-                            <ReusableSelect value={sub.status} onValueChange={(value) => handleStatusChange(task.id, sub.id, value)} options={STATUS_OPTIONS} placeholder='Select status' />
+                            <SelectField value={sub.status} onValueChange={(value) => handleStatusChange(task.id, sub.id, value)} options={STATUS_OPTIONS} placeholder='Select status' />
                           </TableCell>
                           <TableCell>
-                            <ReusableSelect value={sub.assignee} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={ASSIGNEE_OPTIONS} placeholder='Select Assignee' />
+                            <SelectField value={sub.assignee} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={ASSIGNEE_OPTIONS} placeholder='Select Assignee' />
                           </TableCell>
                         </TableRow>
                       ))}
 
-                    {/* <TableRow>
+                    <TableRow>
                     <TableCell colSpan={4}>
-                      <Button>New Task</Button>
+                      <ButtonCreateTask />
                     </TableCell>
-                  </TableRow> */}
+                  </TableRow>
                   </React.Fragment>
                 );
               })
@@ -137,22 +136,5 @@ export default function TaskTable({ data, columns }) {
         </Table>
       </div>
     </div>
-  );
-}
-
-function ReusableSelect({ value, onValueChange, options, placeholder }) {
-  return (
-    <Select onValueChange={onValueChange}>
-      <SelectTrigger className='w-[150px]'>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>
-        {options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
   );
 }

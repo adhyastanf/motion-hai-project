@@ -1,6 +1,6 @@
 'use client';
 
-import ModalCreateTask from '@/components/modal/task-modal';
+import ModalCreateTask from '@/components/modal/my-task-modal';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

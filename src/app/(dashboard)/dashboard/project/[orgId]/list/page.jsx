@@ -9,7 +9,7 @@ export default async function ListDetailProject({ params }) {
     <PageContainer>
       <div className='flex flex-1 flex-col space-y-4'>
         <ProjectListTableAction />
-          <ListProject orgId={orgId} />
+        <ListProject orgId={orgId} />
       </div>
     </PageContainer>
   );

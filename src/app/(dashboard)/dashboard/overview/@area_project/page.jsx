@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import ButtonCreateProject from '@/features/overview/components/area-project/button-create-project';
+import ButtonCreateProject from '@/features/overview/components/area-project/button-create-workspace';
 import ProjectItem from '@/features/overview/components/area-project/project';
 import { Suspense } from 'react';
 
