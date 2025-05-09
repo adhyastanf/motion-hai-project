@@ -1,7 +1,9 @@
+/* Tailwind Base Setup */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Font Variables */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -9,10 +11,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Global Font Family */
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Root Light Mode Colors */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -49,6 +53,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -85,6 +90,7 @@ body {
   }
 }
 
+/* Tailwind Utility Extensions */
 @layer base {
   * {
     @apply border-border;
@@ -92,4 +98,25 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom Keyframes and Animation */
+@keyframes gradient-xy {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-xy {
+  animation: gradient-xy 15s ease infinite;
+  background-size: 200% 200%;
 }
