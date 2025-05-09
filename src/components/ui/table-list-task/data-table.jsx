@@ -1,3 +1,4 @@
+import { updateAssigneTask, updateStatusTask } from '@/app/actions';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ButtonCreateTask from '@/features/list-project/components/list-project-tables/button-create-task';
 import { useGetMembers, useGetStatusTask } from '@/hooks/use-query';
@@ -15,7 +16,7 @@ export default function TaskTable({ data, columns, orgId }) {
     setTasks(data);
   }, [data]);
 
-  const handleStatusChange = (taskId, subtaskId, newStatus) => {
+  const handleStatusChange = async (taskId, subtaskId, newStatus) => {
     const updated = tasks.map((task) => {
       if (task.id !== taskId) return task;
 
@@ -29,21 +30,26 @@ export default function TaskTable({ data, columns, orgId }) {
 
     setTasks(updated);
 
+    await updateStatusTask({taskId : subtaskId, status : newStatus})
+
   };
 
-  const handleAssigneeChange = (taskId, subtaskId, newAssigneeId) => {
+  const handleAssigneeChange = async (taskId, subtaskId, newAssigneeId) => {
+
     const updated = tasks.map((task) => {
       if (task.id !== taskId) return task;
 
       return {
         ...task,
         tasks: task.tasks.map((sub) =>
-          sub.id === subtaskId ? { ...sub, assignee: newAssigneeId } : sub
+          sub.id === subtaskId ? { ...sub, assigneeId: newAssigneeId } : sub
         ),
       };
     });
 
     setTasks(updated);
+
+    await updateAssigneTask({taskId : subtaskId, member : newAssigneeId})
   };
 
   const table = useReactTable({
@@ -98,7 +104,7 @@ export default function TaskTable({ data, columns, orgId }) {
                             <SelectField value={sub?.statusId || ''} onValueChange={(value) => handleStatusChange(task.id, sub.id, value)} options={taskOptions} placeholder='Select status' />
                           </TableCell>
                           <TableCell>
-                            <SelectField value={sub?.assignee || ''} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={memberOptions?.data} placeholder='Select Assignee' />
+                            <SelectField value={sub?.assigneeId || ''} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={memberOptions?.data} placeholder='Select Assignee' />
                           </TableCell>
                           <TableCell>
                             {sub?.dueDate ? format(sub.dueDate, 'MMM dd, yyyy') : ''}

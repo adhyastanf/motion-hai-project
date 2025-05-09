@@ -28,15 +28,28 @@ export async function createTask(values) {
     description: values.description,
     statusId: values.status ? values.status : null,
     dueDate: values.due ? values.due : null,
+    assigneeId: values.assigne ? values.assigne : null
   });
+}
 
-  if (values.assigne) {
-    await db.insert(taskAssignees).values({
-      id: nanoid(),
-      taskId: taskId,
-      memberId: values.assigne,
-    });
-  }
+export async function updateStatusTask(values) {
+  const { taskId, status } = values;
+  await db
+  .update(tasks)
+  .set({
+    statusId: status ? status : null, 
+  })
+  .where({ id: taskId });
+}
+
+export async function updateAssigneTask(values) {
+  const { taskId, member } = values;
+  await db
+  .update(tasks)
+  .set({
+    assigneeId: member ? member : null, 
+  })
+  .where({ id: taskId });
 }
 
 export async function getListProject(organizationId) {
