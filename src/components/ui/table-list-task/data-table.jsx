@@ -1,66 +1,53 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ButtonCreateTask from '@/features/list-project/components/list-project-tables/button-create-task';
+import { useGetMembers, useGetStatusTask } from '@/hooks/use-query';
 import { flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table';
-import React from 'react';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 import SelectField from '../select-options';
 
-const STATUS_OPTIONS = [
-  {
-    value: 'To Do',
-    name: 'To Do',
-  },
-  {
-    value: 'In Progress',
-    name: 'In Progress',
-  },
-  {
-    value: 'In Review',
-    name: 'In Review',
-  },
-  {
-    value: 'Done',
-    name: 'Done',
-  },
-];
-// Opsi assignee (id dan name)
-const ASSIGNEE_OPTIONS = [
-  { value: null, name: 'No Assignee' },
-  { value: 'alice', name: 'Alice' },
-  { value: 'bob', name: 'Bob' },
-  { value: 'charlie', name: 'Charlie' },
-];
+export default function TaskTable({ data, columns, orgId }) {
+  const [tasks, setTasks] = useState(data)
+  const { data: taskOptions } = useGetStatusTask();
+  const { data: memberOptions } = useGetMembers(orgId);
 
-export default function TaskTable({ data, columns }) {
+  useEffect(() => {
+    setTasks(data);
+  }, [data]);
 
   const handleStatusChange = (taskId, subtaskId, newStatus) => {
-    // setTasks((prev) =>
-    //   prev.map((task) =>
-    //     task.id === taskId
-    //       ? {
-    //           ...task,
-    //           subtasks: task.subtasks.map((sub) => (sub.id === subtaskId ? { ...sub, status: newStatus } : sub)),
-    //         }
-    //       : task
-    //   )
-    // );
+    const updated = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+
+      return {
+        ...task,
+        tasks: task.tasks.map((sub) =>
+          sub.id === subtaskId ? { ...sub, statusId: newStatus } : sub
+        ),
+      };
+    });
+
+    setTasks(updated);
+
   };
 
   const handleAssigneeChange = (taskId, subtaskId, newAssigneeId) => {
-    console.log('task , ', taskId)
-    // setTasks((prev) =>
-    //   prev.map((task) =>
-    //     task.id === taskId
-    //       ? {
-    //           ...task,
-    //           subtasks: task.subtasks.map((sub) => (sub.id === subtaskId ? { ...sub, assignee: newAssigneeId } : sub)),
-    //         }
-    //       : task
-    //   )
-    // );
+    const updated = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+
+      return {
+        ...task,
+        tasks: task.tasks.map((sub) =>
+          sub.id === subtaskId ? { ...sub, assignee: newAssigneeId } : sub
+        ),
+      };
+    });
+
+    setTasks(updated);
   };
 
   const table = useReactTable({
-    data: data,
+    data: tasks,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
@@ -75,8 +62,7 @@ export default function TaskTable({ data, columns }) {
 
   return (
     <div className='space-y-4'>
-      <div className='flex justify-end gap-2'>
-      </div>
+      <div className='flex justify-end gap-2'></div>
 
       <div className='rounded-md border'>
         <Table>
@@ -107,21 +93,24 @@ export default function TaskTable({ data, columns }) {
                       task.tasks.map((sub) => (
                         <TableRow key={sub.id} className='bg-muted/50'>
                           <TableCell />
-                          <TableCell className='pl-8'>{sub.title}</TableCell>
+                          <TableCell className='pl-8'>{sub.name}</TableCell>
                           <TableCell>
-                            <SelectField value={sub.status} onValueChange={(value) => handleStatusChange(task.id, sub.id, value)} options={STATUS_OPTIONS} placeholder='Select status' />
+                            <SelectField value={sub?.statusId || ''} onValueChange={(value) => handleStatusChange(task.id, sub.id, value)} options={taskOptions} placeholder='Select status' />
                           </TableCell>
                           <TableCell>
-                            <SelectField value={sub.assignee} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={ASSIGNEE_OPTIONS} placeholder='Select Assignee' />
+                            <SelectField value={sub?.assignee || ''} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={memberOptions?.data} placeholder='Select Assignee' />
+                          </TableCell>
+                          <TableCell>
+                            {sub?.dueDate ? format(sub.dueDate, 'MMM dd, yyyy') : ''}
                           </TableCell>
                         </TableRow>
                       ))}
 
                     <TableRow>
-                    <TableCell colSpan={4}>
-                      <ButtonCreateTask />
-                    </TableCell>
-                  </TableRow>
+                      <TableCell colSpan={4}>
+                        <ButtonCreateTask projectId={task.id} taskOptions={taskOptions} memberOptions={memberOptions?.data} />
+                      </TableCell>
+                    </TableRow>
                   </React.Fragment>
                 );
               })

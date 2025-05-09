@@ -3,10 +3,10 @@
 import TaskForm from '@/features/list-project/task-form';
 import { Modal } from '../ui/modal';
 
-export default function ModalTask({ title, description, open, onClose, onConfirm, isLoading, form, disabled, initialData }) {
+export default function ModalTask({ title, description, open, onClose, onConfirm, isLoading, form, disabled, initialData, taskOptions = [], memberOptions = [] }) {
   return (
     <Modal title={title} description={description} isOpen={open} onClose={onClose}>
-      <TaskForm form={form} onConfirm={onConfirm} isLoading={isLoading} disabled={disabled} initialData={initialData} />
+      <TaskForm form={form} onConfirm={onConfirm} isLoading={isLoading} disabled={disabled} initialData={initialData} taskOptions={taskOptions} memberOptions={memberOptions} />
     </Modal>
   );
 }

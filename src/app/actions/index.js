@@ -2,12 +2,12 @@
 
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db/drizzle';
-import { projects, tasks, taskStatuses } from '@/lib/db/schema';
+import { projects, taskAssignees, tasks, taskStatuses } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { headers } from 'next/headers';
 
-export async function createProject(project, description, orgId) {
+export async function createProject({ project, description, orgId }) {
   const user = await auth.api.getSession({
     headers: await headers(),
   });
@@ -19,23 +19,29 @@ export async function createProject(project, description, orgId) {
     createdBy: user.user.id,
   });
 }
-export async function createTask() {
-  const user = await auth.api.getSession({
-    headers: await headers(),
+export async function createTask(values) {
+  const taskId = nanoid();
+  await db.insert(tasks).values({
+    id: taskId,
+    projectId: values.projectId,
+    name: values.task,
+    description: values.description,
+    statusId: values.status ? values.status : null,
+    dueDate: values.due ? values.due : null,
   });
-  await db.insert(projects).values({
-    id: nanoid(),
-    name: 'Event Bola',
-    organizationId: 'dNyhJdDuqBhj4sLVlXoftihT0VJkhsHi',
-    description: 'sebuah event bola',
-    createdBy: user.user.id,
-  });
+
+  if (values.assigne) {
+    await db.insert(taskAssignees).values({
+      id: nanoid(),
+      taskId: taskId,
+      memberId: values.assigne,
+    });
+  }
 }
 
 export async function getListProject(organizationId) {
   try {
     const rawData = await db.select().from(projects).leftJoin(tasks, eq(tasks.projectId, projects.id)).where(eq(projects.organizationId, organizationId));
-
     const projectMap = new Map();
 
     for (const row of rawData) {
@@ -56,14 +62,42 @@ export async function getListProject(organizationId) {
 
     const data = Array.from(projectMap.values());
 
-    return { data };
+    return { success: true, data };
   } catch (error) {
-    return { error };
+    return { error: 'Failed to fetch project list' };
   }
 }
 
 export async function getStatusTask() {
-  const data = await db.select().from(taskStatuses);
+  try {
+    const data = await db.select().from(taskStatuses);
+    return data;
+  } catch (error) {
+    console.error('Error fetching task statuses:', error);
+    return { success: false, error: 'Failed to get task statuses' };
+  }
+}
 
-  return data;
+export async function getMemberOfOrganization(orgId) {
+  try {
+    const rawData = await auth.api.getFullOrganization({
+      headers: await headers(),
+      query: {
+        organizationId: orgId,
+      },
+    });
+
+    const data = rawData.members.map((member) => ({
+      id: member.id,
+      userId: member.userId,
+      name: member.user.name,
+      email: member.user.email,
+      role: member.role,
+    }));
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error fetching organization info:', error);
+    return { success: false, error: 'Failed to fetch organization members' };
+  }
 }

@@ -38,9 +38,7 @@ export default function ButtonCreateProject() {
   const disabledForm = Boolean(form.watch(['project', 'description']).every(Boolean));
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async ({ project, description }) => {
-      return await createProject(project, description, orgId);
-    },
+    mutationFn:  createProject,
     onSuccess: () => {
       toast({
         title: 'Project Created',
@@ -61,7 +59,12 @@ export default function ButtonCreateProject() {
   });
 
   async function onSubmit(values) {
-    mutate(values);
+    const body = {
+      project: values.project,
+      description: values.description,
+      orgId,
+    };
+    mutate(body);
   }
 
   const fields = [

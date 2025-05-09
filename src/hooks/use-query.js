@@ -1,4 +1,4 @@
-import { getListProject, getStatusTask } from '@/app/actions';
+import { getListProject, getMemberOfOrganization, getStatusTask } from '@/app/actions';
 import { useQuery } from '@tanstack/react-query';
 
 export function useGetListProject(orgId) {
@@ -13,6 +13,14 @@ export function useGetStatusTask() {
   return  useQuery({
     queryKey: ['status-task'],
     queryFn: getStatusTask,
+    refetchOnWindowFocus: true
+  });
+}
+
+export function useGetMembers(orgId) {
+  return  useQuery({
+    queryKey: ['members', orgId],
+    queryFn: () => getMemberOfOrganization(orgId),
     refetchOnWindowFocus: true
   });
 }

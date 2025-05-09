@@ -1,9 +1,7 @@
 'use client';
 
-import { getListProject } from '@/app/actions';
 import TaskTable from '@/components/ui/table-list-task/data-table';
 import { useGetListProject } from '@/hooks/use-query';
-import { useQuery } from '@tanstack/react-query';
 import { columns } from './components/list-project-tables/columns';
 
 export default function ListViewProject({ orgId }) {
@@ -16,5 +14,5 @@ export default function ListViewProject({ orgId }) {
       )
     }
 
-  return <TaskTable columns={columns} data={project.data} />;
+  return <TaskTable columns={columns} data={project?.data} orgId={orgId} />;
 }
