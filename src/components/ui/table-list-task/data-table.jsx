@@ -1,16 +1,26 @@
 import { updateAssigneTask, updateStatusTask } from '@/app/actions';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import ButtonCreateTask from '@/features/list-project/components/list-project-tables/button-create-task';
+import ButtonCreateTask from '@/features/list-project/components/list-project-tables/modal-task';
+import ButtonModalProject from '@/features/list-project/components/list-project-tables/modal-project';
 import { useGetMembers, useGetStatusTask } from '@/hooks/use-query';
 import { flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { MoreHorizontal, PlusSquareIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { Button } from '../button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../dropdown-menu';
 import SelectField from '../select-options';
 
 export default function TaskTable({ data, columns, orgId }) {
-  const [tasks, setTasks] = useState(data)
+  const [tasks, setTasks] = useState(data);
+  const [modal, setModal] = useState('');
+  const [modalTask, setModalTask] = useState('');
+  const [selectedProject, setSelectedProject] = useState({});
+  const [selectedTask, setSelectedTask] = useState({});
   const { data: taskOptions } = useGetStatusTask();
   const { data: memberOptions } = useGetMembers(orgId);
+  
+  const MODAL_CONSTANT = ['update', 'delete', 'create'];
 
   useEffect(() => {
     setTasks(data);
@@ -22,39 +32,33 @@ export default function TaskTable({ data, columns, orgId }) {
 
       return {
         ...task,
-        tasks: task.tasks.map((sub) =>
-          sub.id === subtaskId ? { ...sub, statusId: newStatus } : sub
-        ),
+        tasks: task.tasks.map((sub) => (sub.id === subtaskId ? { ...sub, statusId: newStatus } : sub)),
       };
     });
 
     setTasks(updated);
 
-    await updateStatusTask({taskId : subtaskId, status : newStatus})
-
+    await updateStatusTask({ taskId: subtaskId, status: newStatus });
   };
 
   const handleAssigneeChange = async (taskId, subtaskId, newAssigneeId) => {
-
     const updated = tasks.map((task) => {
       if (task.id !== taskId) return task;
 
       return {
         ...task,
-        tasks: task.tasks.map((sub) =>
-          sub.id === subtaskId ? { ...sub, assigneeId: newAssigneeId } : sub
-        ),
+        tasks: task.tasks.map((sub) => (sub.id === subtaskId ? { ...sub, assigneeId: newAssigneeId } : sub)),
       };
     });
 
     setTasks(updated);
 
-    await updateAssigneTask({taskId : subtaskId, member : newAssigneeId})
+    await updateAssigneTask({ taskId: subtaskId, member: newAssigneeId });
   };
 
   const table = useReactTable({
     data: tasks,
-    columns: columns,
+    columns: columns(setSelectedProject, setModal),
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand: () => true,
@@ -106,15 +110,50 @@ export default function TaskTable({ data, columns, orgId }) {
                           <TableCell>
                             <SelectField value={sub?.assigneeId || ''} onValueChange={(value) => handleAssigneeChange(task.id, sub.id, value)} options={memberOptions?.data} placeholder='Select Assignee' />
                           </TableCell>
+                          <TableCell>{sub?.dueDate ? format(sub.dueDate, 'MMM dd, yyyy') : ''}</TableCell>
                           <TableCell>
-                            {sub?.dueDate ? format(sub.dueDate, 'MMM dd, yyyy') : ''}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant='ghost' className='h-8 w-8 p-0'>
+                                  <MoreHorizontal />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align='end'>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setModalTask('update');
+                                    setSelectedTask({ projectId: task.id, ...sub });
+                                  }}
+                                >
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setModalTask('delete');
+                                    setSelectedTask({ projectId: task.id, ...sub });
+                                  }}
+                                >
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </TableCell>
                         </TableRow>
                       ))}
 
                     <TableRow>
                       <TableCell colSpan={4}>
-                        <ButtonCreateTask projectId={task.id} taskOptions={taskOptions} memberOptions={memberOptions?.data} />
+                        <Button
+                          className='flex gap-5 items-center self-start'
+                          variant='ghost'
+                          onClick={() => {
+                            setModalTask('create');
+                            setSelectedTask({ projectId: task.id });
+                          }}
+                        >
+                          <PlusSquareIcon size={40} />
+                          <h1>Create Task</h1>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   </React.Fragment>
@@ -129,6 +168,8 @@ export default function TaskTable({ data, columns, orgId }) {
             )}
           </TableBody>
         </Table>
+        {MODAL_CONSTANT.includes(modal) && <ButtonModalProject modal={modal} setModal={setModal} projectId={selectedProject?.id} initialData={selectedProject} />}
+        {MODAL_CONSTANT.includes(modalTask) && <ButtonCreateTask modal={modalTask} setModal={setModalTask} projectId={selectedTask?.projectId} taskId={selectedTask?.id} initialData={selectedTask} taskOptions={taskOptions} memberOptions={memberOptions?.data} />}
       </div>
     </div>
   );

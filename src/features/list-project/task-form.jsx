@@ -63,7 +63,7 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, taskOpt
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
-                <SelectField onValueChange={(value) => field.onChange(value)} options={taskOptions} placeholder='Select Status' />
+                <SelectField value={field.value} onValueChange={(value) => field.onChange(value)} options={taskOptions} placeholder='Select Status' />
                 <FormMessage />
               </FormItem>
             )}
@@ -74,7 +74,7 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, taskOpt
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Assigne</FormLabel>
-                <SelectField onValueChange={(value) => field.onChange(value)} options={memberOptions} placeholder='Select Assigne' />
+                <SelectField value={field.value} onValueChange={(value) => field.onChange(value)} options={memberOptions} placeholder='Select Assigne' />
                 <FormMessage />
               </FormItem>
             )}

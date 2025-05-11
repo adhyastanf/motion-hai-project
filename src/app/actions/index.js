@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db/drizzle';
-import { projects, taskAssignees, tasks, taskStatuses } from '@/lib/db/schema';
+import { projects, tasks, taskStatuses } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { headers } from 'next/headers';
@@ -19,6 +19,22 @@ export async function createProject({ project, description, orgId }) {
     createdBy: user.user.id,
   });
 }
+
+export async function deleteProject(projectId) {
+  await db.delete(projects).where(eq(projects.id, projectId));
+}
+
+export async function updateProject({ project, description, projectId }) {
+  await db.update(projects)
+    .set({
+      name: project,
+      description: description,
+      updatedAt: new Date(),
+    })
+    .where(eq(projects.id, projectId));
+}
+
+
 export async function createTask(values) {
   const taskId = nanoid();
   await db.insert(tasks).values({
@@ -30,6 +46,24 @@ export async function createTask(values) {
     dueDate: values.due ? values.due : null,
     assigneeId: values.assigne ? values.assigne : null
   });
+}
+
+export async function deleteTask(taskId) {
+  await db.delete(tasks).where(eq(tasks.id, taskId));
+}
+
+
+export async function updateTask(values) {
+  await db.update(tasks)
+    .set({
+      name: values.task,
+      description: values.description,
+      statusId: values.status ? values.status : null,
+      dueDate: values.due ? values.due : null,
+      assigneeId: values.assigne ? values.assigne : null,
+      updatedAt: new Date()
+    })
+    .where(eq(tasks.id, values.taskId));
 }
 
 export async function updateStatusTask(values) {
