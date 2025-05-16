@@ -87,7 +87,7 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, taskOpt
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder='Enter product description' className='resize-none' {...field} />
+                <Textarea placeholder='Enter task description' className='resize-none' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

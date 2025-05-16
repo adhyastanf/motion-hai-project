@@ -28,9 +28,7 @@ export default async function DashboardLayout({ children }) {
           <AppSidebar session={session} projects={projects} />
           <SidebarInset>
             <Header session={session} />
-            {/* page main content */}
             {children}
-            {/* page main content ends */}
           </SidebarInset>
         </SidebarProvider>
       </KBar>

@@ -111,7 +111,7 @@ export default function ButtonCreateTask({ modal, setModal, projectId, taskId, i
   return (
     <>
       <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} taskOptions={taskOptions} memberOptions={memberOptions} />
-      <ModalTask title='Update Task' open={modal === 'update'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} taskOptions={taskOptions} memberOptions={memberOptions} />
+      <ModalTask title='Update Task' open={modal === 'update'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} taskOptions={taskOptions} memberOptions={memberOptions} initialData={initialData} />
       <AlertModal
         title={`Are you sure to delete task "${initialData?.name}"?`}
         description='This action cannot be undone. This will permanently delete your task.'

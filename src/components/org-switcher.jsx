@@ -30,7 +30,7 @@ export function OrgSwitcher({ projects }) {
               </div>
               <div className='flex flex-col gap-0.5 leading-none'>
                 <span className='font-semibold'>Hai Motion</span>
-                <span className=''>{defaultProject.name}</span>
+                <span className=''>{defaultProject?.name}</span>
               </div>
               <ChevronDown className='ml-auto' />
             </SidebarMenuButton>

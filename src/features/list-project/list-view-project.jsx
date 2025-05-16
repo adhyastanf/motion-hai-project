@@ -6,7 +6,6 @@ import { columns } from './components/list-project-tables/columns';
 
 export default function ListViewProject({ orgId }) {
   const { data : project, isLoading, isError } = useGetListProject(orgId)
-
   
   if(isLoading){
     return (

@@ -7,7 +7,7 @@ import NavDetailProject from '@/features/project-details/components/tabs-project
 import PageContainer from '@/components/layout/page-container';
 
 export default async function ProjectLayout({ children, params }) {
-  const { projectId } = await params;
+  const { orgId } = await params;
 
   const projects = await auth.api.listOrganizations({
     headers: await headers(),
@@ -17,7 +17,7 @@ export default async function ProjectLayout({ children, params }) {
     await auth.api.getFullOrganization({
       headers: await headers(),
       query: {
-        organizationId: projectId,
+        organizationId: orgId,
       },
     });
 

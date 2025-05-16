@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const tabs = [
@@ -8,9 +8,10 @@ const tabs = [
   { name: 'List', value: 'list' },
   { name: 'Activity', value: 'activity' },
   { name: 'Settings', value: 'settings' },
+  { name: 'Calendar', value: 'calendar' },
 ];
 
-export default function NavDetailProject() {
+export default function NavDetailProject({ activeProject }) {
   const router = useRouter();
   const pathname = usePathname();
 

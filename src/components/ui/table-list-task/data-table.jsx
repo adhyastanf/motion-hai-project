@@ -64,12 +64,6 @@ export default function TaskTable({ data, columns, orgId }) {
     getRowCanExpand: () => true,
   });
 
-  const toggleAllRows = () => {
-    // setExpandedRows(
-    //   expandedRows.length === data.length ? [] : data.map((task) => task.id)
-    // );
-  };
-
   return (
     <div className='space-y-4'>
       <div className='flex justify-end gap-2'></div>

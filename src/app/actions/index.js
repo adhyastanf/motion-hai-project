@@ -2,9 +2,10 @@
 
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db/drizzle';
-import { projects, tasks, taskStatuses } from '@/lib/db/schema';
+import { invitations, members, projects, taskComments, tasks, taskStatuses, users } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
+import { redirect } from 'next/dist/server/api-utils';
 import { headers } from 'next/headers';
 
 export async function createProject({ project, description, orgId }) {
@@ -25,7 +26,8 @@ export async function deleteProject(projectId) {
 }
 
 export async function updateProject({ project, description, projectId }) {
-  await db.update(projects)
+  await db
+    .update(projects)
     .set({
       name: project,
       description: description,
@@ -33,7 +35,6 @@ export async function updateProject({ project, description, projectId }) {
     })
     .where(eq(projects.id, projectId));
 }
-
 
 export async function createTask(values) {
   const taskId = nanoid();
@@ -44,7 +45,7 @@ export async function createTask(values) {
     description: values.description,
     statusId: values.status ? values.status : null,
     dueDate: values.due ? values.due : null,
-    assigneeId: values.assigne ? values.assigne : null
+    assigneeId: values.assigne ? values.assigne : null,
   });
 }
 
@@ -52,16 +53,16 @@ export async function deleteTask(taskId) {
   await db.delete(tasks).where(eq(tasks.id, taskId));
 }
 
-
 export async function updateTask(values) {
-  await db.update(tasks)
+  await db
+    .update(tasks)
     .set({
       name: values.task,
       description: values.description,
       statusId: values.status ? values.status : null,
       dueDate: values.due ? values.due : null,
       assigneeId: values.assigne ? values.assigne : null,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     })
     .where(eq(tasks.id, values.taskId));
 }
@@ -69,31 +70,41 @@ export async function updateTask(values) {
 export async function updateStatusTask(values) {
   const { taskId, status } = values;
   await db
-  .update(tasks)
-  .set({
-    statusId: status ? status : null, 
-  })
-  .where({ id: taskId });
+    .update(tasks)
+    .set({
+      statusId: status ? status : null,
+    })
+    .where({ id: taskId });
 }
 
 export async function updateAssigneTask(values) {
   const { taskId, member } = values;
   await db
-  .update(tasks)
-  .set({
-    assigneeId: member ? member : null, 
-  })
-  .where({ id: taskId });
+    .update(tasks)
+    .set({
+      assigneeId: member ? member : null,
+    })
+    .where({ id: taskId });
 }
 
 export async function getListProject(organizationId) {
   try {
-    const rawData = await db.select().from(projects).leftJoin(tasks, eq(tasks.projectId, projects.id)).where(eq(projects.organizationId, organizationId));
+    const rawData = await db
+      .select()
+      .from(projects)
+      .leftJoin(tasks, eq(tasks.projectId, projects.id))
+      .leftJoin(taskStatuses, eq(tasks.statusId, taskStatuses.id))
+      .leftJoin(members, eq(tasks.assigneeId, members.id))
+      .leftJoin(users, eq(members.userId, users.id))
+      .where(eq(projects.organizationId, organizationId));
+
     const projectMap = new Map();
 
     for (const row of rawData) {
       const project = row.projects;
       const task = row.tasks;
+      const assignee = row.users;
+      const taskStatus = row.task_statuses;
 
       if (!projectMap.has(project.id)) {
         projectMap.set(project.id, {
@@ -103,7 +114,23 @@ export async function getListProject(organizationId) {
       }
 
       if (task && task.id) {
-        projectMap.get(project.id).tasks.push(task);
+        projectMap.get(project.id).tasks.push({
+          ...task,
+          status: taskStatus
+            ? {
+                id: taskStatus.id,
+                name: taskStatus.name,
+              }
+            : null,
+          assignee: assignee
+            ? {
+                id: assignee.id,
+                name: assignee.name,
+                email: assignee.email,
+                image: assignee.image,
+              }
+            : null,
+        });
       }
     }
 
@@ -146,5 +173,80 @@ export async function getMemberOfOrganization(orgId) {
   } catch (error) {
     console.error('Error fetching organization info:', error);
     return { success: false, error: 'Failed to fetch organization members' };
+  }
+}
+
+export async function generateInvitationLink(organizationId) {
+  const user = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const existing = await db.select().from(invitations).where(eq(invitations.organizationId, organizationId)).where(eq(invitations.isActive, true)).limit(1);
+
+  if (existing.length > 0) {
+    return existing[0].id;
+  }
+
+  const id = nanoid();
+  const isActive = true;
+
+  const newInvitation = await db.insert(invitations).values({
+    id,
+    organizationId,
+    role: 'member',
+    inviterId: user.user.id,
+    isActive,
+  });
+
+  return newInvitation.id;
+}
+
+export async function acceptInvitation(userId, orgId) {
+  try {
+    await auth.api.addMember({
+      body: {
+        userId,
+        organizationId: orgId,
+        role: 'member',
+      },
+    });
+
+    redirect(`/dashboard/project/${orgId}`);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+export async function getCommentsByTaskId(taskId) {
+  try {
+    const data = await db
+      .select()
+      .from(taskComments)
+      .where(eq(taskComments.taskId, taskId))
+      .orderBy(taskComments.createdAt);
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Failed to fetch comments:', error);
+    return { success: false, error: 'Failed to fetch comments' };
+  }
+}
+
+export async function createTaskComment(taskId, memberId, commentText) {
+  try {
+    const newComment = {
+      id: nanoid(), // generate ID unik
+      taskId,
+      memberId,
+      comment: commentText,
+      createdAt: new Date(), // timestamp saat ini
+    };
+
+    await db.insert(taskComments).values(newComment);
+
+    return { success: true, data: newComment };
+  } catch (error) {
+    console.error('Failed to create comment:', error);
+    return { success: false, error: 'Failed to create comment' };
   }
 }

@@ -80,10 +80,11 @@ export const invitations = mysqlTable('invitations', {
   organizationId: varchar('organization_id', { length: 36 })
     .notNull()
     .references(() => organizations.id, { onDelete: 'cascade' }),
-  email: text('email').notNull(),
+  email: text('email'),
   role: text('role'),
   status: text('status').notNull(),
-  expiresAt: timestamp('expires_at').notNull(),
+  isActive: boolean('is_active').notNull().default(true),
+  // expiresAt: timestamp('expires_at').notNull(),
   inviterId: varchar('inviter_id', { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
