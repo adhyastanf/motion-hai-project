@@ -18,19 +18,15 @@ export default async function DashboardLayout({ children }) {
     headers: await headers(),
   });
 
-  const projects = await auth.api.listOrganizations({
-    headers: await headers(),
-  });
-
   return (
-      <KBar>
-        <SidebarProvider defaultOpen={defaultOpen}>
-          <AppSidebar session={session} projects={projects} />
-          <SidebarInset>
-            <Header session={session} />
-            {children}
-          </SidebarInset>
-        </SidebarProvider>
-      </KBar>
+    <KBar>
+      <SidebarProvider defaultOpen={defaultOpen}>
+        {/* <AppSidebar session={session} projects={projects} /> */}
+        <SidebarInset>
+          <Header session={session} />
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
+    </KBar>
   );
 }

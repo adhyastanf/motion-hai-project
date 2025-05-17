@@ -8,10 +8,9 @@ import PageContainer from '@/components/layout/page-container';
 import { getListProject } from '@/app/actions';
 
 export default async function ProjectLayout({ children, params }) {
-
-  const {session} = await auth.api.getSession({
-    headers : await headers()
-  })
+  const { session } = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   const { orgId } = await params;
 
@@ -19,7 +18,8 @@ export default async function ProjectLayout({ children, params }) {
   //   headers: await headers(),
   // });
 
-  const projects = await getListProject(session.activeOrganizationId)
+  const projects = await getListProject(session.activeOrganizationId);
+  console.log(projects)
 
   try {
     // await auth.api.getFullOrganization({
@@ -31,11 +31,11 @@ export default async function ProjectLayout({ children, params }) {
 
     return (
       // <PageContainer>
-        <div>
-          <HeadersDetailProject projects={projects} />
-          <NavDetailProject />
-          {children}
-        </div>
+      <div>
+        {/* <HeadersDetailProject projects={projects} /> */}
+        <NavDetailProject />
+        {children}
+      </div>
       // </PageContainer>
     );
   } catch (error) {

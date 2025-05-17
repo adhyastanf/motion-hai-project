@@ -1,9 +1,23 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import ButtonCreateProject from '@/features/overview/components/area-project/button-create-workspace';
 import ProjectItem from '@/features/overview/components/area-project/project';
-import { Suspense } from 'react';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 export default async function ProjectPage() {
+  const { session } = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  // console.log(session);
+
+  // const projects = await auth.api.listOrganizations({
+  //   headers: await headers(),
+  // });
+
+  // const projects = await getListProject(session.activeOrganizationId);
+  // console.log(projects);
+
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between'>
@@ -15,10 +29,8 @@ export default async function ProjectPage() {
         </CardDescription>
       </CardHeader>
       <CardContent className='flex flex-col gap-3'>
-        <ButtonCreateProject />
-        <Suspense fallback={'loading...'}>
-          <ProjectItem />
-        </Suspense>
+        {/* <ButtonCreateProject /> */}
+        <ProjectItem orgId={session.activeOrganizationId} />
       </CardContent>
     </Card>
   );

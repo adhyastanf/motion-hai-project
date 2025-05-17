@@ -8,6 +8,14 @@ import { nanoid } from 'nanoid';
 import { redirect } from 'next/dist/server/api-utils';
 import { headers } from 'next/headers';
 
+export async function getWorkspace() {
+  const workspace = await auth.api.listOrganizations({
+    headers: await headers(),
+  });
+
+  return workspace
+}
+
 export async function createProject({ project, description, orgId }) {
   const user = await auth.api.getSession({
     headers: await headers(),
@@ -219,11 +227,7 @@ export async function acceptInvitation(userId, orgId) {
 
 export async function getCommentsByTaskId(taskId) {
   try {
-    const data = await db
-      .select()
-      .from(taskComments)
-      .where(eq(taskComments.taskId, taskId))
-      .orderBy(taskComments.createdAt);
+    const data = await db.select().from(taskComments).where(eq(taskComments.taskId, taskId)).orderBy(taskComments.createdAt);
 
     return { success: true, data };
   } catch (error) {
