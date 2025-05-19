@@ -3,17 +3,21 @@
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db/drizzle';
 import { invitations, members, projects, taskComments, tasks, taskStatuses, users } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { redirect } from 'next/dist/server/api-utils';
 import { headers } from 'next/headers';
 
 export async function getWorkspace() {
-  const workspace = await auth.api.listOrganizations({
-    headers: await headers(),
-  });
+  try {
+    const workspace = await auth.api.listOrganizations({
+      headers: await headers(),
+    });
 
-  return workspace
+    return workspace;
+  } catch (err) {
+    return err;
+  }
 }
 
 export async function createProject({ project, description, orgId }) {
@@ -93,6 +97,46 @@ export async function updateAssigneTask(values) {
       assigneeId: member ? member : null,
     })
     .where({ id: taskId });
+}
+
+export async function getListTask(projectId, filters) {
+  try {
+
+    const conditions = [eq(tasks.projectId, projectId)];
+
+    // if (filters.status) {
+    //   conditions.push(eq(tasks.statusId, filters.status));
+    // }
+
+    // if (filters.assignee) {
+    //   conditions.push(eq(tasks.assigneeId, filters.assignee));
+    // }
+
+    const data = await db
+      .select({
+        id: tasks.id,
+        name: tasks.name,
+        description: tasks.description,
+        dueDate: tasks.dueDate,
+        createdAt: tasks.createdAt,
+        updatedAt: tasks.updatedAt,
+        statusId: tasks.statusId,
+        status: taskStatuses.name,
+        assigneeId: tasks.assigneeId,
+        assignee: users.name,
+        assigneeEmail: users.email,
+      })
+      .from(tasks)
+      .leftJoin(taskStatuses, eq(tasks.statusId, taskStatuses.id))
+      .leftJoin(members, eq(tasks.assigneeId, members.id))
+      .leftJoin(users, eq(members.userId, users.id))
+      .where(and(...conditions))
+      .orderBy(desc(tasks.createdAt));
+
+    return data;
+  } catch (err) {
+    return err;
+  }
 }
 
 export async function getListProject(organizationId) {
@@ -177,7 +221,7 @@ export async function getMemberOfOrganization(orgId) {
       role: member.role,
     }));
 
-    return { success: true, data };
+    return data;
   } catch (error) {
     console.error('Error fetching organization info:', error);
     return { success: false, error: 'Failed to fetch organization members' };

@@ -1,4 +1,4 @@
-import { getListProject, getMemberOfOrganization, getStatusTask } from '@/app/actions';
+import { getListProject, getListTask, getMemberOfOrganization, getStatusTask } from '@/app/actions';
 import { authClient } from '@/lib/client/auth-client';
 import { useQuery } from '@tanstack/react-query';
 
@@ -9,6 +9,15 @@ export function useGetListProject(orgId) {
     refetchOnWindowFocus: true,
   });
 }
+
+export function useGetListTask(projectId, filters) {
+  return useQuery({
+    queryKey: ['list-task', projectId],
+    queryFn: () => getListTask(projectId),
+    refetchOnWindowFocus: true,
+  });
+}
+
 
 export function useGetStatusTask() {
   return useQuery({

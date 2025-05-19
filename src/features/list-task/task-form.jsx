@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Calendar1Icon, Loader2 } from 'lucide-react';
 
-export default function TaskForm({ form, disabled, isLoading, onConfirm, taskOptions = [], memberOptions = [] }) {
+export default function TaskForm({ form, disabled, isLoading, onConfirm, statusOptions, memberOptions }) {
 
   function onSubmit(values) {
     onConfirm(values)
@@ -63,7 +63,7 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, taskOpt
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
-                <SelectField value={field.value} onValueChange={(value) => field.onChange(value)} options={taskOptions} placeholder='Select Status' />
+                <SelectField value={field.value} onValueChange={(value) => field.onChange(value)} options={statusOptions} placeholder='Select Status' />
                 <FormMessage />
               </FormItem>
             )}

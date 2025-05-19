@@ -18,8 +18,7 @@ export default async function ProjectLayout({ children, params }) {
   //   headers: await headers(),
   // });
 
-  const projects = await getListProject(session.activeOrganizationId);
-  console.log(projects)
+  const projects = await getListProject(orgId);
 
   try {
     // await auth.api.getFullOrganization({
@@ -31,11 +30,11 @@ export default async function ProjectLayout({ children, params }) {
 
     return (
       // <PageContainer>
-      <div>
-        {/* <HeadersDetailProject projects={projects} /> */}
-        <NavDetailProject />
+      <>
+        <HeadersDetailProject projects={projects.data} />
+        
         {children}
-      </div>
+      </>
       // </PageContainer>
     );
   } catch (error) {

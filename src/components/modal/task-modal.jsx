@@ -1,12 +1,11 @@
 'use client';
 
-import CommentsSection from '@/features/list-project/components/list-project-tables/comment-task';
-import TaskForm from '@/features/list-project/task-form';
-import { useParams } from 'next/navigation';
+import CommentsSection from '@/features/list-task/components/list-project-tables/comment-task';
+import TaskForm from '@/features/list-task/task-form';
 import { Modal } from '../ui/modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
-export default function ModalTask({ title, description, open, onClose, onConfirm, isLoading, form, disabled, initialData, taskOptions = [], memberOptions = [] }) {
+export default function ModalTask({ title, description, open, onClose, onConfirm, isLoading, form, disabled, initialData, statusOptions, memberOptions}) {
 
   return (
     <Modal title={title} description={description} isOpen={open} onClose={onClose}>
@@ -16,7 +15,7 @@ export default function ModalTask({ title, description, open, onClose, onConfirm
           <TabsTrigger value='comments'>Comments</TabsTrigger>
         </TabsList>
         <TabsContent value='task'>
-          <TaskForm form={form} onConfirm={onConfirm} isLoading={isLoading} disabled={disabled} taskOptions={taskOptions} memberOptions={memberOptions} />
+          <TaskForm form={form} onConfirm={onConfirm} isLoading={isLoading} disabled={disabled} statusOptions={statusOptions} memberOptions={memberOptions} />
         </TabsContent>
         <TabsContent value='comments'>
           <CommentsSection taskId={initialData?.id} assigneeId={initialData?.assigneeId} />

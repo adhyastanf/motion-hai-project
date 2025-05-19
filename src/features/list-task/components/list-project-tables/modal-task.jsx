@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-export default function ButtonCreateTask({ modal, setModal, projectId, taskId, initialData, taskOptions = [], memberOptions = [] }) {
+export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [] }) {
   const formSchema = z.object({
     task: z.string().min(2, {
       message: 'Product name must be at least 2 characters.',
@@ -38,7 +38,7 @@ export default function ButtonCreateTask({ modal, setModal, projectId, taskId, i
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { orgId } = useParams();
+  const { projectId } = useParams();
 
   const disabledForm = Boolean(form.watch(['task', 'description']).every(Boolean));
 
@@ -70,7 +70,7 @@ export default function ButtonCreateTask({ modal, setModal, projectId, taskId, i
         });
       }
       queryClient.invalidateQueries({
-        queryKey: ['list-project', orgId],
+        queryKey: ['list-task', projectId],
       });
       setModal('');
       form.reset();
@@ -110,8 +110,8 @@ export default function ButtonCreateTask({ modal, setModal, projectId, taskId, i
 
   return (
     <>
-      <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} taskOptions={taskOptions} memberOptions={memberOptions} />
-      <ModalTask title='Update Task' open={modal === 'update'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} taskOptions={taskOptions} memberOptions={memberOptions} initialData={initialData} />
+      <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} />
+      <ModalTask title='Update Task' open={modal === 'update'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} initialData={initialData} />
       <AlertModal
         title={`Are you sure to delete task "${initialData?.name}"?`}
         description='This action cannot be undone. This will permanently delete your task.'

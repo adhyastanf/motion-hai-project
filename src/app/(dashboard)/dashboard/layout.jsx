@@ -2,6 +2,7 @@ import KBar from '@/components/kbar';
 import AppSidebar from '@/components/layout/app-sidebar';
 import Header from '@/components/layout/header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import ListViewTask from '@/features/list-task/list-view-task';
 import { auth } from '@/lib/auth';
 import { cookies, headers } from 'next/headers';
 
@@ -21,7 +22,7 @@ export default async function DashboardLayout({ children }) {
   return (
     <KBar>
       <SidebarProvider defaultOpen={defaultOpen}>
-        {/* <AppSidebar session={session} projects={projects} /> */}
+        <AppSidebar session={session} />
         <SidebarInset>
           <Header session={session} />
           {children}

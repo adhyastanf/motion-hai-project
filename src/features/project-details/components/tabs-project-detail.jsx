@@ -1,38 +1,82 @@
 'use client';
 
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useParams } from 'next/navigation';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useGetListTask, useGetMembers, useGetStatusTask } from '@/hooks/use-query';
+import PageContainer from '@/components/layout/page-container';
+import TaskListTableAction from '@/features/list-task/components/list-project-tables/list-task-table-action';
+import ListViewTask from '@/features/list-task/list-view-task';
+import DataCalendar from '@/features/calendar/data-calendar';
+import KanbanViewPage from '@/features/kanban/components/kanban-view-page';
+import DataKanban from '@/features/board/data-board';
 
-const tabs = [
-  { name: 'Overview', value: '' },
-  { name: 'List', value: 'list' },
-  { name: 'Activity', value: 'activity' },
-  { name: 'Settings', value: 'settings' },
-  { name: 'Calendar', value: 'calendar' },
-];
+export default function TabsTask() {
+  const { projectId, orgId } = useParams();
+  const { data: tasks, isLoading, isError } = useGetListTask(projectId);
+  const { data: statusOptions } = useGetStatusTask();
+  const { data: memberOptions } = useGetMembers(orgId);
 
-export default function NavDetailProject({ activeProject }) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const segments = pathname.split('/').filter(Boolean);
-  const last = segments.at(-1) || '';
-  const isTab = tabs.some((tab) => tab.value === last);
-
-  const currentTab = isTab ? last : '';
-  const basePath = isTab ? '/' + segments.slice(0, -1).join('/') : pathname;
-
-  const handleChange = (value) => router.push(value ? `${basePath}/${value}` : basePath);
+  const tabs = [
+    {
+      name: 'Overview',
+      value: 'overview',
+      content: (
+        <PageContainer scrollable={false}>
+          <div className='flex flex-1 flex-col space-y-4'>
+            <TaskListTableAction />
+            <ListViewTask data={tasks} isLoading={isLoading} statusOptions={statusOptions} memberOptions={memberOptions} />
+          </div>
+        </PageContainer>
+      ),
+    },
+    {
+      name: 'Table',
+      value: 'list',
+      content: (
+        <PageContainer scrollable={false}>
+          <div className='flex flex-1 flex-col space-y-4'>
+            <TaskListTableAction />
+            <ListViewTask data={tasks} isLoading={isLoading}  statusOptions={statusOptions} memberOptions={memberOptions} />
+          </div>
+        </PageContainer>
+      ),
+    },
+    { name: 'Activity', value: 'activity', content: <div>sdsd</div> },
+    { name: 'Board', value: 'board', content: <DataKanban data={tasks} isLoading={isLoading}  statusOptions={statusOptions} /> },
+    { name: 'Settings', value: 'settings', content: <div>sdsdsd</div> },
+    {
+      name: 'Calendar',
+      value: 'calendar',
+      content: (
+        <PageContainer scrollable>
+          <div className='flex flex-1 flex-col space-y-4'>
+            <TaskListTableAction />
+            <DataCalendar data={tasks} isLoading={isLoading} />
+          </div>
+        </PageContainer>
+      ),
+    },
+  ];
 
   return (
-    <Tabs value={currentTab} onValueChange={handleChange} className='w-full'>
+    <Tabs defaultValue={tabs[0].value} className='w-full'>
       <TabsList className='w-full p-0 bg-background justify-start border-b rounded-none'>
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.name} value={tab.value} className='rounded-none bg-background h-full data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-primary'>
+          <TabsTrigger
+            key={tab.value}
+            value={tab.value}
+            className='rounded-none bg-background h-full data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-primary'
+          >
             <p className='text-[13px]'>{tab.name}</p>
           </TabsTrigger>
         ))}
       </TabsList>
+
+      {tabs.map((tab) => (
+        <TabsContent key={tab.value} value={tab.value} className='relative'>
+          {tab.content}
+        </TabsContent>
+      ))}
     </Tabs>
   );
 }

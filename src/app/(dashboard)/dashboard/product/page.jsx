@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import ProductListingPage from '@/features/products/components/product-listing';
 import ProductTableAction from '@/features/products/components/product-tables/product-table-action';
-import { DataTableSkeleton } from '@/components/ui/table/table-skeleton';
+import { DataTableSkeleton } from '@/components/ui/table-list-task/table-skeleton';
 
 export const metadata = {
   title: 'Dashboard: Products'

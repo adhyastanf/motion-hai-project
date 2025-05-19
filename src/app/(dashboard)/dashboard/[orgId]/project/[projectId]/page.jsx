@@ -1,5 +1,5 @@
-export default async function DetailProject({ params }) {
-  const { projectId } = await params;
+import TabsTask from '@/features/project-details/components/tabs-project-detail';
 
-    return <div>{projectId}</div>;
+export default async function DetailProject() {
+  return <TabsTask />;
 }
