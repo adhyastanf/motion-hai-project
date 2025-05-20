@@ -1,5 +1,5 @@
 import Contact from "@/components/landing-page/Contact";
-import Hero from "@/components/landing-page/Hero";
+import Contacthero from "@/components/landing-page/Contacthero";
 import Location from "@/components/landing-page/Location";
 
 
@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
 
-    <Hero />
+    <Contacthero />
     <Location />
     <Contact />
 
