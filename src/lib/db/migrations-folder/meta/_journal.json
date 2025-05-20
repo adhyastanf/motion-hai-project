@@ -8,6 +8,27 @@
       "when": 1746350132314,
       "tag": "0000_strange_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1746791694138,
+      "tag": "0001_curvy_fixer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1747031692493,
+      "tag": "0002_sparkling_nemesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1747045986927,
+      "tag": "0003_supreme_ultragirl",
+      "breakpoints": true
     }
   ]
 }

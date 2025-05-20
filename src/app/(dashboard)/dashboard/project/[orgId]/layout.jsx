@@ -5,21 +5,29 @@ import { headers } from 'next/headers';
 import HeadersDetailProject from '@/features/project-details/components/headers-projects';
 import NavDetailProject from '@/features/project-details/components/tabs-project-detail';
 import PageContainer from '@/components/layout/page-container';
+import { getListProject } from '@/app/actions';
 
 export default async function ProjectLayout({ children, params }) {
-  const { projectId } = await params;
 
-  const projects = await auth.api.listOrganizations({
-    headers: await headers(),
-  });
+  const {session} = await auth.api.getSession({
+    headers : await headers()
+  })
+
+  const { orgId } = await params;
+
+  // const projects = await auth.api.listOrganizations({
+  //   headers: await headers(),
+  // });
+
+  const projects = await getListProject(session.activeOrganizationId)
 
   try {
-    await auth.api.getFullOrganization({
-      headers: await headers(),
-      query: {
-        organizationId: projectId,
-      },
-    });
+    // await auth.api.getFullOrganization({
+    //   headers: await headers(),
+    //   query: {
+    //     organizationId: orgId,
+    //   },
+    // });
 
     return (
       // <PageContainer>

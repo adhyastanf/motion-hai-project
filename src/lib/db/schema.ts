@@ -80,10 +80,11 @@ export const invitations = mysqlTable('invitations', {
   organizationId: varchar('organization_id', { length: 36 })
     .notNull()
     .references(() => organizations.id, { onDelete: 'cascade' }),
-  email: text('email').notNull(),
+  email: text('email'),
   role: text('role'),
   status: text('status').notNull(),
-  expiresAt: timestamp('expires_at').notNull(),
+  isActive: boolean('is_active').notNull().default(true),
+  // expiresAt: timestamp('expires_at').notNull(),
   inviterId: varchar('inviter_id', { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
@@ -124,6 +125,8 @@ export const tasks = mysqlTable('tasks', {
   statusId: varchar('status_id', { length: 36 })
     // .notNull()
     .references(() => taskStatuses.id, { onDelete: 'set null' }),
+  assigneeId: varchar('assignee_id', { length: 36 }) // 👈 Assignee baru
+    .references(() => members.id, { onDelete: 'set null' }),
   priority: text('priority'),
   dueDate: datetime('due_date'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -136,16 +139,16 @@ export const taskStatuses = mysqlTable('task_statuses', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
-export const taskAssignees = mysqlTable('task_assignees', {
-  id: varchar('id', { length: 36 }).primaryKey(),
-  taskId: varchar('task_id', { length: 36 })
-    .notNull()
-    .references(() => tasks.id, { onDelete: 'cascade' }),
-  memberId: varchar('member_id', { length: 36 })
-    .notNull()
-    .references(() => members.id, { onDelete: 'cascade' }),
-  assignedAt: timestamp('assigned_at').notNull().defaultNow(),
-});
+// export const taskAssignees = mysqlTable('task_assignees', {
+//   id: varchar('id', { length: 36 }).primaryKey(),
+//   taskId: varchar('task_id', { length: 36 })
+//     .notNull()
+//     .references(() => tasks.id, { onDelete: 'cascade' }),
+//   memberId: varchar('member_id', { length: 36 })
+//     .notNull()
+//     .references(() => members.id, { onDelete: 'cascade' }),
+//   assignedAt: timestamp('assigned_at').notNull().defaultNow(),
+// });
 
 export const taskComments = mysqlTable('task_comments', {
   id: varchar('id', { length: 36 }).primaryKey(),
@@ -216,7 +219,6 @@ export const membersRelations = relations(members, ({ one, many }) => ({
     fields: [members.organizationId],
     references: [organizations.id],
   }),
-  taskAssignees: many(taskAssignees),
   taskComments: many(taskComments),
 }));
 
@@ -264,25 +266,16 @@ export const tasksRelations = relations(tasks, ({ one, many }) => ({
     fields: [tasks.statusId],
     references: [taskStatuses.id],
   }),
-  assignees: many(taskAssignees),
+  assignee: one(members, {
+    fields: [tasks.assigneeId],
+    references: [members.id],
+  }),
   comments: many(taskComments),
 }));
 
 // Task Statuses
 export const taskStatusesRelations = relations(taskStatuses, ({ many }) => ({
   tasks: many(tasks),
-}));
-
-// Task Assignees
-export const taskAssigneesRelations = relations(taskAssignees, ({ one }) => ({
-  task: one(tasks, {
-    fields: [taskAssignees.taskId],
-    references: [tasks.id],
-  }),
-  member: one(members, {
-    fields: [taskAssignees.memberId],
-    references: [members.id],
-  }),
 }));
 
 // Task Comments

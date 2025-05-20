@@ -1,0 +1,1 @@
+ALTER TABLE `invitations` MODIFY COLUMN `email` text;

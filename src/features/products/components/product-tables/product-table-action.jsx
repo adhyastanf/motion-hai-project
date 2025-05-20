@@ -1,7 +1,7 @@
 'use client';
 
 import { DataTableFilterBox } from '@/components/ui/table/data-table-filter-box';
-import { DataTableResetFilter } from '@/components/ui/table/data-table-reset';
+import { DataTableResetFilter } from '@/components/ui/table-list-task/data-table-reset';
 import { DataTableSearch } from '@/components/ui/table/data-table-search';
 
 import {
