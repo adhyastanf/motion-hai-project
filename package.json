@@ -47,6 +47,7 @@
     "date-fns": "^4.1.0",
     "drizzle-kit": "^0.30.6",
     "drizzle-orm": "^0.41.0",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.10.5",
     "hono": "^4.7.6",

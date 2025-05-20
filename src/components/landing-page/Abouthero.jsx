@@ -6,18 +6,29 @@ import footer from "../assets/footer.png"; // Import spinning icon
 
 const Abouthero = () => {
     return (
-        <section className="relative bg-[#4D6499] text-white py-24 px-6 md:px-20 overflow-hidden">
+        <section className="relative text-white py-24 px-6 md:px-20 overflow-hidden"
+        style={{
+            background: "linear-gradient(180deg, #7098C0, #91A5BB)"
+        }}
+        >
             {/* Decorative Geometric Background Shape */}
             <div className="absolute w-[400px] h-[400px] bg-[#172233] rounded-full top-[-100px] left-[-100px] opacity-30 blur-3xl"></div>
-            <div className="absolute w-[600px] h-[600px] bg-[#4D6499] rounded-full bottom-[-200px] right-[-200px] opacity-20 blur-2xl"></div>
 
             {/* Spinning Icon */}
-            <div className="absolute bottom-[-50px] right-[-50px] w-[300px] h-[300px] opacity-10 animate-spin-slower z-0 pointer-events-none">
+            <div className="absolute bottom-[-0px] right-[-50px] w-[300px] h-[300px] opacity-10 animate-spin-slower z-0 pointer-events-none">
                 <Image
                     src={footer}
                     alt="Spinning Icon"
                     fill
                     className="object-contain blur-sm"
+                />
+            </div>
+            <div className="absolute top-[40px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower z-90 pointer-events-none">
+                <Image
+                    src={footer}
+                    alt="Spinning Icon"
+                    fill
+                    className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
                 />
             </div>
 
@@ -30,15 +41,16 @@ const Abouthero = () => {
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
                 >
-                    <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
-                        <span className="text-[#7098C0]">Lorem</span>{" "}
-                        <span className="text-white">Ipsum</span><br />
-                        <span className="text-[#91A5BB]">Lorem</span>
-                    </h1>
+                <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
+                <span className="text-[#4D6499]">Create</span>{" "}
+                <span className="text-white">with</span><br />
+                <span className="text-[#000000]">purpose.</span>
+                </h1>
 
-                    <p className="mt-6 text-[#91A5BB] text-lg max-w-lg">
-                        Ipsum.
-                    </p>
+                <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
+                Every line, every step — make it count.
+                </p>
+
                 </motion.div>
 
                 {/* Image Section */}
@@ -52,7 +64,7 @@ const Abouthero = () => {
                     <Image
                         src={profilepic}
                         alt="Profile"
-                        className="rounded-xl shadow-2xl w-full max-w-xs md:max-w-sm"
+                        className="w-full max-w-xs md:max-w-sm"
                     />
                 </motion.div>
             </div>
