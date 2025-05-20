@@ -13,32 +13,37 @@ const projects = [
   {
     title: "Halodoc Project",
     src: halodoc,
-    description: "A modern, responsive design showcasing creative UI.",
+    description: "This is a placeholder description. Add your project copy here.",
+    videoId: "UPKm3q24C-w",
   },
   {
     title: "Lolica Project",
     src: lolica,
-    description: "A product landing page focused on accessibility and speed.",
+    description: "This is a placeholder description. Add your project copy here.",
+    videoId: "6rrxsneWCkM",
   },
   {
     title: "Mom Fest Project",
     src: momfest,
-    description: "An interactive portfolio with smooth animations.",
+    description: "This is a placeholder description. Add your project copy here.",
+    videoId: "tyoASAvKEMU",
   },
   {
     title: "Pemkot Ambon Project",
     src: pemkotambon,
-    description: "An interactive portfolio with smooth animations.",
+    description: "This is a placeholder description. Add your project copy here.",
   },
   {
     title: "Sharp Project",
     src: sharp,
-    description: "An interactive portfolio with smooth animations.",
+    description: "This is a placeholder description. Add your project copy here.",
+    videoId: "qgsEQXtAeyg",
   },
   {
     title: "Summarecon Serpong Project",
     src: sms,
-    description: "An interactive portfolio with smooth animations.",
+    description: "This is a placeholder description. Add your project copy here.",
+    videoId: "T0DHUnyVsMY",
   },
 ];
 
@@ -47,7 +52,7 @@ const Portfoliopage = () => {
 
   return (
     <div
-      className="text-white bg-gradient-to-b from-black via-[#381a5f] to-black py-18"
+      className="text-white bg-gradient-to-b from-black via-[#381a5f] to-black pt-16"
       id="portfolio"
     >
       {/* Section Title */}
@@ -58,13 +63,13 @@ const Portfoliopage = () => {
         transition={{ duration: 0.5, delay: 0.25 }}
         className="text-center"
       >
-        <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold my-12">
+        <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-12">
           Motion <span className="text-orange-400">Projects</span>
         </h1>
       </motion.div>
 
       {/* Projects */}
-      <div className="px-6 md:px-0 max-w-[1000px] mx-auto mt-40 space-y-36">
+      <div className="px-6 md:px-0 max-w-[1000px] mx-auto mt-28 space-y-36">
         {projects.map((project, index) => (
           <motion.div
             key={index}
@@ -79,7 +84,7 @@ const Portfoliopage = () => {
             {/* Project Title */}
             <div
               className={`text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.6)] w-full md:w-1/2 text-center ${
-                index % 2 === 1 ? "md:text-right" : "md:text- left"
+                index % 2 === 1 ? "md:text-right" : "md:text-left"
               }`}
             >
               {project.title}
@@ -113,11 +118,27 @@ const Portfoliopage = () => {
             <h2 className="text-white text-3xl font-semibold mb-4 text-center">
               {selectedProject.title}
             </h2>
-            <Image
-              src={selectedProject.src}
-              alt={selectedProject.title}
-              className="w-full h-[500px] object-contain rounded-lg"
-            />
+
+            {/* Conditional media: video or image */}
+            {selectedProject.videoId ? (
+              <iframe
+                className="w-full aspect-video"
+                src={`https://www.youtube.com/embed/${selectedProject.videoId}?autoplay=1&rel=0`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            ) : (
+              <Image
+                src={selectedProject.src}
+                alt={selectedProject.title}
+                className="w-full max-h-[500px] object-contain mx-auto rounded-lg border border-gray-700"
+              />
+            )}
+
+            {/* Project Description */}
             <p className="text-gray-300 mt-6 text-lg text-center">
               {selectedProject.description}
             </p>

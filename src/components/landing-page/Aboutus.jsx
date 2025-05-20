@@ -3,10 +3,10 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import photo1 from "../assets/photo1.jpg";
-import photo2 from "../assets/photo2.jpg";
-import photo3 from "../assets/photo3.jpg";
-import photo4 from "../assets/photo4.jpg";
+import photo1 from "../assets/photo1.webp";
+import photo2 from "../assets/photo2.webp";
+import photo3 from "../assets/photo3.webp";
+import photo4 from "../assets/photo4.webp";
 
 const About = () => {
   const router = useRouter();

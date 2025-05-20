@@ -21,6 +21,7 @@ const Hero = () => {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="text-8xl font-bold text-center"
                 >
+                    {/*<p className="text-2xl text-[#FFFFFF] mb-2">Hi we are</p>*/}
                     <h1 className="text-[#98B4CE]">Hai</h1>
                     <h1 className="text-[#FF4500]">Motion</h1>
                 </motion.div>

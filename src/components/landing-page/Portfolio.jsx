@@ -1,40 +1,52 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+
 import halodoc from "../assets/halodoc.png";
 import lolica from "../assets/lolica.png";
 import momfest from "../assets/momfest.png";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import pemkotambon from "../assets/pemkotambon.png";
+import sharp from "../assets/sharp.png";
+import sms from "../assets/sms.jpg";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const projects = [
   {
     title: "Halodoc Project",
     src: halodoc,
-    description: "A modern, responsive design showcasing creative UI.",
   },
   {
     title: "Lolica Project",
     src: lolica,
-    description: "A product landing page focused on accessibility and speed.",
   },
   {
     title: "Mom Fest Project",
     src: momfest,
-    description: "An interactive portfolio with smooth animations.",
+  },
+  {
+    title: "Pemkot Ambon Project",
+    src: pemkotambon,
+  },
+  {
+    title: "Sharp Project",
+    src: sharp,
   },
 ];
 
 const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
   const router = useRouter();
 
   return (
-    <div
-      className="text-white bg-gradient-to-b from-black to-[#381a5f] py-18"
-      id="portfolio"
-    >
-      {/* Section Title */}
+    <div className="text-white bg-gradient-to-b from-black to-[#381a5f] py-20" id="portfolio">
+      {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: 75 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -47,44 +59,37 @@ const Portfolio = () => {
         </h1>
       </motion.div>
 
-      {/* Projects */}
-      <div className="px-6 md:px-0 max-w-[1000px] mx-auto mt-40 space-y-36">
-        {projects.map((project, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 75 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className={`flex flex-col md:flex-row ${
-              index % 2 === 1 ? "md:flex-row-reverse" : ""
-            } items-center gap-12`}
-          >
-            {/* Project Title */}
-            <div
-              className={`text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.6)] w-full md:w-1/2 text-center ${
-                index % 2 === 1 ? "md:text-right" : "md:text-left"
-              }`}
-            >
-              {project.title}
-            </div>
+      {/* Carousel */}
+      <motion.div
+        initial={{ opacity: 0, y: 75 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.25 }}
+        className="max-w-7xl mx-auto mt-12"
+      >
+        <Carousel className="w-full">
+          <CarouselContent>
+            {projects.map((project, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <div className="p-4 flex flex-col items-center gap-4">
+                  <h3 className="text-xl font-semibold text-center text-white">
+                    {project.title}
+                  </h3>
+                  <Image
+                    src={project.src}
+                    alt={project.title}
+                    className="w-full object-cover rounded-md border border-gray-700"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </motion.div>
 
-            {/* Project Image */}
-            <div
-              className="cursor-pointer w-full md:w-1/2 flex justify-center"
-              onClick={() => setSelectedProject(project)}
-            >
-              <Image
-                src={project.src}
-                alt={project.title}
-                className="h-[350px] w-[500px] object-cover border rounded border-gray-700 hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Click for More Button */}
+      {/* Button to Full Portfolio */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -99,36 +104,6 @@ const Portfolio = () => {
           Click for More
         </button>
       </motion.div>
-
-      {/* Popup Modal */}
-      {selectedProject && (
-        <div
-          className="fixed inset-0 flex bg-black/70 justify-center items-center z-50"
-          onClick={() => setSelectedProject(null)}
-        >
-          <div
-            className="bg-[#1a1a1a] p-8 rounded-2xl w-[80%] max-w-[880px] h-[88vh] overflow-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-white text-3xl font-semibold mb-4 text-center">
-              {selectedProject.title}
-            </h2>
-
-            {/* Image Container with containment */}
-            <div className="w-full h-[600px] flex justify-center items-center">
-              <Image
-                src={selectedProject.src}
-                alt={selectedProject.title}
-                className="max-w-full max-h-full object-contain rounded-lg"
-              />
-            </div>
-
-            <p className="text-gray-300 mt-6 text-lg text-center">
-              {selectedProject.description}
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
