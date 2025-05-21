@@ -3,41 +3,42 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import profilepic from "../assets/profilepic.png";
+import { usePreloader } from "../context/PreloaderContext"; // ⬅️ import the context
 
 const brandName = "Hai Motion";
 const fullText = "Lorem ipsum dolor sit amet.";
 
-const Preloader = ({ onFinish }) => {
+const Preloader = () => {
   const [visibleWords, setVisibleWords] = useState([]);
-  const [finished, setFinished] = useState(false);
+  const { showPreloader, finishPreloader } = usePreloader(); // ⬅️ get context values
 
   const words = fullText.trim().split(" ");
 
   useEffect(() => {
+    if (!showPreloader) return;
+
     if (visibleWords.length < words.length) {
       const timer = setTimeout(() => {
         setVisibleWords((prev) => [...prev, words[prev.length]]);
-      }, 300); // Typing speed
+      }, 300);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
-        setFinished(true);
-        onFinish();
-      }, 2000); // Delay before ending preloader
+        finishPreloader(); // ⬅️ tell context we're done
+      }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [visibleWords, words, onFinish]);
+  }, [visibleWords, words, showPreloader, finishPreloader]);
 
   return (
     <AnimatePresence>
-      {!finished && (
+      {showPreloader && (
         <motion.div
           className="fixed inset-0 bg-[#7098C0] z-50 flex flex-col items-center justify-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 1 }}
         >
-          {/* Word-by-word typing animation */}
           <div className="text-white text-xl md:text-2xl font-light max-w-2xl px-8 text-center mb-6 min-h-[3rem] flex flex-wrap justify-center">
             {visibleWords.map((word, index) => (
               <motion.span
@@ -52,7 +53,6 @@ const Preloader = ({ onFinish }) => {
             ))}
           </div>
 
-          {/* Logo and brand */}
           <motion.div
             className="bg-[#40608d] rounded-md flex items-center justify-center overflow-hidden"
             initial={{ width: 150, height: 150 }}

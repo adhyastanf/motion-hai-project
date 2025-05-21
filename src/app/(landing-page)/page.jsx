@@ -1,18 +1,20 @@
 import About from "@/components/landing-page/About";
 import Contact from "@/components/landing-page/Contact";
-import Hero from "@/components/landing-page/Hero";
+import Homehero from "@/components/landing-page/Homehero";
 import Portfolio from "@/components/landing-page/Portfolio";
-import Skills from "@/components/landing-page/Skills";
+import Client from "@/components/landing-page/Client";
+import Association from "@/components/landing-page/Association";
 
 
 export default function Home() {
   return (
     <>
 
-    <Hero />
+    <Homehero />
     <About />
     <Portfolio />
-    <Skills />
+    <Client />
+    <Association />
     <Contact />
 
     </>

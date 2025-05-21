@@ -36,7 +36,8 @@ const Navbar = () => {
   return (
     <header
       className={`w-full fixed top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-[#4D6499] shadow-lg" : "bg-transparent"
+        scrolled ? "bg-black/10 backdrop-blur-md shadow-lg"
+      : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -60,7 +61,8 @@ const Navbar = () => {
               className="relative group hover:text-white transition-colors"
             >
               {link.title}
-              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-[#B55527] rounded transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-3/4 bg-[#E67E22] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                <span className="absolute left-0 -bottom-1 h-[2px] w-1/2 bg-[#B55527] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 delay-100"></span>
             </Link>
           ))}
         </nav>
