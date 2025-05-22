@@ -3,10 +3,26 @@
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db/drizzle';
 import { invitations, members, projects, taskComments, tasks, taskStatuses, users } from '@/lib/db/schema';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, isNull } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { redirect } from 'next/dist/server/api-utils';
 import { headers } from 'next/headers';
+
+export async function getUserForWorkspace(orgId) {
+  try {
+    const data = await db
+      .select()
+      .from(users)
+      .leftJoin(members, and(eq(users.id, members.userId), eq(members.organizationId, orgId)))
+      .where(isNull(members.id));
+
+      const result = data.map(item => item.users);
+
+    return result;
+  } catch (err) {
+    return err;
+  }
+}
 
 export async function getWorkspace() {
   try {
@@ -59,6 +75,28 @@ export async function createTask(values) {
     dueDate: values.due ? values.due : null,
     assigneeId: values.assigne ? values.assigne : null,
   });
+
+  const [newTask] = await db
+    .select({
+      id: tasks.id,
+      name: tasks.name,
+      description: tasks.description,
+      dueDate: tasks.dueDate,
+      createdAt: tasks.createdAt,
+      updatedAt: tasks.updatedAt,
+      statusId: tasks.statusId,
+      status: taskStatuses.name,
+      assigneeId: tasks.assigneeId,
+      assignee: users.name,
+      assigneeEmail: users.email,
+    })
+    .from(tasks)
+    .leftJoin(taskStatuses, eq(tasks.statusId, taskStatuses.id))
+    .leftJoin(members, eq(tasks.assigneeId, members.id))
+    .leftJoin(users, eq(members.userId, users.id))
+    .where(eq(tasks.id, taskId));
+
+  return newTask;
 }
 
 export async function deleteTask(taskId) {
@@ -101,7 +139,6 @@ export async function updateAssigneTask(values) {
 
 export async function getListTask(projectId, filters) {
   try {
-
     const conditions = [eq(tasks.projectId, projectId)];
 
     // if (filters.status) {
@@ -264,6 +301,24 @@ export async function acceptInvitation(userId, orgId) {
     });
 
     redirect(`/dashboard/project/${orgId}`);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+export async function createBulkMember(userIds, orgId) {
+  try {
+    await Promise.all(
+      userIds.map(async (userId) => {
+        return auth.api.addMember({
+          body: {
+            userId,
+            organizationId : orgId,
+            role :' member',
+          },
+        });
+      })
+    );
   } catch (err) {
     console.error(err.message);
   }

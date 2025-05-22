@@ -1,39 +1,33 @@
 'use client';
 
-import { generateInvitationLink } from '@/app/actions';
+import { createBulkMember } from '@/app/actions';
+import PageContainer from '@/components/layout/page-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { useGetMembers, useGetOrganization } from '@/hooks/use-query';
+import { Modal } from '@/components/ui/modal';
+import { useGetMembers, useGetOrganization, useGetUsers } from '@/hooks/use-query';
 import { useToast } from '@/hooks/use-toast';
 import { authClient } from '@/lib/client/auth-client';
 import { DotsVerticalIcon } from '@radix-ui/react-icons';
-import { useQueryClient } from '@tanstack/react-query';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import ButtonModalWorkspace from './components/modal-workspace';
 
 const MODAL_CONSTANT = ['update', 'delete'];
-export default function SettingsDashboardPage({ orgId }) {
+export default function SettingsDashboardPage() {
+  const { orgId, projectId } = useParams();
   const { toast } = useToast();
   const [modal, setModal] = useState('');
-  const [invitationLink, setInvitationLink] = useState(null);
-  const [isLinkCopied, setIsLinkCopied] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [openBulkModal, setOpenBulkModal] = useState(false);
   const { data: members } = useGetMembers(orgId);
   const { data: organizations } = useGetOrganization(orgId);
+  const { data: users } = useGetUsers(orgId);
   const queryClient = useQueryClient();
-
-  const handleGenerateLink = async () => {
-    const link = await generateInvitationLink(orgId);
-    setInvitationLink(`http://localhost:3000/dashboard/accept-invite/${link}`);
-  };
-
-  const handleCopyLink = async () => {
-    if (invitationLink) {
-      await navigator.clipboard.writeText(invitationLink);
-      setIsLinkCopied(true);
-      setTimeout(() => setIsLinkCopied(false), 2000);
-    }
-  };
 
   async function handleUpdateRole(memberId, role) {
     await authClient.organization.updateMemberRole(
@@ -55,6 +49,9 @@ export default function SettingsDashboardPage({ orgId }) {
           });
           queryClient.invalidateQueries({
             queryKey: ['members', orgId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['users', orgId],
           });
         },
         onError: (ctx) => {
@@ -88,6 +85,12 @@ export default function SettingsDashboardPage({ orgId }) {
           queryClient.invalidateQueries({
             queryKey: ['members', orgId],
           });
+          queryClient.invalidateQueries({
+            queryKey: ['users', orgId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['list-task', projectId],
+          });
         },
         onError: (ctx) => {
           toast({
@@ -100,92 +103,145 @@ export default function SettingsDashboardPage({ orgId }) {
     );
   }
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values) => createBulkMember(values, orgId),
+    onSuccess: () => {
+      toast({
+        title: 'Member Added',
+        description: 'Member has been added successfully.',
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['members', orgId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['users', orgId],
+      });
+      setOpenBulkModal(false);
+      setSelectedMembers([]);
+    },
+    onError: () => {
+      toast({
+        title: 'Failed to Added Member',
+        variant: 'destructive',
+      });
+    },
+  });
+
   return (
-    <div className='p-6 space-y-6 max-w-4xl mx-auto'>
-      <h1 className='text-3xl font-bold'>Workspace Settings</h1>
-      <Card>
-        <CardHeader className='flex flex-row items-center justify-between'>
-          <div>
-            <CardTitle>Workspace Info</CardTitle>
-            <CardDescription>Manage the name, description, and visibility of your workspace.</CardDescription>
-          </div>
-          <div className='flex gap-2'>
-            <Button variant='outline' size='sm' onClick={() => setModal('update')}>
-              Edit
-            </Button>
-            <Button variant='destructive' size='sm' onClick={() => setModal('delete')}>
-              Delete
-            </Button>
-          </div>
-          {MODAL_CONSTANT.includes(modal) && <ButtonModalWorkspace modal={modal} setModal={setModal} initialData={organizations?.data} />}
-        </CardHeader>
-        <CardContent>
-          <p className='text-sm text-muted-foreground'>
-            Workspace Name: <strong>{organizations?.data?.name}</strong>
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Members</CardTitle>
-          <CardDescription>View and manage members in this workspace.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul className='space-y-2 text-sm'>
-            {members?.data?.map((member) => (
-              <li key={member.id} className='flex justify-between items-center'>
-                <div>
-                  <p>{member.name}</p>
-                  <p className='text-muted-foreground text-xs'>{member.email}</p>
-                </div>
-
-                <div className='flex items-center gap-4'>
-                  <span className='capitalize'>{member.role}</span>
-                  {member.role !== 'owner' && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' size='icon'>
-                          <DotsVerticalIcon />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align='end'>
-                        <DropdownMenuItem onClick={() => handleUpdateRole(member.id, 'admin')}>Set as Admin</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleUpdateRole(member.id, 'member')}>Set as Member</DropdownMenuItem>
-                        <DropdownMenuItem className='text-red-700' onClick={() => handleDeleteMember(member.id)}>
-                          Remove {member.name}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Invite Member</CardTitle>
-          <CardDescription>Generate and share a link for inviting a member to join this workspace.</CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          {invitationLink ? (
-            <div className='space-y-2'>
-              <p className='text-sm'>Share this invitation link:</p>
-              <p className='font-semibold'>{invitationLink}</p>
-              <Button onClick={handleCopyLink} variant='outline'>
-                {isLinkCopied ? 'Link Copied!' : 'Copy Link'}
-              </Button>
+    <PageContainer scrollable={false}>
+      <div className='flex flex-1 flex-col space-y-4'>
+        <h1 className='text-3xl font-bold'>Workspace Settings</h1>
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <div>
+              <CardTitle>Workspace Info</CardTitle>
+              <CardDescription>Manage the name, description, and visibility of your workspace.</CardDescription>
             </div>
-          ) : (
-            <Button onClick={handleGenerateLink} variant='outline'>
-              Generate Invitation Link
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='ghost' size='icon'>
+                  <DotsVerticalIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuItem onClick={() => setModal('update')}>Edit</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setModal('delete')}>Delete</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {MODAL_CONSTANT.includes(modal) && <ButtonModalWorkspace modal={modal} setModal={setModal} initialData={organizations?.data} />}
+          </CardHeader>
+          <CardContent>
+            <p className='text-sm text-muted-foreground'>
+              Workspace Name: <strong className='capitalize'>{organizations?.data?.name}</strong>
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <div>
+              <CardTitle>Members</CardTitle>
+              <CardDescription>View and manage members in this workspace.</CardDescription>
+            </div>
+            <Button onClick={() => setOpenBulkModal(true)}>Add Member</Button>
+          </CardHeader>
+          <CardContent>
+            <ul className='space-y-2 text-sm'>
+              {members?.map((member) => (
+                <li key={member.id} className='flex justify-between items-center'>
+                  <div>
+                    <p>{member.name}</p>
+                    <p className='text-muted-foreground text-xs'>{member.email}</p>
+                  </div>
+
+                  <div className='flex items-center gap-4'>
+                    <span className='capitalize'>{member.role}</span>
+                    {member.role !== 'owner' && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant='ghost' size='icon'>
+                            <DotsVerticalIcon />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align='end'>
+                          <DropdownMenuItem onClick={() => handleUpdateRole(member.id, 'admin')}>Set as Admin</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleUpdateRole(member.id, 'member')}>Set as Member</DropdownMenuItem>
+                          <DropdownMenuItem className='text-red-700' onClick={() => handleDeleteMember(member.id)}>
+                            Remove {member.name}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Modal title='Add Member' description={'Select Members To Add :'} isOpen={openBulkModal} onClose={() => setOpenBulkModal(false)}>
+          <div className='space-y-4'>
+            <ScrollArea className='h-40 rounded-md px-2'>
+              <div className='space-y-2'>
+                {users?.length > 0 ? (
+                  users.map((user) => (
+                    <label key={user.id} className='flex items-center gap-2 py-1'>
+                      <Checkbox
+                        checked={selectedMembers.includes(user.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedMembers((prev) => [...prev, user.id]);
+                          } else {
+                            setSelectedMembers((prev) => prev.filter((id) => id !== user.id));
+                          }
+                        }}
+                      />
+                      <span>{user.name}</span>
+                    </label>
+                  ))
+                ) : (
+                  <p className='text-muted-foreground text-sm'>No users available to invite.</p>
+                )}
+              </div>
+            </ScrollArea>
+
+            <Button
+              className='w-full'
+              onClick={() => {
+                mutate(selectedMembers);
+                toast({
+                  title: 'Members selected',
+                  description: `${selectedMembers.length} member(s) selected.`,
+                });
+              }}
+              disabled={selectedMembers.length === 0 || isPending}
+            >
+              Add Member
             </Button>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          </div>
+        </Modal>
+      </div>
+    </PageContainer>
   );
 }

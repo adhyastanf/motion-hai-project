@@ -1,49 +1,78 @@
 'use client';
 
-import { Check, ChevronDown, GalleryVerticalEnd } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import ButtonModalProject from '@/features/list-task/components/list-project-tables/modal-project';
+import { useGetListProject } from '@/hooks/use-query';
+import { Check, ChevronDown, GalleryVerticalEnd, Pencil } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { authClient } from '@/lib/client/auth-client';
+import { useState } from 'react';
+import PageContainer from './layout/page-container';
+import { Button } from './ui/button';
 
-export function OrgSwitcher({ projects }) {
+export function OrgSwitcher() {
   const params = useParams();
   const router = useRouter();
+  const [modal, setModal] = useState('');
+  const { data: projects } = useGetListProject(params.orgId);
 
-  const defaultProject = projects.find((org) => org.id === params.projectId);
+  const defaultProject = projects.data.find((project) => project.id === params.projectId);
+
+  const [selectedProject] = projects.data.filter((project) => project.id === params.projectId);
 
   const handleProjectSwitch = async (project) => {
-    await authClient.organization.setActive({
-      organizationId: project.id,
-    });
-    router.push(`/dashboard/project/${project.id}`);
+    router.push(`/dashboard/${params.orgId}/project/${project.id}`);
   };
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
+    <div>
+      <div className='flex items-center justify-between w-full gap-2'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
-              <div className='bg-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
+            <Button variant='ghost' className='w-full md:w-auto justify-start md:justify-between gap-2 text-sm font-medium px-3 py-2 truncate'>
+              <div className='bg-primary text-white flex items-center justify-center rounded-md p-1'>
                 <GalleryVerticalEnd className='size-4' />
               </div>
-              <div className='flex flex-col gap-0.5 leading-none'>
-                <span className='font-semibold'>Hai Motion</span>
-                <span className=''>{defaultProject?.name}</span>
+              <div className='block truncate text-left'>
+                <span className='font-semibold truncate capitalize'>{defaultProject?.name || 'Pilih Proyek'}</span>
               </div>
-              <ChevronDown className='ml-auto' />
-            </SidebarMenuButton>
+              <ChevronDown className='ml-auto size-4' />
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-[--radix-dropdown-menu-trigger-width]' align='start'>
-            {projects.map((project) => (
-              <DropdownMenuItem key={project.id} onSelect={() => handleProjectSwitch(project)}>
-                {project.name} {project.id === defaultProject.id && <Check className='ml-auto' />}
+
+          <DropdownMenuContent className='w-[var(--radix-dropdown-menu-trigger-width)] max-w-xs' align='start'>
+            {projects.data.map((project) => (
+              <DropdownMenuItem key={project.id} onSelect={() => handleProjectSwitch(project)} className='truncate capitalize'>
+                {project.name}
+                {project.id === defaultProject?.id && <Check className='ml-auto size-4' />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' size='icon' className='shrink-0'>
+              <Pencil size={4} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end'>
+            <DropdownMenuItem
+              onClick={() => {
+                setModal('update');
+              }}
+            >
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setModal('delete');
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <ButtonModalProject modal={modal} setModal={setModal} projectId={selectedProject?.id} initialData={selectedProject}router={router} />
+    </div>
   );
 }
