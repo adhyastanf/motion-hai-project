@@ -1,86 +1,96 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { Link as ScrollLink } from "react-scroll";
-import Link from "next/link";
+import profilepic from "../assets/profilepic.png";
 
 const navLinks = [
-    { title: "Home", path: "/" },
-    { title: "About", path: "/about" },
-    { title: "Portofolio", path: "/portofolio" },
-    { title: "Contact Us", path: "/contact-us" },
+  { title: "Home", path: "/" },
+  { title: "About", path: "/about" },
+  { title: "Portofolio", path: "/portofolio" },
+  { title: "Contact Us", path: "/contact-us" },
 ];
 
 const Navbar = () => {
-    const [nav, setNav] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-    const toggleNav = () => setNav(!nav);
-    const closeNav = () => setNav(false);
+  const toggleNav = () => setNavOpen(!navOpen);
+  const closeNav = () => setNavOpen(false);
 
-    const menuVariants = {
-        open: { x: 0, transition: { stiffness: 20, damping: 15 } },
-        closed: { x: "-100%", transition: { stiffness: 20, damping: 15 } },
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
     };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    return (
-        <div className="text-white/70 pt-6">
-            {/* Desktop Navbar */}
-            <div className="hidden md:flex items-center px-4 py-2 mx-auto max-w-[500px]">
-                <ul className="flex flex-row p-4 space-x-8">
-                    {navLinks.map((link, index) => (
-                        <Link href={link.path} key={index} className="relative group">
-                            {/* <ScrollLink
-                                to={link.path}
-                                smooth={true}
-                                duration={800}
-                                offset={-70}
-                                className="cursor-pointer hover:text-white transition"
-                            > */}
-                                {link.title}
-                            {/* </ScrollLink> */}
-                            
-                            {/* Upper underline (Full width on hover) */}
-                            <div className="absolute left-0 bottom-[-2px] w-0 h-1 bg-orange-400 rounded-full transition-all duration-300 ease-out group-hover:w-full"></div>
-                            
-                            {/* Lower underline (5/8 of the width on hover) */}
-                            <div className="absolute left-0 bottom-[-6px] w-0 h-1 bg-orange-600 rounded-full transition-all duration-300 ease-out group-hover:w-2/3"></div>
-                        </Link>
-                    ))}
-                </ul>
-            </div>
+  const menuVariants = {
+    open: { x: 0, transition: { type: "spring", stiffness: 25 } },
+    closed: { x: "-100%", transition: { type: "spring", stiffness: 25 } },
+  };
 
-            {/* Mobile Menu Icon */}
-            <div onClick={toggleNav} className="md:hidden absolute top-5 right-5 border rounded text-white/70 border-white/70 p-2 z-50">
-                {nav ? <AiOutlineClose size={30} /> : <AiOutlineMenu size={30} />}
-            </div>
+  return (
+    <header
+      className={`w-full fixed top-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-black/10 backdrop-blur-md shadow-lg"
+      : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo using profile picture */}
+        <Link href="/" className="flex items-center">
+          <Image
+            src={profilepic}
+            alt="Logo"
+            width={50} // Adjust the width as needed
+            height={50} // Adjust the height as needed
+            className="rounded-full" // Adjust styling if needed
+          />
+        </Link>
 
-            {/* Mobile Navbar */}
-            <motion.div
-                initial={false}
-                animate={nav ? "open" : "closed"}
-                variants={menuVariants}
-                className="fixed left-0 top-0 w-full h-full bg-black/90 z-40 flex flex-col justify-center items-center"
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex space-x-10 text-white/80">
+          {navLinks.map((link, index) => (
+            <Link
+              href={link.path}
+              key={index}
+              className="relative group hover:text-white transition-colors"
             >
-                <ul className="text-3xl font-semibold space-y-8">
-                    {navLinks.map((link, index) => (
-                        <li key={index}>
-                            <ScrollLink
-                                to={link.path}
-                                smooth={true}
-                                duration={800}
-                                offset={-70}
-                                onClick={closeNav}
-                                className="cursor-pointer hover:text-white transition"
-                            >
-                                {link.title}
-                            </ScrollLink>
-                        </li>
-                    ))}
-                </ul>
-            </motion.div>
+              {link.title}
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-3/4 bg-[#E67E22] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                <span className="absolute left-0 -bottom-1 h-[2px] w-1/2 bg-[#B55527] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 delay-100"></span>
+            </Link>
+          ))}
+        </nav>
+
+        {/* Mobile Icon */}
+        <div
+          className="md:hidden p-2 border border-white/60 text-white/80 rounded z-50"
+          onClick={toggleNav}
+        >
+          {navOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
         </div>
-    );
+
+        {/* Mobile Nav */}
+        <motion.div
+          initial={false}
+          animate={navOpen ? "open" : "closed"}
+          variants={menuVariants}
+          className="md:hidden fixed top-0 left-0 w-full h-full bg-[#172233] flex flex-col items-center justify-center space-y-8 text-white text-2xl font-semibold z-40"
+        >
+          {navLinks.map((link, index) => (
+            <Link href={link.path} key={index} onClick={closeNav}>
+              {link.title}
+            </Link>
+          ))}
+        </motion.div>
+      </div>
+    </header>
+  );
 };
 
 export default Navbar;

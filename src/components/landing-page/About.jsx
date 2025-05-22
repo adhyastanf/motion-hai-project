@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import book from "../assets/book.png";
 import pc from "../assets/pc.png";
 import card from "../assets/card.png";
-import finance from "../assets/finance.png";
+import screw from "../assets/icon1.png";
+import lighting from "../assets/icon2.png"
 
 const About = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const About = () => {
       delay: 0.3,
     },
     {
-      img: pc,
+      img: screw,
       title: "Creative Services",
       text:
         "We offer strategic communications created by creativity and in thoughtful ways. We will work with you to reach your audiences and brand story across digital, videos, photos and many more.",
@@ -34,14 +35,14 @@ const About = () => {
       delay: 0.5,
     },
     {
-      img: finance,
+      img: lighting,
       title: "Live Stream",
       text:
         "Need a team to help make your brand/event/product streaming live in front of clients? We are here willing to help you organize it all.",
       delay: 0.6,
     },
     {
-      img: book,
+      img: pc,
       title: "Photo Product",
       text:
         "Extra effort in creating such a promising product? We’re here to do it for you, taking photos or videos, we are in!",
@@ -50,7 +51,7 @@ const About = () => {
   ];
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 md:px-0" id="about">
+    <div className="max-w-[1400px] mx-auto px-6 md:px-0" id="about">
       
       {/* Animated Title */}
       <motion.div
@@ -66,9 +67,9 @@ const About = () => {
       </motion.div>
 
       {/* Single-column long cards */}
-      <div className="flex flex-col gap-6 items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
         {cards.map(({ img, title, text, delay }, idx) => {
-          const reverseIcon = idx % 2 === 1; // place icon on right for 2nd & 4th card
+          const reverseIcon = idx % 2 === 1; // if you want to keep icon placement logic, but might want to simplify for grid
           return (
             <motion.div
               key={idx}
@@ -76,28 +77,20 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay }}
-              className="w-full max-w-[900px] relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl overflow-hidden"
+              className="max-w-[450px] min-h-[420px] relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl overflow-hidden p-8"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-purple-700 to-orange-800 opacity-20 animate-gradient-xy" />
-              <div className="flex items-center p-6">
-                {!reverseIcon && (
-                  <div className="flex-shrink-0">
-                    <Image src={img} alt={title} className="h-[130px] w-auto" />
-                  </div>
-                )}
-
-                <div className={`flex-grow ${!reverseIcon ? "ml-6" : ""}`}>
-                  <h2 className="text-2xl font-bold text-white">
-                    {title}
-                  </h2>
-                  <p className="text-lg text-white mt-2">{text}</p>
+              <div className="flex flex-col items-center">
+                {/* Icon on top */}
+                <div className="mb-6">
+                  <Image src={img} alt={title} className="h-[130px] w-auto" />
                 </div>
 
-                {reverseIcon && (
-                  <div className="flex-shrink-0 ml-6">
-                    <Image src={img} alt={title} className="h-[130px] w-auto" />
-                  </div>
-                )}
+                {/* Title */}
+                <h2 className="text-3xl font-bold text-white text-left mb-4">{title}</h2>
+
+                {/* Text */}
+                <p className="text-lg text-white">{text}</p>
               </div>
             </motion.div>
           );

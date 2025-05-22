@@ -1,15 +1,16 @@
-import Hero from "@/components/landing-page/Hero";
+"use client";
+import { useState } from "react";
+import Abouthero from "@/components/landing-page/Abouthero";
 import Aboutus from "@/components/landing-page/Aboutus";
-import Services from "@/components/landing-page/Services";
 
+export default function HomePage() {
+  const [loading, setLoading] = useState(true);
 
-export default function Home() {
   return (
-    <>
-    <Hero />
-    <Aboutus />
-    <Services />
 
-    </>
+      <main>
+        <Abouthero />
+        <Aboutus />
+      </main>
   );
 }
