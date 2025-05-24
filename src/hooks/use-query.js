@@ -1,4 +1,4 @@
-import { getListProject, getListTask, getMemberOfOrganization, getStatusTask } from '@/app/actions';
+import { getListProject, getListTask, getMemberOfOrganization, getStatusTask, getUserForWorkspace } from '@/app/actions';
 import { authClient } from '@/lib/client/auth-client';
 import { useQuery } from '@tanstack/react-query';
 
@@ -26,7 +26,6 @@ export function useGetStatusTask() {
     refetchOnWindowFocus: true,
   });
 }
-
 export function useGetMembers(orgId) {
   return useQuery({
     queryKey: ['members', orgId],
@@ -34,6 +33,16 @@ export function useGetMembers(orgId) {
     refetchOnWindowFocus: true,
   });
 }
+
+export function useGetUsers(orgId) {
+  return useQuery({
+    queryKey: ['users', orgId],
+    queryFn: () => getUserForWorkspace(orgId),
+    refetchOnWindowFocus: true,
+  });
+}
+
+
 export function useGetOrganization(orgId) {
   return useQuery({
     queryFn: async () =>

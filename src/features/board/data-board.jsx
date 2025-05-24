@@ -1,15 +1,29 @@
 'use client';
 
 import { updateStatusTask } from '@/app/actions';
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay } from '@dnd-kit/core';
+import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 import { useState } from 'react';
 import KanbanCard from './kanban-card';
 import { KanbanColumn } from './kanban-column';
 
 export default function DataKanban({ data = [], isLoading, statusOptions = [] }) {
-  const statusMapping = Object.fromEntries(
-    statusOptions?.map(status => [status.name.toLowerCase(), status.id])
-  );
+  const { projectId } = useParams();
+  const debounceRef = useRef(null);
+  const queryClient = useQueryClient();
+
+  const invalidateTaskQuery = () => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      queryClient.invalidateQueries({
+        queryKey: ['list-task', projectId],
+      });
+    }, 2000);
+  };
+  const statusMapping = Object.fromEntries(statusOptions?.map((status) => [status.name.toLowerCase(), status.id]));
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -23,6 +37,14 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
     inprogress: tasks.filter((task) => task.status === 'inprogress' && task.id !== activeId),
     done: tasks.filter((task) => task.status === 'done' && task.id !== activeId),
   };
+
+  const { mutate } = useMutation({
+    mutationFn: updateStatusTask,
+    onSuccess: () => {
+      invalidateTaskQuery()
+    },
+    onError: (err) => console.error('Failed to submit comment:', err),
+  });
 
   const handleDragEnd = async ({ active, over }) => {
     if (!over || !active) return;
@@ -38,23 +60,26 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
 
     if (overTask) {
       destinationColumn = overTask.status;
-    }
-    else if (Boolean(over.id)) {
+    } else if (Boolean(over.id)) {
       destinationColumn = over.id;
     }
 
     if (activeTask.status !== destinationColumn) {
-      setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === activeTaskId ? { ...task, status: destinationColumn } : task
-      ))
+      setTasks((prevTasks) => prevTasks.map((task) => (task.id === activeTaskId ? { ...task, status: destinationColumn } : task)));
+
+      setActiveId(null);
+      setActiveTask(null);
       const values = { taskId: activeId, status: statusMapping[destinationColumn] };
-      // await updateStatusTask(values)
+      mutate(values);
     }
 
     setActiveId(null);
     setActiveTask(null);
   };
+
+  useEffect(() => {
+    setTasks(data)
+  }, [data])
 
   return (
     <DndContext
@@ -71,7 +96,7 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
         setActiveTask(null);
       }}
     >
-      <div className='grid grid-cols-3 gap-4 p-4'>
+      <div className='grid sm:grid-cols-3 grid-cols-1 gap-4'>
         <KanbanColumn title='To Do' id='todo' items={columns.todo} />
         <KanbanColumn title='In Progress' id='inprogress' items={columns.inprogress} />
         <KanbanColumn title='Done' id='done' items={columns.done} />

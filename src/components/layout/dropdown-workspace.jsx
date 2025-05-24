@@ -9,7 +9,7 @@ import { getWorkspace } from '@/app/actions';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ButtonCreateWorkspace from '@/features/overview/components/area-project/button-create-workspace';
-
+import Link from 'next/link';
 
 export default function WorkspaceDropdown() {
   const [modal, setModal] = useState(false);
@@ -56,10 +56,12 @@ export default function WorkspaceDropdown() {
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => {}} className='text-primary'>
-            <Settings size={16} className='mr-2' />
-            Settings Workspace
-          </DropdownMenuItem>
+          <Link href={`/dashboard/${orgId}/settings`}>
+            <DropdownMenuItem className='text-primary'>
+              <Settings size={16} className='mr-2' />
+              Settings Workspace
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuContent>
       </DropdownMenu>
       <ButtonCreateWorkspace modal={modal} setModal={setModal} />

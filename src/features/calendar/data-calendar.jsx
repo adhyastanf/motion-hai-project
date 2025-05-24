@@ -44,10 +44,7 @@ const CustomToolbar = ({ date, onNavigate }) => {
   );
 };
 
-export default function DataCalendar({data, isLoading}) {
-  const { orgId } = useParams();
-  const { data: taskOptions } = useGetStatusTask();
-  const { data: memberOptions } = useGetMembers(orgId);
+export default function DataCalendar({data, isLoading, statusOptions, memberOptions}) {
   const [value, setValue] = useState(new Date());
   const [modal, setModal] = useState('');
   const [selectedTask, setSelectedTask] = useState({});
@@ -141,7 +138,7 @@ export default function DataCalendar({data, isLoading}) {
           toolbar: () => <CustomToolbar date={value} onNavigate={handleNavigate} />,
         }}
       />
-      {MODAL_CONSTANT.includes(modal) && <ButtonModalTask modal={modal} setModal={setModal} taskId={selectedTask?.id} initialData={selectedTask} taskOptions={taskOptions} memberOptions={memberOptions} />}
+      {MODAL_CONSTANT.includes(modal) && <ButtonModalTask modal={modal} setModal={setModal} taskId={selectedTask?.id} initialData={selectedTask} statusOptions={statusOptions} memberOptions={memberOptions} />}
     </>
   );
 }

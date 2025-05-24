@@ -52,7 +52,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
         return await deleteTask(taskId);
       }
     },
-    onSuccess: () => {
+    onSuccess: (newTask) => {
       if (modal === 'create') {
         toast({
           title: 'Task Created',

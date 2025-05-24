@@ -5,7 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { authClient } from '@/lib/client/auth-client';
 import { generateSlug } from '@/lib/format';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -17,7 +17,7 @@ export default function ButtonCreateWorkspace({ modal, setModal }) {
   });
 
   const { toast } = useToast();
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -43,7 +43,7 @@ export default function ButtonCreateWorkspace({ modal, setModal }) {
           toast({
             title: 'You has create workspace',
           });
-          router.refresh();
+          queryClient.invalidateQueries(['workspaces'])
           form.reset();
           setModal(false);
         },
