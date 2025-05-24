@@ -1,14 +1,13 @@
-"use client";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+"use client"
+import Image from "next/image"
+import { motion } from "framer-motion"
+import { useRouter } from "next/navigation"
 
-import halodoc from "../assets/halodoc.png";
-import lolica from "../assets/lolica.png";
-import momfest from "../assets/momfest.png";
-import pemkotambon from "../assets/pemkotambon.png";
-import sharp from "../assets/sharp.png";
-import sms from "../assets/sms.jpg";
+import halodoc from "../assets/halodoc.png"
+import lolica from "../assets/lolica.png"
+import momfest from "../assets/momfest.png"
+import pemkotambon from "../assets/pemkotambon.png"
+import sharp from "../assets/sharp.png"
 
 import {
   Carousel,
@@ -16,33 +15,18 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/ui/carousel"
 
 const projects = [
-  {
-    title: "Halodoc Project",
-    src: halodoc,
-  },
-  {
-    title: "Lolica Project",
-    src: lolica,
-  },
-  {
-    title: "Mom Fest Project",
-    src: momfest,
-  },
-  {
-    title: "Pemkot Ambon Project",
-    src: pemkotambon,
-  },
-  {
-    title: "Sharp Project",
-    src: sharp,
-  },
-];
+  { title: "Halodoc Project", src: halodoc },
+  { title: "Lolica Project", src: lolica },
+  { title: "Mom Fest Project", src: momfest },
+  { title: "Pemkot Ambon Project", src: pemkotambon },
+  { title: "Sharp Project", src: sharp },
+]
 
 const Portfolio = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <div className="text-white bg-gradient-to-b from-black to-[#381a5f] py-20" id="portfolio">
@@ -67,26 +51,30 @@ const Portfolio = () => {
         transition={{ duration: 0.5, delay: 0.25 }}
         className="max-w-7xl mx-auto mt-12"
       >
-        <Carousel className="w-full">
-          <CarouselContent>
-            {projects.map((project, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <div className="p-4 flex flex-col items-center gap-4">
-                  <h3 className="text-xl font-semibold text-center text-white">
-                    {project.title}
-                  </h3>
-                  <Image
-                    src={project.src}
-                    alt={project.title}
-                    className="w-full object-cover rounded-md border border-gray-700"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <div className="relative">
+          <Carousel className="w-full">
+            <CarouselPrevious />
+            <CarouselNext />
+            <CarouselContent>
+              {projects.map((project, index) => (
+                <CarouselItem key={index} className="basis-1/2 md:basis-1/3 lg:basis-1/4">
+                  <div className="p-4 flex flex-col items-center gap-4">
+                    <div className="overflow-hidden rounded-xl shadow-lg border border-gray-700 transition-all duration-500 ease-in-out transform hover:scale-105">
+                      <Image
+                        src={project.src}
+                        alt={project.title}
+                        className="w-full h-64 object-cover"
+                      />
+                    </div>
+                    <h3 className="text-lg font-semibold text-center text-white">
+                      {project.title}
+                    </h3>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </motion.div>
 
       {/* Button to Full Portfolio */}
@@ -105,7 +93,7 @@ const Portfolio = () => {
         </button>
       </motion.div>
     </div>
-  );
-};
+  )
+}
 
-export default Portfolio;
+export default Portfolio
