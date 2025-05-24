@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { BsHeadphones, BsBook } from "react-icons/bs";
+import Image from "next/image";
+import footer from "../assets/footer.png"; // Adjust path if needed
 
 const questions = [
   "What is Nuron? How does it work?",
@@ -30,18 +32,37 @@ const Faq = () => {
 
   return (
     <div className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-32 text-white relative overflow-hidden">
+      {/* Spinning Background Icons */}
+      <div className="absolute top-[100px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm"
+        />
+      </div>
+      <div className="absolute bottom-[100px] right-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+        />
+      </div>
+
       {/* Main Title */}
       <motion.h1
-        className="text-6xl font-bold text-center text-[#603111] mb-16"
+        className="text-6xl font-bold text-center text-[#603111] mb-16 relative z-10"
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        F<span className="text-white">a</span><span className="text-[#7098C0]">q</span>
+        F<span className="text-white">a</span>
+        <span className="text-[#7098C0]">q</span>
       </motion.h1>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6 relative z-10">
         {/* Left Side - FAQs */}
         <div ref={leftColRef} className="col-span-2 flex flex-col gap-4">
           <h2 className="text-4xl font-bold mb-4">
@@ -89,9 +110,7 @@ const Faq = () => {
                 <BsBook className="text-[#7098C0]" />
                 Online Documentation
               </h3>
-              <p className="text-base text-white/70 mt-2">
-                Well organized and up to date
-              </p>
+              <p className="text-base text-white/70 mt-2">Well organized and up to date</p>
             </div>
             <Link
               href="/about"
@@ -130,7 +149,8 @@ const Faq = () => {
                 Get Support
               </Link>
               <p className="text-sm text-white/50 mt-2 leading-relaxed">
-                Support Time: Monday – Friday<br />
+                Support Time: Monday – Friday
+                <br />
                 Response Time: Maximum 24 hours
               </p>
             </div>

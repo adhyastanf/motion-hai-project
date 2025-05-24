@@ -14,6 +14,8 @@ import {
   FaLightbulb,
   FaUsers,
 } from "react-icons/fa";
+import Image from "next/image";
+import footer from "../assets/footer.png"; // adjust path if necessary
 
 const videoPackages = [
   {
@@ -84,8 +86,26 @@ const videoPackages = [
 
 const Services = () => {
   return (
-    <div className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-24">
-      <div className="max-w-[1600px] mx-auto px-6">
+    <div className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-24 relative overflow-hidden">
+      {/* Spinning Background Icons */}
+      <div className="absolute top-[100px] left-[20px] w-[150px] h-[150px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm"
+        />
+      </div>
+      <div className="absolute bottom-[100px] right-[20px] w-[150px] h-[150px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+        />
+      </div>
+
+      <div className="max-w-[1600px] mx-auto px-6 relative z-10">
         <motion.h1
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

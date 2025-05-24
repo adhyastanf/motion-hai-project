@@ -10,6 +10,8 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 
+import footer from "../assets/footer.png"; // Import footer.png for background spinner
+
 const projects = [
   {
     title: "Halodoc Project",
@@ -101,102 +103,134 @@ export default function Portfoliopage() {
       className="text-black pt-20 min-h-screen relative overflow-hidden"
       style={{
         background: "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
+        zIndex: 0,
+        position: "relative",
       }}
     >
-      <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-16 text-center">
-        Motion <span className="text-orange-600">Projects</span>
-      </h1>
+      {/* Spinning footer images above background but behind content */}
+      <div className="absolute top-[100px] left-[50px] w-[150px] h-[150px] opacity-10 animate-spin-slow pointer-events-none z-10">
+        <Image
+          src={footer}
+          alt="Background spinner"
+          fill
+          className="object-contain blur-sm"
+          unoptimized
+        />
+      </div>
 
-      <Swiper
-        modules={[EffectCoverflow, Navigation]}
-        onSwiper={setSwiperInstance}
-        effect="coverflow"
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        loop={true}
-        pagination={false}
-        navigation={true}
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 0,
-          depth: 400,
-          modifier: 3.5,
-          slideShadows: false,
-        }}
-        style={{ paddingBottom: "4rem" }}
-        className="max-w-6xl mx-auto custom-swiper"
-      >
-        {projects.map((project, idx) => (
-          <SwiperSlide
-            key={idx}
-            style={{
-              width: "500px",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => setSelectedProject(project)}
-          >
-            <Image
-              src={project.src}
-              alt={project.title}
-              width={500}
-              height={350}
-              className="rounded-xl object-cover"
-              draggable={false}
-              unoptimized
-            />
-            <p className="text-center mt-4 font-semibold text-lg text-white">
-              {project.title}
-            </p>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <div className="absolute bottom-[100px] right-[50px] w-[200px] h-[200px] opacity-10 animate-spin-slow pointer-events-none z-10">
+        <Image
+          src={footer}
+          alt="Background spinner flipped"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+          unoptimized
+        />
+      </div>
 
-      {selectedProject && (
-        <div
-          className="fixed inset-0 flex bg-black/70 justify-center items-center z-50 p-4"
-          onClick={() => setSelectedProject(null)}
+      {/* Content container on top */}
+      <div className="relative z-20">
+        <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-16 text-center">
+          Motion <span className="text-orange-600">Projects</span>
+        </h1>
+
+        <Swiper
+          modules={[EffectCoverflow, Navigation]}
+          onSwiper={setSwiperInstance}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          loop={true}
+          pagination={false}
+          navigation={true}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 400,
+            modifier: 3.5,
+            slideShadows: false,
+          }}
+          style={{ paddingBottom: "4rem" }}
+          className="max-w-6xl mx-auto custom-swiper"
         >
-          <div
-            className="bg-black p-6 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-white text-3xl font-semibold mb-4 text-center">
-              {selectedProject.title}
-            </h2>
-
-            {selectedProject.videoId ? (
-              <iframe
-                className="w-full aspect-video rounded-lg"
-                src={`https://www.youtube.com/embed/${selectedProject.videoId}?autoplay=1&rel=0`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
-            ) : (
+          {projects.map((project, idx) => (
+            <SwiperSlide
+              key={idx}
+              style={{
+                width: "500px",
+                borderRadius: "1rem",
+                cursor: "pointer",
+              }}
+              onClick={() => setSelectedProject(project)}
+            >
               <Image
-                src={selectedProject.src}
-                alt={selectedProject.title}
-                className="w-full max-h-[500px] object-contain mx-auto rounded-lg border border-gray-300"
+                src={project.src}
+                alt={project.title}
+                width={500}
+                height={350}
+                className="rounded-xl object-cover"
+                draggable={false}
                 unoptimized
               />
-            )}
+              <p className="text-center mt-4 font-semibold text-lg text-white">
+                {project.title}
+              </p>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-            <p className="text-gray-300 mt-6 text-lg text-center">
-              This is a placeholder description. Add your project copy here.
-            </p>
+        {selectedProject && (
+          <div
+            className="fixed inset-0 flex bg-black/70 justify-center items-center z-50 p-4"
+            onClick={() => setSelectedProject(null)}
+          >
+            <div
+              className="bg-black p-6 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-white text-3xl font-semibold mb-4 text-center">
+                {selectedProject.title}
+              </h2>
+
+              {selectedProject.videoId ? (
+                <iframe
+                  className="w-full aspect-video rounded-lg"
+                  src={`https://www.youtube.com/embed/${selectedProject.videoId}?autoplay=1&rel=0`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              ) : (
+                <Image
+                  src={selectedProject.src}
+                  alt={selectedProject.title}
+                  className="w-full max-h-[500px] object-contain mx-auto rounded-lg border border-gray-300"
+                  unoptimized
+                />
+              )}
+
+              <p className="text-gray-300 mt-6 text-lg text-center">
+                This is a placeholder description. Add your project copy here.
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Transisi ke footer */}
+      {/* Bottom gradient fade overlay */}
       <div
-        className="w-full h-20"
+        className="w-full pointer-events-none"
         style={{
-          background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000000 100%)",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "80px",
+          background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
+          zIndex: 30,
         }}
       />
 
@@ -227,6 +261,19 @@ export default function Portfoliopage() {
         .swiper-button-next::after {
           font-size: 24px;
           font-weight: bold;
+        }
+
+        @keyframes spin-slow {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        .animate-spin-slow {
+          animation: spin-slow 60s linear infinite;
         }
       `}</style>
     </div>

@@ -8,6 +8,7 @@ import halodoc from "../assets/halodoc.png";
 import lolica from "../assets/lolica.png";
 import momfest from "../assets/momfest.png";
 import pemkotambon from "../assets/pemkotambon.png";
+import footer from "../assets/footer.png"; // Spinning icon import
 
 // Card Data with titles split into two lines manually
 const cards = [
@@ -42,9 +43,27 @@ const About = () => {
 
   return (
     <div
-      className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pb-32 text-white relative overflow-hidden"
+      className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pb-12 text-white relative overflow-hidden"
       id="about"
     >
+      {/* Spinning Background Icons */}
+      <div className="absolute top-[100px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm"
+        />
+      </div>
+      <div className="absolute bottom-[100px] right-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+        />
+      </div>
+
       {/* TOP GRADIENT OVERLAY */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-t from-transparent to-black pointer-events-none"></div>
 
@@ -54,7 +73,7 @@ const About = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="text-5xl md:text-6xl font-semibold text-center pt-16 pb-20"
+        className="text-5xl md:text-6xl font-semibold text-center mt-8 pt-16 pb-20"
       >
         What We <span className="text-orange-400">Do</span>
       </motion.h1>
