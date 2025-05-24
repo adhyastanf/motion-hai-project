@@ -1,51 +1,25 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 
-import halodoc from "../assets/halodoc.png";
-import lolica from "../assets/lolica.png";
-import momfest from "../assets/momfest.png";
-import pemkotambon from "../assets/pemkotambon.png";
-import sharp from "../assets/sharp.png";
-import sms from "../assets/sms.jpg";
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import img1 from "../assets/halodoc.png";       // plant
+import img2 from "../assets/lolica.png";        // bottle
+import img3 from "../assets/pemkotambon.png";   // laptop
+import img4 from "../assets/momfest.png";       // phone standing
 
 const projects = [
-  {
-    title: "Halodoc Project",
-    src: halodoc,
-  },
-  {
-    title: "Lolica Project",
-    src: lolica,
-  },
-  {
-    title: "Mom Fest Project",
-    src: momfest,
-  },
-  {
-    title: "Pemkot Ambon Project",
-    src: pemkotambon,
-  },
-  {
-    title: "Sharp Project",
-    src: sharp,
-  },
+  { title: "Plant", src: img1 },
+  { title: "Bottle", src: img2 },
+  { title: "Laptop", src: img3 },
+  { title: "Phone Standing", src: img4 },
 ];
 
 const Portfolio = () => {
-  const router = useRouter();
-
   return (
-    <div className="text-white bg-gradient-to-b from-black to-[#381a5f] py-20" id="portfolio">
+    <div
+      className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111] relative overflow-hidden py-12"
+      id="portfolio"
+    >
       {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: 75 }}
@@ -59,51 +33,52 @@ const Portfolio = () => {
         </h1>
       </motion.div>
 
-      {/* Carousel */}
-      <motion.div
-        initial={{ opacity: 0, y: 75 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.25 }}
-        className="max-w-7xl mx-auto mt-12"
-      >
-        <Carousel className="w-full">
-          <CarouselContent>
-            {projects.map((project, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <div className="p-4 flex flex-col items-center gap-4">
-                  <h3 className="text-xl font-semibold text-center text-white">
-                    {project.title}
-                  </h3>
-                  <Image
-                    src={project.src}
-                    alt={project.title}
-                    className="w-full object-cover rounded-md border border-gray-700"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </motion.div>
-
-      {/* Button to Full Portfolio */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-        className="flex justify-center mt-16"
-      >
-        <button
-          onClick={() => router.push("/portofolio")}
-          className="bg-orange-600 text-white px-6 py-3 text-xl rounded-lg font-semibold hover:bg-orange-500 hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-lg"
+      {/* Custom Grid Layout with 4 Images */}
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-3 grid-rows-2 gap-4 auto-rows-[200px]">
+        {/* Image 1: Top-left */}
+        <motion.div
+          className="col-span-1 row-span-1 overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0 }}
         >
-          Click for More
-        </button>
-      </motion.div>
+          <Image src={projects[0].src} alt={projects[0].title} className="w-full h-full object-cover" />
+        </motion.div>
+
+        {/* Image 2: Top-middle */}
+        <motion.div
+          className="col-span-1 row-span-1 overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <Image src={projects[1].src} alt={projects[1].title} className="w-full h-full object-cover" />
+        </motion.div>
+
+        {/* Image 4: Tall phone image */}
+        <motion.div
+          className="col-span-1 row-span-2 overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <Image src={projects[3].src} alt={projects[3].title} className="w-full h-full object-cover" />
+        </motion.div>
+
+        {/* Image 3: Laptop - bottom row spanning 2 cols */}
+        <motion.div
+          className="col-span-2 row-span-1 overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <Image src={projects[2].src} alt={projects[2].title} className="w-full h-full object-cover" />
+        </motion.div>
+      </div>
     </div>
   );
 };

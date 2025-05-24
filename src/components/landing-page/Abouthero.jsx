@@ -15,7 +15,7 @@ const Abouthero = () => {
             <div className="absolute w-[400px] h-[400px] bg-[#172233] rounded-full top-[-100px] left-[-100px] opacity-30 blur-3xl"></div>
 
             {/* Spinning Icon */}
-            <div className="absolute bottom-[-0px] right-[-50px] w-[300px] h-[300px] opacity-10 animate-spin-slower z-0 pointer-events-none">
+            <div className="absolute bottom-[-0px] right-[25px] w-[200px] h-[200px] opacity-10 animate-spin-slower z-0 pointer-events-none">
                 <Image
                     src={footer}
                     alt="Spinning Icon"
@@ -23,7 +23,7 @@ const Abouthero = () => {
                     className="object-contain blur-sm"
                 />
             </div>
-            <div className="absolute top-[40px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower z-90 pointer-events-none">
+            <div className="absolute top-[40px] left-[20px] w-[250px] h-[250px] opacity-10 animate-spin-slower z-90 pointer-events-none">
                 <Image
                     src={footer}
                     alt="Spinning Icon"
