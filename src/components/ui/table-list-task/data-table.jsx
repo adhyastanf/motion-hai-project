@@ -86,7 +86,6 @@ export default function TaskTable({ data, columns, totalItems, pageSizeOptions =
                 )}
               </TableBody>
             </Table>
-            {/* {MODAL_CONSTANT.includes(modal) && <ButtonModalProject modal={modal} setModal={setModal} projectId={selectedProject?.id} initialData={selectedProject} />} */}
             {MODAL_CONSTANT.includes(modal) && <ButtonModalTask modal={modal} setModal={setModal} taskId={selectedTask?.id} initialData={selectedTask} statusOptions={statusOptions} memberOptions={memberOptions} />}
             <ScrollBar orientation='horizontal' />
           </ScrollArea>

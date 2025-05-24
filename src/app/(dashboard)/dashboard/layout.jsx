@@ -26,8 +26,11 @@ export default async function DashboardLayout({ children }) {
       <LoaderProvider>
         <LoadingScreen />
         <SidebarProvider defaultOpen={defaultOpen}>
-          {/* <AppSidebar session={session} /> */}
-          <SidebarInset>{children}</SidebarInset>
+          <AppSidebar session={session} />
+          <SidebarInset>
+          <Header session={session} />
+            {children}
+            </SidebarInset>
         </SidebarProvider>
       </LoaderProvider>
     </KBar>

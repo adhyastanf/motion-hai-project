@@ -20,7 +20,7 @@ export default function WorkspaceDropdown() {
     queryFn: getWorkspace,
   });
 
-  const defaultProject = workspaces.find((org) => org.id === orgId);
+  const defaultProject = workspaces?.find((org) => org?.id === orgId);
 
   const handleWorkspaceSwitch = async (workspace) => {
     await authClient.organization.setActive({
@@ -43,7 +43,7 @@ export default function WorkspaceDropdown() {
             return (
               <DropdownMenuItem key={workspace.id} onSelect={() => handleWorkspaceSwitch(workspace)}>
                 {workspace.name}
-                {workspace.id === defaultProject.id && <Check className='ml-auto' />}
+                {workspace?.id === defaultProject?.id && <Check className='ml-auto' />}
               </DropdownMenuItem>
             );
           })}

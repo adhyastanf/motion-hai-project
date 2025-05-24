@@ -24,7 +24,6 @@ export default async function DashboardDetailLayout({ children, params }) {
 
   return (
     <>
-      <Header session={session} />
       {children}
     </>
   );

@@ -10,11 +10,11 @@ export function useGetListProject(orgId) {
   });
 }
 
-export function useGetListTask(projectId, filters) {
+export function useGetListTask(projectId) {
   return useQuery({
     queryKey: ['list-task', projectId],
     queryFn: () => getListTask(projectId),
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: 'always'
   });
 }
 

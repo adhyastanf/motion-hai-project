@@ -74,13 +74,12 @@ export default function SettingsDashboardPage() {
       {
         onRequest: () => {
           toast({
-            title: 'Please wait...',
+            title: 'Please waittttt...',
           });
         },
         onSuccess: () => {
-          toast({
-            title: 'Member Deleted',
-            description: 'Member has been deleted successfully.',
+          queryClient.invalidateQueries({
+            queryKey: ['list-task', projectId],
           });
           queryClient.invalidateQueries({
             queryKey: ['members', orgId],
@@ -88,8 +87,9 @@ export default function SettingsDashboardPage() {
           queryClient.invalidateQueries({
             queryKey: ['users', orgId],
           });
-          queryClient.invalidateQueries({
-            queryKey: ['list-task', projectId],
+          toast({
+            title: 'Member Deleted',
+            description: 'Member has been deleted successfully.',
           });
         },
         onError: (ctx) => {

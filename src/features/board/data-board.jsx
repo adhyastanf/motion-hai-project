@@ -21,7 +21,7 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
       queryClient.invalidateQueries({
         queryKey: ['list-task', projectId],
       });
-    }, 2000);
+    }, 100);
   };
   const statusMapping = Object.fromEntries(statusOptions?.map((status) => [status.name.toLowerCase(), status.id]));
 
@@ -41,7 +41,9 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
   const { mutate } = useMutation({
     mutationFn: updateStatusTask,
     onSuccess: () => {
-      invalidateTaskQuery()
+      queryClient.invalidateQueries({
+        queryKey: ['list-task', projectId],
+      });
     },
     onError: (err) => console.error('Failed to submit comment:', err),
   });

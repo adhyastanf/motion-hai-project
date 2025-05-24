@@ -1,16 +1,16 @@
 // components/comments-section.tsx
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { MessageSquare, SendHorizonal } from 'lucide-react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { createTaskComment, getCommentsByTaskId } from '@/app/actions';
-import { useParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { MessageSquare, SendHorizonal } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const formSchema = z.object({
   comments: z.string(),
@@ -38,9 +38,9 @@ export default function CommentsSection({ taskId, assigneeId }) {
       return await createTaskComment(taskId, assigneeId, values.comments);
     },
     onSuccess: () => {
-      form.reset();
       queryClient.invalidateQueries({ queryKey: ['list-project', orgId] });
       queryClient.invalidateQueries({ queryKey: ['comments', taskId] });
+      form.reset();
     },
     onError: (err) => console.error('Failed to submit comment:', err),
   });
