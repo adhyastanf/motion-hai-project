@@ -1,5 +1,6 @@
 'use client';
 
+import { FileUploader } from '@/components/file-uploader';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -12,9 +13,8 @@ import { format } from 'date-fns';
 import { Calendar1Icon, Loader2 } from 'lucide-react';
 
 export default function TaskForm({ form, disabled, isLoading, onConfirm, statusOptions, memberOptions }) {
-
   function onSubmit(values) {
-    onConfirm(values)
+    onConfirm(values);
   }
 
   return (
@@ -44,8 +44,8 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, statusO
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button variant={'outline'} className={cn('w-full text-left font-normal', !field.value && 'text-muted-foreground')}>
-                        {field.value ? format(field.value,  'dd MMMM yyyy') : <span>Pick a date</span>}
-                        <Calendar1Icon  className='ml-auto h-4 w-4 opacity-50'/>
+                        {field.value ? format(field.value, 'dd MMMM yyyy') : <span>Pick a date</span>}
+                        <Calendar1Icon className='ml-auto h-4 w-4 opacity-50' />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -80,6 +80,44 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, statusO
             )}
           />
         </div>
+        {/* <FormField
+          control={form.control}
+          name='files'
+          render={({ field }) => (
+            <div className='space-y-6'>
+              <FormItem className='w-full'>
+                <FormLabel>Files</FormLabel>
+                <FormControl>
+                  <FileUploader
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    maxFiles={1}
+                    maxSize={2 * 1024 * 1024}
+                    // disabled={loading}
+                    // progresses={progresses}
+                    // pass the onUpload function here for direct upload
+                    // onUpload={uploadFiles}
+                    // disabled={isUploading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </div>
+          )}
+        /> */}
+        <FormField
+          control={form.control}
+          name='brand'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Brand Name</FormLabel>
+              <FormControl>
+                <Input placeholder='Enter brand name' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name='description'
@@ -94,17 +132,17 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, statusO
           )}
         />
         {isLoading && (
-            <Button disabled className='w-full'>
-              <Loader2 className='animate-spin' />
-              Please wait...
-            </Button>
-          )}
+          <Button disabled className='w-full'>
+            <Loader2 className='animate-spin' />
+            Please wait...
+          </Button>
+        )}
 
-          {!isLoading && (
-            <Button type='submit' disabled={!disabled} className='w-full'>
-              Submit
-            </Button>
-          )}
+        {!isLoading && (
+          <Button type='submit' disabled={!disabled} className='w-full'>
+            Submit
+          </Button>
+        )}
       </form>
     </Form>
   );

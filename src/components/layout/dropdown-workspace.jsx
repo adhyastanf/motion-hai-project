@@ -56,7 +56,7 @@ export default function WorkspaceDropdown() {
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
-          <Link href={`/dashboard/${orgId}/settings`}>
+          <Link href={`/dashboard/${orgId}/settings`} shallow={false}>
             <DropdownMenuItem className='text-primary'>
               <Settings size={16} className='mr-2' />
               Settings Workspace

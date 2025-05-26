@@ -103,8 +103,8 @@ export const projects = mysqlTable('projects', {
   createdBy: varchar('created_by', { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  dateFrom: datetime('date_from'), // Tanggal mulai proyek
-  dateTo: datetime('date_to'), // Tanggal selesai proyek
+  dateFrom: datetime('date_from'),
+  dateTo: datetime('date_to'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 });
@@ -127,7 +127,7 @@ export const tasks = mysqlTable('tasks', {
     .references(() => taskStatuses.id, { onDelete: 'set null' }),
   assigneeId: varchar('assignee_id', { length: 36 }) // 👈 Assignee baru
     .references(() => members.id, { onDelete: 'set null' }),
-  priority: text('priority'),
+  brand: text('brand'),
   dueDate: datetime('due_date'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
@@ -138,17 +138,6 @@ export const taskStatuses = mysqlTable('task_statuses', {
   name: text('name').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
-
-// export const taskAssignees = mysqlTable('task_assignees', {
-//   id: varchar('id', { length: 36 }).primaryKey(),
-//   taskId: varchar('task_id', { length: 36 })
-//     .notNull()
-//     .references(() => tasks.id, { onDelete: 'cascade' }),
-//   memberId: varchar('member_id', { length: 36 })
-//     .notNull()
-//     .references(() => members.id, { onDelete: 'cascade' }),
-//   assignedAt: timestamp('assigned_at').notNull().defaultNow(),
-// });
 
 export const taskComments = mysqlTable('task_comments', {
   id: varchar('id', { length: 36 }).primaryKey(),

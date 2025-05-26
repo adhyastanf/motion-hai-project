@@ -18,16 +18,24 @@ import { useState } from 'react';
 import ButtonModalWorkspace from './components/modal-workspace';
 
 const MODAL_CONSTANT = ['update', 'delete'];
+
 export default function SettingsDashboardPage() {
-  const { orgId, projectId } = useParams();
+  const { orgId } = useParams();
   const { toast } = useToast();
+
   const [modal, setModal] = useState('');
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [openBulkModal, setOpenBulkModal] = useState(false);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
   const { data: members } = useGetMembers(orgId);
   const { data: organizations } = useGetOrganization(orgId);
   const { data: users } = useGetUsers(orgId);
   const queryClient = useQueryClient();
+
+  const currentUser = members?.find((m) => m?.isCurrentUser);
+  const isOwner = currentUser?.role === 'owner';
 
   async function handleUpdateRole(memberId, role) {
     await authClient.organization.updateMemberRole(
@@ -37,22 +45,11 @@ export default function SettingsDashboardPage() {
         organizationId: orgId,
       },
       {
-        onRequest: () => {
-          toast({
-            title: 'Please wait...',
-          });
-        },
+        onRequest: () => toast({ title: 'Please wait...' }),
         onSuccess: () => {
-          toast({
-            title: 'Role Updated',
-            description: 'Role has been updated successfully.',
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['members', orgId],
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['users', orgId],
-          });
+          toast({ title: 'Role Updated', description: 'Role has been updated successfully.' });
+          queryClient.invalidateQueries({ queryKey: ['members', orgId] });
+          queryClient.invalidateQueries({ queryKey: ['users', orgId] });
         },
         onError: (ctx) => {
           toast({
@@ -72,25 +69,12 @@ export default function SettingsDashboardPage() {
         organizationId: orgId,
       },
       {
-        onRequest: () => {
-          toast({
-            title: 'Please waittttt...',
-          });
-        },
+        onRequest: () => toast({ title: 'Please wait...' }),
         onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: ['list-task', projectId],
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['members', orgId],
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['users', orgId],
-          });
-          toast({
-            title: 'Member Deleted',
-            description: 'Member has been deleted successfully.',
-          });
+          // queryClient.invalidateQueries({ queryKey: ['list-task', projectId] });
+          queryClient.invalidateQueries({ queryKey: ['members', orgId] });
+          queryClient.invalidateQueries({ queryKey: ['users', orgId] });
+          toast({ title: 'Member Deleted', description: 'Member has been deleted successfully.' });
         },
         onError: (ctx) => {
           toast({
@@ -110,28 +94,69 @@ export default function SettingsDashboardPage() {
         title: 'Member Added',
         description: 'Member has been added successfully.',
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['members', orgId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['users', orgId],
-      });
+      queryClient.invalidateQueries({ queryKey: ['members', orgId] });
+      queryClient.invalidateQueries({ queryKey: ['users', orgId] });
       setOpenBulkModal(false);
       setSelectedMembers([]);
     },
     onError: () => {
       toast({
-        title: 'Failed to Added Member',
+        title: 'Failed to Add Member',
         variant: 'destructive',
       });
     },
   });
 
+  async function handleLeaveOrganization() {
+    await authClient.organization.leave(
+      {
+        organizationId: 'sdsd',
+      },
+      {
+        onRequest: () => toast({ title: 'Please Wait...' }),
+        onSuccess: () => {
+          toast({ title: 'Left Organization', description: 'You have left the organization.' });
+          queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+          queryClient.invalidateQueries({ queryKey: ['members', orgId] });
+          queryClient.invalidateQueries({ queryKey: ['users', orgId] });
+          setLeaveConfirmOpen(false);
+        },
+        onError: (ctx) =>
+          toast({
+            title: 'Something went wrong',
+            description: ctx.error.message ?? 'Failed to left organization.',
+            variant: 'destructive',
+          }),
+      }
+    );
+  }
+
+  async function handleDeleteOrganization() {
+    await authClient.organization.delete(
+      { organizationId: orgId },
+      {
+        onRequest: () => toast({ title: 'Deleting organization...' }),
+        onSuccess: () => {
+          toast({ title: 'Organization Deleted' });
+          // router.push('/dashboard');
+        },
+        onError: (ctx) => {
+          toast({
+            title: 'Something went wrong',
+            description: ctx.error.message ?? 'Failed to delete organization.',
+            variant: 'destructive',
+          });
+        },
+      }
+    );
+  }
+
   return (
     <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <h1 className='text-3xl font-bold'>Workspace Settings</h1>
+
+        <Button onClick={handleLeaveOrganization}>Leave</Button>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between'>
             <div>
@@ -174,7 +199,6 @@ export default function SettingsDashboardPage() {
                     <p>{member.name}</p>
                     <p className='text-muted-foreground text-xs'>{member.email}</p>
                   </div>
-
                   <div className='flex items-center gap-4'>
                     <span className='capitalize'>{member.role}</span>
                     {member.role !== 'owner' && (
@@ -200,7 +224,23 @@ export default function SettingsDashboardPage() {
           </CardContent>
         </Card>
 
-        <Modal title='Add Member' description={'Select Members To Add :'} isOpen={openBulkModal} onClose={() => setOpenBulkModal(false)}>
+        {/* Action Buttons */}
+        <div className='space-y-2'>
+          {!isOwner && (
+            <Button variant='destructive' onClick={() => setLeaveConfirmOpen(true)}>
+              Leave Organization
+            </Button>
+          )}
+
+          {isOwner && (
+            <Button variant='destructive' onClick={() => setDeleteConfirmOpen(true)}>
+              Delete Organization
+            </Button>
+          )}
+        </div>
+
+        {/* Modal Add Members */}
+        <Modal title='Add Member' description='Select Members To Add :' isOpen={openBulkModal} onClose={() => setOpenBulkModal(false)}>
           <div className='space-y-4'>
             <ScrollArea className='h-40 rounded-md px-2'>
               <div className='space-y-2'>
@@ -225,19 +265,38 @@ export default function SettingsDashboardPage() {
                 )}
               </div>
             </ScrollArea>
-
             <Button
               className='w-full'
               onClick={() => {
                 mutate(selectedMembers);
-                toast({
-                  title: 'Members selected',
-                  description: `${selectedMembers.length} member(s) selected.`,
-                });
               }}
               disabled={selectedMembers.length === 0 || isPending}
             >
               Add Member
+            </Button>
+          </div>
+        </Modal>
+
+        {/* Modal Confirm Leave */}
+        <Modal title='Leave Organization' description='Are you sure you want to leave this organization? You will lose access.' isOpen={leaveConfirmOpen} onClose={() => setLeaveConfirmOpen(false)}>
+          <div className='flex justify-end gap-2 mt-4'>
+            <Button variant='ghost' onClick={() => setLeaveConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant='destructive' onClick={handleLeaveOrganization}>
+              Leave
+            </Button>
+          </div>
+        </Modal>
+
+        {/* Modal Confirm Delete */}
+        <Modal title='Delete Organization' description='This action cannot be undone. All data will be permanently deleted.' isOpen={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+          <div className='flex justify-end gap-2 mt-4'>
+            <Button variant='ghost' onClick={() => setDeleteConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant='destructive' onClick={handleDeleteOrganization}>
+              Delete
             </Button>
           </div>
         </Modal>

@@ -4,25 +4,15 @@ import { updateStatusTask } from '@/app/actions';
 import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KanbanCard from './kanban-card';
 import { KanbanColumn } from './kanban-column';
 
 export default function DataKanban({ data = [], isLoading, statusOptions = [] }) {
   const { projectId } = useParams();
-  const debounceRef = useRef(null);
+
   const queryClient = useQueryClient();
 
-  const invalidateTaskQuery = () => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      queryClient.invalidateQueries({
-        queryKey: ['list-task', projectId],
-      });
-    }, 100);
-  };
   const statusMapping = Object.fromEntries(statusOptions?.map((status) => [status.name.toLowerCase(), status.id]));
 
   const sensors = useSensors(useSensor(PointerSensor));
@@ -80,8 +70,13 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
   };
 
   useEffect(() => {
-    setTasks(data)
-  }, [data])
+    setTasks((prevTasks) => {
+      if (prevTasks !== data && data?.length !== prevTasks?.length) {
+        return data;
+      }
+      return prevTasks;
+    });
+  }, [data]);
 
   return (
     <DndContext
@@ -99,9 +94,9 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
       }}
     >
       <div className='grid sm:grid-cols-3 grid-cols-1 gap-4'>
-        <KanbanColumn title='To Do' id='todo' items={columns.todo} />
-        <KanbanColumn title='In Progress' id='inprogress' items={columns.inprogress} />
-        <KanbanColumn title='Done' id='done' items={columns.done} />
+        <KanbanColumn title='To Do' id='todo' items={columns.todo} isLoading={isLoading}/>
+        <KanbanColumn title='In Progress' id='inprogress' items={columns.inprogress}  isLoading={isLoading} />
+        <KanbanColumn title='Done' id='done' items={columns.done}  isLoading={isLoading} />
       </div>
 
       <DragOverlay>{activeTask ? <KanbanCard id={activeTask.id} title={activeTask.name} desc={activeTask.description} /> : null}</DragOverlay>

@@ -10,11 +10,26 @@ import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
 export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [] }) {
   const formSchema = z.object({
     task: z.string().min(2, {
       message: 'Product name must be at least 2 characters.',
     }),
+    // files: z
+    // .any()
+    // .refine((files) => files?.length == 1, 'Image is required.')
+    // .refine(
+    //   (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+    //   `Max file size is 5MB.`
+    // )
+    // .refine(
+    //   (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+    //   '.jpg, .jpeg, .png and .webp files are accepted.'
+    // ),
+    brand: z.string().optional(),
     assigne: z.string().optional(),
     status: z.string().optional(),
     due: z.any().optional(),
@@ -26,6 +41,8 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
   const defaultValues = {
     task: initialData?.name || '',
     assigne: initialData?.assigneeId || '',
+    // files: [],
+    brand: initialData?.brand || '',
     status: initialData?.statusId || '',
     due: initialData?.dueDate || null,
     description: initialData?.description || '',
@@ -69,9 +86,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
           description: 'Your task has been deleted successfully.',
         });
       }
-      queryClient.invalidateQueries({
-        queryKey: ['list-task', projectId],
-      });
+      queryClient.invalidateQueries({queryKey:['list-task', projectId]});
       setModal('');
       form.reset();
     },
@@ -111,7 +126,18 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
   return (
     <>
       <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} />
-      <ModalTask title='Update Task' open={modal === 'update'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} initialData={initialData} />
+      <ModalTask
+        title='Update Task'
+        open={modal === 'update'}
+        onClose={handleClose}
+        form={form}
+        onConfirm={onSubmit}
+        isLoading={isPending}
+        disabled={disabledForm}
+        statusOptions={statusOptions}
+        memberOptions={memberOptions}
+        initialData={initialData}
+      />
       <AlertModal
         title={`Are you sure to delete task "${initialData?.name}"?`}
         description='This action cannot be undone. This will permanently delete your task.'

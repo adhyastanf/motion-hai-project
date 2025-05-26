@@ -2,16 +2,17 @@
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip as ReTooltip, Legend as ReLegend, ResponsiveContainer } from 'recharts';
 
 export default function TaskOverview({ data = [], isLoading }) {
-  if (isLoading) return <p className='text-center text-gray-500 italic'>Loading task overview...</p>;
+  if (isLoading) return <LoadingOverview />;
 
   const statusCounts = {
-    todo: data.filter((task) => task.status === 'todo').length,
-    inprogress: data.filter((task) => task.status === 'inprogress').length,
-    done: data.filter((task) => task.status === 'done').length,
-    unassigned: data.filter((task) => !task.assignee).length,
+    todo: data?.filter((task) => task.status === 'todo').length,
+    inprogress: data?.filter((task) => task.status === 'inprogress').length,
+    done: data?.filter((task) => task.status === 'done').length,
+    unassigned: data?.filter((task) => !task.assignee).length,
     total: data.length,
   };
 
@@ -116,6 +117,35 @@ export default function TaskOverview({ data = [], isLoading }) {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+      </div>
+    </div>
+  );
+}
+
+function LoadingOverview() {
+  return (
+    <div className='flex flex-col gap-8'>
+      {/* Summary Cards Skeleton */}
+      <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6'>
+        {Array.from({ length: 5 }).map((_, idx) => (
+          <div key={idx} className='rounded-lg shadow-sm p-4 space-y-2'>
+            <Skeleton className='h-4 w-1/3' />
+            <Skeleton className='h-6 w-1/2' />
+            <Skeleton className='h-2 w-full' />
+          </div>
+        ))}
+      </div>
+
+      {/* Charts Skeleton */}
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
+        <div className='rounded-lg shadow-lg p-4 space-y-4'>
+          <Skeleton className='h-6 w-1/3' />
+          <Skeleton className='h-[320px] w-full' />
+        </div>
+        <div className='rounded-lg shadow-lg p-4 space-y-4'>
+          <Skeleton className='h-6 w-1/3' />
+          <Skeleton className='h-[300px] w-full' />
+        </div>
       </div>
     </div>
   );

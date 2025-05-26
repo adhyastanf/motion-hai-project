@@ -16,7 +16,7 @@ export async function getUserForWorkspace(orgId) {
       .leftJoin(members, and(eq(users.id, members.userId), eq(members.organizationId, orgId)))
       .where(isNull(members.id));
 
-      const result = data.map(item => item.users);
+    const result = data.map((item) => item.users);
 
     return result;
   } catch (err) {
@@ -71,11 +71,11 @@ export async function createTask(values) {
     projectId: values.projectId,
     name: values.task,
     description: values.description,
+    brand: values.brand ? values.brand : null,
     statusId: values.status ? values.status : null,
     dueDate: values.due ? values.due : null,
     assigneeId: values.assigne ? values.assigne : null,
   });
-
 }
 
 export async function deleteTask(taskId) {
@@ -88,6 +88,7 @@ export async function updateTask(values) {
     .set({
       name: values.task,
       description: values.description,
+      brand: values.brand ? values.brand : null,
       statusId: values.status ? values.status : null,
       dueDate: values.due ? values.due : null,
       assigneeId: values.assigne ? values.assigne : null,
@@ -116,23 +117,24 @@ export async function updateAssigneTask(values) {
     .where({ id: taskId });
 }
 
-export async function getListTask(projectId) {
+export async function getListTask(projectId, filters) {
   try {
     const conditions = [eq(tasks.projectId, projectId)];
 
-    // if (filters.status) {
-    //   conditions.push(eq(tasks.statusId, filters.status));
-    // }
+    if (filters?.status) {
+      conditions.push(eq(tasks.statusId, filters?.status));
+    }
 
-    // if (filters.assignee) {
-    //   conditions.push(eq(tasks.assigneeId, filters.assignee));
-    // }
+    if (filters?.assignee) {
+      conditions.push(eq(tasks.assigneeId, filters?.assignee));
+    }
 
     const data = await db
       .select({
         id: tasks.id,
         name: tasks.name,
         description: tasks.description,
+        brand: tasks.brand,
         dueDate: tasks.dueDate,
         createdAt: tasks.createdAt,
         updatedAt: tasks.updatedAt,
@@ -149,7 +151,16 @@ export async function getListTask(projectId) {
       .where(and(...conditions))
       .orderBy(desc(tasks.createdAt));
 
-    return data;
+
+    // .limit(filters.limit)
+    // .offset(offset)
+    const start = (filters?.page - 1) * filters?.limit;
+    const end = start + filters?.limit;
+    const paginatedData = data?.slice(start, end);
+
+    // console.log(paginatedData)
+
+    return { allData : data, data : paginatedData , totalData: data.length };
   } catch (err) {
     return err;
   }
@@ -157,11 +168,7 @@ export async function getListTask(projectId) {
 
 export async function getListProject(organizationId) {
   try {
-    const data = await db
-      .select()
-      .from(projects)
-      .where(eq(projects.organizationId, organizationId))
-      .orderBy(desc(projects.createdAt));
+    const data = await db.select().from(projects).where(eq(projects.organizationId, organizationId)).orderBy(desc(projects.createdAt));
 
     return { success: true, data };
   } catch (error) {
@@ -251,8 +258,8 @@ export async function createBulkMember(userIds, orgId) {
         return auth.api.addMember({
           body: {
             userId,
-            organizationId : orgId,
-            role :' member',
+            organizationId: orgId,
+            role: ' member',
           },
         });
       })

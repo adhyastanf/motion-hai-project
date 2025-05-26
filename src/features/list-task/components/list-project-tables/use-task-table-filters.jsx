@@ -17,9 +17,9 @@ export const CATEGORY_OPTIONS = [
 
 export function useProductTableFilters() {
 
-  const [searchQuery, setSearchQuery] = useQueryState('q', searchParams.q.withOptions({ shallow: false, throttleMs: 1000 }).withDefault(''));
+  const [searchQuery, setSearchQuery] = useQueryState('q', searchParams.q.withOptions({ shallow: true, throttleMs: 1000 }).withDefault(''));
 
-  const [categoriesFilter, setCategoriesFilter] = useQueryState('categories', searchParams.categories.withOptions({ shallow: false }).withDefault(''));
+  const [categoriesFilter, setCategoriesFilter] = useQueryState('categories', searchParams.categories.withOptions({ shallow: true }).withDefault(''));
 
   const [page, setPage] = useQueryState('page', searchParams.page.withDefault(1));
 
@@ -27,7 +27,7 @@ export function useProductTableFilters() {
 
   const [assigneeFilter, setAssigneeFilter] = useQueryState('assignee', searchParams.assignee.withOptions({ shallow: true }).withDefault(''));
 
-  const [dueDateFilter, setDueDateFilter] = useQueryState('dueDate', searchParams.dueDate.withOptions({ shallow: false }).withDefault(''));
+  const [dueDateFilter, setDueDateFilter] = useQueryState('dueDate', searchParams.dueDate.withOptions({ shallow: true }).withDefault(''));
 
   const resetFilters = useCallback(() => {
     setSearchQuery(null);

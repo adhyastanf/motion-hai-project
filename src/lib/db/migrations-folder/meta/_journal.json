@@ -43,6 +43,13 @@
       "when": 1747931639300,
       "tag": "0005_tan_warbird",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1748159076337,
+      "tag": "0006_clammy_iron_lad",
+      "breakpoints": true
     }
   ]
 }

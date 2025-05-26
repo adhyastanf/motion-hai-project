@@ -6,7 +6,7 @@ import { db } from './db/drizzle';
 import { accounts, activityLogs, invitations, members, organizations, projects, sessions, taskComments, tasks, taskStatuses, users, verifications } from './db/schema';
 
 export const auth = betterAuth({
-  plugins: [openAPI(), organization({})],
+  plugins: [openAPI(), organization()],
   emailAndPassword: {
     enabled: true,
     async sendResetPassword(url, user) {

@@ -37,6 +37,14 @@ export const columns = [
     },
   },
   {
+    accessorKey: 'brand',
+    header: 'Brand',
+    cell: ({ row }) => {
+      const { brand } = row.original;
+      return <span className='font-medium capitalize'>{brand || 'No Brand'}</span>;
+    },
+  },
+  {
     id: 'actions',
     enableHiding: false,
     cell: ({ row, table }) => {
