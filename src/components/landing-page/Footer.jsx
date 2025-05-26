@@ -21,9 +21,9 @@ const Footer = () => {
                         />
                         <span className="text-xl font-bold">Hai Motion</span>
                     </div>
-                    <p className="text-white/70 leading-relaxed">
-                    Kami bukan hanya sekadar penyedia jasa kami adalah partner kreatif yang siap tumbuh bersama Anda. Setiap proyek kami kerjakan dengan penuh riset, ide segar, dan sentuhan profesional, demi hasil yang tidak hanya indah dipandang, tapi juga berdampak nyata.
-                    </p>
+                    <p className="text-white/70 leading-relaxed text-justify max-w-lg indent-6">
+    Kami bukan hanya sekadar penyedia jasa kami adalah partner kreatif yang siap tumbuh bersama Anda. Setiap proyek kami kerjakan dengan penuh riset, ide segar, dan sentuhan profesional, demi hasil yang tidak hanya indah dipandang, tapi juga berdampak nyata.
+</p>
                 </div>
 
                 {/* Hai Motion Pages */}
