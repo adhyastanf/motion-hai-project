@@ -10,37 +10,49 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 
-import footer from "../assets/footer.png"; // Import footer.png for background spinner
+import footer from "../assets/footer.png"; // Background spinner image
 
 const projects = [
   {
-    title: "Halodoc Project",
+    title: "HALODOC - Rumah Sakit Terapung 2021",
     src: require("../assets/halodoc.png"),
     videoId: "UPKm3q24C-w",
+    description:
+      "Sebuah perjalanan kemanusiaan di Pulau Bawean. Kami dipercaya Halodoc untuk mendokumentasikan inisiatif sosial berupa Rumah Sakit Terapung menggunakan kapal Penisi tradisional yang menjangkau wilayah terpencil tanpa akses kesehatan. Melalui video dokumentasi ini, kami menyampaikan pesan kuat tentang harapan dan dedikasi pelayanan medis.",
   },
   {
-    title: "Lolica Project",
+    title: "LOLICA - Colorful Fashion Commercial 2019",
     src: require("../assets/lolica.png"),
     videoId: "6rrxsneWCkM",
+    description:
+      "LOLICA mempercayakan kami untuk merancang video iklan penuh warna yang menampilkan keunikan fashion wanita dengan sentuhan trend Korea. Kami merasakan ekspresi diri dan gaya hidup muda dengan konsep visual yang segar dan menarik. ",
   },
   {
-    title: "Mom Fest Project",
+    title: "MOMFEST - Mothers on Mission Festival 2021",
     src: require("../assets/momfest.png"),
     videoId: "tyoASAvKEMU",
+    description:
+      "Siaran langsung penuh makna untuk para ibu. Dalam event seminar ini, kami menangani produksi live Stream profesional. Menghadirkan koneksi yang intim dan nyata antara pembicara dan para peserta, baik secara luring maupun daring.",
   },
   {
-    title: "Pemkot Ambon Project",
+    title: "PEMKOT AMBON - Hari Kesaktian Pancasila 2020",
     src: require("../assets/pemkotambon.png"),
+    description:
+      "Merayakan nilai kebangsaan lewat layar. Kami mendokumentasikan dan menyiarkan secara langsung peringatan Hari Kesaktian Pancasila bersama pemerintah Kota Ambon. Suatu kehormatan bagi kami untuk menjadi bagian dari peristiwa istimewa yang penuh makna.",
   },
   {
-    title: "Sharp Project",
+    title: "SHARP - Social Experiment Documentation 2021",
     src: require("../assets/sharp.png"),
     videoId: "qgsEQXtAeyg",
+    description:
+      "Berbagi kebahagiaan, menjangkau yang terlupakan. Sharp mempercayakan kami untuk mengabadikan momen spesial dalam aksi sosial mereka bersama anak - anak panti asuhan. Video dokumentasi ini menangkap kehangatan interaksi, kebahagiaan, dan kepedulian dalam sebuah kisah yang menginspirasi.",
   },
   {
-    title: "Summarecon Serpong Project",
+    title: "SUMMARECON SERPONG - Annual Awards Documentation 2020",
     src: require("../assets/sms.jpg"),
     videoId: "T0DHUnyVsMY",
+    description:
+      "Prestasi dalam kemegahan. Kami memproduksi dokumentasi resmi acara penghargaan tahunan Summarecon Serpong di Royal Ballroom, The Springs Club. Menghadirkan kesan elegan dan profesional dalam setiap frame yang kami rekam.",
   },
 ];
 
@@ -53,7 +65,7 @@ export default function Portfoliopage() {
 
     const updateSlidesStyle = () => {
       swiperInstance.slides.forEach((slideEl) => {
-        slideEl.style.filter = "grayscale(100%)";
+        slideEl.style.filter = "grayscale(100%) blur(10px)";
         slideEl.style.opacity = "0.3";
         slideEl.style.transition =
           "filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease";
@@ -107,7 +119,7 @@ export default function Portfoliopage() {
         position: "relative",
       }}
     >
-      {/* Spinning footer images above background but behind content */}
+      {/* Background spinners */}
       <div className="absolute top-[100px] left-[50px] w-[150px] h-[150px] opacity-10 animate-spin-slow pointer-events-none z-10">
         <Image
           src={footer}
@@ -117,7 +129,6 @@ export default function Portfoliopage() {
           unoptimized
         />
       </div>
-
       <div className="absolute bottom-[100px] right-[50px] w-[200px] h-[200px] opacity-10 animate-spin-slow pointer-events-none z-10">
         <Image
           src={footer}
@@ -128,10 +139,10 @@ export default function Portfoliopage() {
         />
       </div>
 
-      {/* Content container on top */}
+      {/* Main content */}
       <div className="relative z-20">
         <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-16 text-center">
-          Motion <span className="text-orange-600">Projects</span>
+          Our <span className="text-orange-600">Portofolio</span>
         </h1>
 
         <Swiper
@@ -212,15 +223,17 @@ export default function Portfoliopage() {
                 />
               )}
 
-              <p className="text-gray-300 mt-6 text-lg text-center">
-                This is a placeholder description. Add your project copy here.
-              </p>
+              {selectedProject.description && (
+                <p className="text-gray-300 mt-6 text-lg text-center whitespace-pre-line">
+                  {selectedProject.description}
+                </p>
+              )}
             </div>
           </div>
         )}
       </div>
 
-      {/* Bottom gradient fade overlay */}
+      {/* Bottom fade overlay */}
       <div
         className="w-full pointer-events-none"
         style={{
@@ -234,35 +247,25 @@ export default function Portfoliopage() {
         }}
       />
 
-      {/* Custom Swiper Arrow Colors */}
+      {/* Swiper button styles and spinner animation */}
       <style jsx global>{`
         .swiper-button-prev {
-          color: #f97316; /* orange */
+          color: #f97316;
         }
-
         .swiper-button-next {
-          color: #3b82f6; /* blue */
+          color: #3b82f6;
         }
-
-        .swiper-button-prev,
-        .swiper-button-next {
-          transition: color 0.3s ease;
-        }
-
         .swiper-button-prev:hover {
-          color: #fb923c; /* lighter orange on hover */
+          color: #fb923c;
         }
-
         .swiper-button-next:hover {
-          color: #60a5fa; /* lighter blue on hover */
+          color: #60a5fa;
         }
-
         .swiper-button-prev::after,
         .swiper-button-next::after {
           font-size: 24px;
           font-weight: bold;
         }
-
         @keyframes spin-slow {
           from {
             transform: rotate(0deg);
@@ -271,7 +274,6 @@ export default function Portfoliopage() {
             transform: rotate(360deg);
           }
         }
-
         .animate-spin-slow {
           animation: spin-slow 60s linear infinite;
         }
