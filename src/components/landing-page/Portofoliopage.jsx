@@ -18,41 +18,41 @@ const projects = [
     src: require("../assets/halodoc.png"),
     videoId: "UPKm3q24C-w",
     description:
-      "Sebuah perjalanan kemanusiaan di Pulau Bawean. Kami dipercaya Halodoc untuk mendokumentasikan inisiatif sosial berupa Rumah Sakit Terapung menggunakan kapal Penisi tradisional yang menjangkau wilayah terpencil tanpa akses kesehatan. Melalui video dokumentasi ini, kami menyampaikan pesan kuat tentang harapan dan dedikasi pelayanan medis.",
+      "Sebuah perjalanan kemanusiaan di Pulau Bawean. Kami dipercaya Halodoc untuk mendokumentasikan inisiatif sosial berupa Rumah Sakit Terapung menggunakan kapal Penisi tradisional yang menjangkau wilayah terpencil tanpa akses kesehatan.",
   },
   {
     title: "LOLICA - Colorful Fashion Commercial 2019",
     src: require("../assets/lolica.png"),
     videoId: "6rrxsneWCkM",
     description:
-      "LOLICA mempercayakan kami untuk merancang video iklan penuh warna yang menampilkan keunikan fashion wanita dengan sentuhan trend Korea. Kami merasakan ekspresi diri dan gaya hidup muda dengan konsep visual yang segar dan menarik. ",
+      "LOLICA mempercayakan kami untuk merancang video iklan penuh warna yang menampilkan keunikan fashion wanita dengan sentuhan trend Korea.",
   },
   {
     title: "MOMFEST - Mothers on Mission Festival 2021",
     src: require("../assets/momfest.png"),
     videoId: "tyoASAvKEMU",
     description:
-      "Siaran langsung penuh makna untuk para ibu. Dalam event seminar ini, kami menangani produksi live Stream profesional. Menghadirkan koneksi yang intim dan nyata antara pembicara dan para peserta, baik secara luring maupun daring.",
+      "Siaran langsung penuh makna untuk para ibu. Dalam event seminar ini, kami menangani produksi live Stream profesional.",
   },
   {
     title: "PEMKOT AMBON - Hari Kesaktian Pancasila 2020",
     src: require("../assets/pemkotambon.png"),
     description:
-      "Merayakan nilai kebangsaan lewat layar. Kami mendokumentasikan dan menyiarkan secara langsung peringatan Hari Kesaktian Pancasila bersama pemerintah Kota Ambon. Suatu kehormatan bagi kami untuk menjadi bagian dari peristiwa istimewa yang penuh makna.",
+      "Merayakan nilai kebangsaan lewat layar. Kami mendokumentasikan dan menyiarkan secara langsung peringatan Hari Kesaktian Pancasila bersama pemerintah Kota Ambon.",
   },
   {
     title: "SHARP - Social Experiment Documentation 2021",
     src: require("../assets/sharp.png"),
     videoId: "qgsEQXtAeyg",
     description:
-      "Berbagi kebahagiaan, menjangkau yang terlupakan. Sharp mempercayakan kami untuk mengabadikan momen spesial dalam aksi sosial mereka bersama anak - anak panti asuhan. Video dokumentasi ini menangkap kehangatan interaksi, kebahagiaan, dan kepedulian dalam sebuah kisah yang menginspirasi.",
+      "Sharp mempercayakan kami untuk mengabadikan momen spesial dalam aksi sosial mereka bersama anak - anak panti asuhan.",
   },
   {
     title: "SUMMARECON SERPONG - Annual Awards Documentation 2020",
     src: require("../assets/sms.jpg"),
     videoId: "T0DHUnyVsMY",
     description:
-      "Prestasi dalam kemegahan. Kami memproduksi dokumentasi resmi acara penghargaan tahunan Summarecon Serpong di Royal Ballroom, The Springs Club. Menghadirkan kesan elegan dan profesional dalam setiap frame yang kami rekam.",
+      "Kami memproduksi dokumentasi resmi acara penghargaan tahunan Summarecon Serpong di Royal Ballroom.",
   },
 ];
 
@@ -70,10 +70,12 @@ export default function Portfoliopage() {
         slideEl.style.transition =
           "filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease";
         slideEl.style.zIndex = "0";
-        slideEl.style.transform = "scale(0.85)";
+        slideEl.style.transform = "scale(0.8)";
       });
 
-      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+      const total = swiperInstance.slides.length;
+      const activeIndex = swiperInstance.activeIndex;
+      const activeSlide = swiperInstance.slides[activeIndex];
       if (activeSlide) {
         activeSlide.style.filter = "grayscale(0%)";
         activeSlide.style.opacity = "1";
@@ -81,25 +83,22 @@ export default function Portfoliopage() {
         activeSlide.style.transform = "scale(1)";
       }
 
-      const total = swiperInstance.slides.length;
-      const leftIndex = (swiperInstance.activeIndex - 1 + total) % total;
-      const rightIndex = (swiperInstance.activeIndex + 1) % total;
+      const sideIndices = [
+        (activeIndex - 1 + total) % total,
+        (activeIndex + 1) % total,
+        (activeIndex - 2 + total) % total,
+        (activeIndex + 2) % total,
+      ];
 
-      const leftSlide = swiperInstance.slides[leftIndex];
-      if (leftSlide) {
-        leftSlide.style.filter = "grayscale(100%)";
-        leftSlide.style.opacity = "0.4";
-        leftSlide.style.zIndex = "5";
-        leftSlide.style.transform = "scale(0.9)";
-      }
-
-      const rightSlide = swiperInstance.slides[rightIndex];
-      if (rightSlide) {
-        rightSlide.style.filter = "grayscale(100%)";
-        rightSlide.style.opacity = "0.4";
-        rightSlide.style.zIndex = "5";
-        rightSlide.style.transform = "scale(0.9)";
-      }
+      sideIndices.forEach((i, idx) => {
+        const slide = swiperInstance.slides[i];
+        if (slide) {
+          slide.style.filter = "grayscale(100%)";
+          slide.style.opacity = idx < 2 ? "0.4" : "0.2";
+          slide.style.zIndex = idx < 2 ? "5" : "1";
+          slide.style.transform = `scale(${idx < 2 ? "0.9" : "0.85"})`;
+        }
+      });
     };
 
     updateSlidesStyle();
@@ -116,7 +115,6 @@ export default function Portfoliopage() {
       style={{
         background: "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
         zIndex: 0,
-        position: "relative",
       }}
     >
       {/* Background spinners */}
@@ -139,7 +137,6 @@ export default function Portfoliopage() {
         />
       </div>
 
-      {/* Main content */}
       <div className="relative z-20">
         <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-16 text-center">
           Our <span className="text-orange-600">Portofolio</span>
@@ -153,23 +150,22 @@ export default function Portfoliopage() {
           centeredSlides={true}
           slidesPerView={"auto"}
           loop={true}
-          pagination={false}
           navigation={true}
           coverflowEffect={{
             rotate: 0,
             stretch: 0,
-            depth: 400,
-            modifier: 3.5,
+            depth: 250,
+            modifier: 2.5,
             slideShadows: false,
           }}
           style={{ paddingBottom: "4rem" }}
-          className="max-w-6xl mx-auto custom-swiper"
+          className="max-w-7xl mx-auto custom-swiper"
         >
           {projects.map((project, idx) => (
             <SwiperSlide
               key={idx}
               style={{
-                width: "500px",
+                width: "300px",
                 borderRadius: "1rem",
                 cursor: "pointer",
               }}
@@ -178,13 +174,13 @@ export default function Portfoliopage() {
               <Image
                 src={project.src}
                 alt={project.title}
-                width={500}
-                height={350}
+                width={300}
+                height={200}
                 className="rounded-xl object-cover"
                 draggable={false}
                 unoptimized
               />
-              <p className="text-center mt-4 font-semibold text-lg text-white">
+              <p className="text-center mt-4 font-semibold text-base text-white">
                 {project.title}
               </p>
             </SwiperSlide>
@@ -233,7 +229,6 @@ export default function Portfoliopage() {
         )}
       </div>
 
-      {/* Bottom fade overlay */}
       <div
         className="w-full pointer-events-none"
         style={{
@@ -247,7 +242,6 @@ export default function Portfoliopage() {
         }}
       />
 
-      {/* Swiper button styles and spinner animation */}
       <style jsx global>{`
         .swiper-button-prev {
           color: #f97316;
