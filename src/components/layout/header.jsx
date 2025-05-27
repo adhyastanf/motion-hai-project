@@ -20,7 +20,6 @@ export default async function Header({ session }) {
         <SidebarTrigger className='-ml-1' />
         <Separator orientation='vertical' className='mr-2 h-4' />
 
-        {/* <Breadcrumbs /> */}
         <HydrationBoundary state={dehydrate(queryClient)}>
           <WorkspaceDropdown />
         </HydrationBoundary>
@@ -28,7 +27,7 @@ export default async function Header({ session }) {
 
       <div className='flex items-center gap-2 px-4'>
         <div className='hidden md:flex'>
-          <SearchInput />
+          {/* <SearchInput /> */}
         </div>
         <UserNav session={session} />
         <ThemeToggle />

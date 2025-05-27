@@ -18,6 +18,7 @@ import {
   LucideShoppingBag,
   Moon,
   MoreVertical,
+  NotepadText,
   Pizza,
   Plus,
   Settings,
@@ -60,6 +61,7 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  projects: NotepadText,
   gitHub: ({ ...props }) => (
     <svg aria-hidden='true' focusable='false' data-prefix='fab' data-icon='github' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512' {...props}>
       <path

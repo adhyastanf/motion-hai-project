@@ -10,7 +10,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     async sendResetPassword(url, user) {
-      console.log('Sending reset password email to', user?.email, 'with url', url);
+      // console.log('Sending reset password email to', user?.email, 'with url', url);
     },
   },
   database: drizzleAdapter(db, {

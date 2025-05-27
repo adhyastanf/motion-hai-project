@@ -4,7 +4,6 @@ import Header from '@/components/layout/header';
 import { LoaderProvider } from '@/components/providers/loader-provider';
 import LoadingScreen from '@/components/providers/loading-scree';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import ListViewTask from '@/features/list-task/list-view-task';
 import { auth } from '@/lib/auth';
 import { cookies, headers } from 'next/headers';
 
@@ -28,9 +27,9 @@ export default async function DashboardLayout({ children }) {
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar session={session} />
           <SidebarInset>
-          <Header session={session} />
+            <Header session={session} />
             {children}
-            </SidebarInset>
+          </SidebarInset>
         </SidebarProvider>
       </LoaderProvider>
     </KBar>

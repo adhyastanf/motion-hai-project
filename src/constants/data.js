@@ -1,4 +1,3 @@
-
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
 export const navItems = [
   {
@@ -7,68 +6,16 @@ export const navItems = [
     icon: 'dashboard',
     isActive: false,
     shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
-  },
-  {
-    title: 'Notification',
-    url: '/dashboard/notification',
-    icon: 'dashboard',
-    isActive: false,
-    shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
-  },
-  {
-    title: 'My Task',
-    url: '#',
-    icon: 'dashboard',
-    isActive: false,
-    shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
+    items: [], // Empty array as there are no child items for Dashboard
   },
   {
     title: 'Projects',
     url: '#',
-    icon: 'dashboard',
+    icon: 'projects',
     isActive: false,
-    shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
-  },
-  {
-    title: 'Product',
-    url: '/dashboard/product',
-    icon: 'product',
     shortcut: ['p', 'p'],
-    isActive: false,
-    items: [] // No child items
+    items: [],
   },
-  {
-    title: 'Account',
-    url: '#', // Placeholder as there is no direct link for the parent
-    icon: 'billing',
-    isActive: false,
-    items: [
-      {
-        title: 'Profile',
-        url: '/dashboard/profile',
-        icon: 'userPen',
-        shortcut: ['m', 'm']
-      },
-      {
-        title: 'Login',
-        shortcut: ['l', 'l'],
-        url: '/',
-        icon: 'login'
-      }
-    ]
-  },
-  {
-    title: 'Kanban',
-    url: '/dashboard/kanban',
-    icon: 'kanban',
-    shortcut: ['k', 'k'],
-    isActive: false,
-    items: [] // No child items
-  }
 ];
 
 export const recentSalesData = [
@@ -78,7 +25,7 @@ export const recentSalesData = [
     email: 'olivia.martin@email.com',
     amount: '+$1,999.00',
     image: 'https://api.slingacademy.com/public/sample-users/1.png',
-    initials: 'OM'
+    initials: 'OM',
   },
   {
     id: 2,
@@ -86,7 +33,7 @@ export const recentSalesData = [
     email: 'jackson.lee@email.com',
     amount: '+$39.00',
     image: 'https://api.slingacademy.com/public/sample-users/2.png',
-    initials: 'JL'
+    initials: 'JL',
   },
   {
     id: 3,
@@ -94,7 +41,7 @@ export const recentSalesData = [
     email: 'isabella.nguyen@email.com',
     amount: '+$299.00',
     image: 'https://api.slingacademy.com/public/sample-users/3.png',
-    initials: 'IN'
+    initials: 'IN',
   },
   {
     id: 4,
@@ -102,7 +49,7 @@ export const recentSalesData = [
     email: 'will@email.com',
     amount: '+$99.00',
     image: 'https://api.slingacademy.com/public/sample-users/4.png',
-    initials: 'WK'
+    initials: 'WK',
   },
   {
     id: 5,
@@ -110,6 +57,6 @@ export const recentSalesData = [
     email: 'sofia.davis@email.com',
     amount: '+$39.00',
     image: 'https://api.slingacademy.com/public/sample-users/5.png',
-    initials: 'SD'
-  }
+    initials: 'SD',
+  },
 ];
