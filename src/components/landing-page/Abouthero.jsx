@@ -6,10 +6,11 @@ import footer from "../assets/footer.png"; // Import spinning icon
 
 const Abouthero = () => {
     return (
-        <section className="relative text-white py-24 px-6 md:px-20 overflow-hidden"
-        style={{
-            background: "linear-gradient(180deg, #7098C0, #91A5BB)"
-        }}
+        <section
+            className="relative text-white py-24 px-6 md:px-20 overflow-hidden"
+            style={{
+                background: "linear-gradient(180deg, #7098C0, #91A5BB)"
+            }}
         >
             {/* Decorative Geometric Background Shape */}
             <div className="absolute w-[400px] h-[400px] bg-[#172233] rounded-full top-[-100px] left-[-100px] opacity-30 blur-3xl"></div>
@@ -41,16 +42,16 @@ const Abouthero = () => {
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
                 >
-                <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
-                <span className="text-[#4D6499]">Create</span>{" "}
-                <span className="text-white">with</span><br />
-                <span className="text-[#000000]">purpose.</span>
-                </h1>
+                    <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
+                        <span className="text-[#4D6499]">About</span>{" "}
+                        <span className="text-black">Us</span><br />
+                    </h1>
 
-                <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
-                Every line, every step — make it count.
-                </p>
-
+                    <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
+                        Over the years, we have built a strong reputation with our clients and aim to expand our company to new heights.
+                        <br /><br />
+                        Our team consists of talented photographers, videographers, editors, and designers working together to deliver creative and professional media solutions. We thrive on the joy of storytelling, the sincerity in moments, and the vibrant energy of life, aiming to craft experiences that resonate with our clients and their audiences.
+                    </p>
                 </motion.div>
 
                 {/* Image Section */}

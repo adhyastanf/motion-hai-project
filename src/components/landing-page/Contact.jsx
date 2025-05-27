@@ -165,7 +165,7 @@ const Contact = () => {
                                         type="text"
                                         name="name"
                                         id="name"
-                                        placeholder="Enter your full name"
+                                        placeholder="John Doe"
                                         className="h-12 w-full bg-white/20 placeholder:text-white/70 border border-white/30 rounded-lg px-4 text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-[#BE8C35]"
                                     />
                                 </div>
@@ -177,7 +177,7 @@ const Contact = () => {
                                         type="email"
                                         name="email"
                                         id="email"
-                                        placeholder="you@example.com"
+                                        placeholder="johndoe@example.com"
                                         className="h-12 w-full bg-white/20 placeholder:text-white/70 border border-white/30 rounded-lg px-4 text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-[#BE8C35]"
                                     />
                                 </div>
@@ -192,7 +192,7 @@ const Contact = () => {
                                         type="text"
                                         name="phone"
                                         id="phone"
-                                        placeholder="e.g. 0896-xxxx-xxxx"
+                                        placeholder="e.g. 08xx-xxxx-xxxx"
                                         className="h-12 w-full bg-white/20 placeholder:text-white/70 border border-white/30 rounded-lg px-4 text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-[#BE8C35]"
                                     />
                                 </div>
@@ -225,7 +225,7 @@ const Contact = () => {
 
                             <button
                                 type="submit"
-                                className="bg-[#E0A53D] hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg text-lg w-full"
+                                className="bg-[#E0A53D] hover:bg-[#603111] text-white font-semibold py-3 px-6 rounded-lg text-lg w-full"
                             >
                                 Send Message
                             </button>

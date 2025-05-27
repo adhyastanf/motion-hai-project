@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <footer className="bg-black text-white text-sm">
             {/* Top Grid Section */}
-            <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 border-b border-gray-700">
+            <div className="max-w-full mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 border-b border-gray-700">
 
                 {/* Logo & Company Info */}
                 <div className="col-span-1">
@@ -22,7 +22,8 @@ const Footer = () => {
                         <span className="text-xl font-bold">Hai Motion</span>
                     </div>
                     <p className="text-white/70 leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Kami bukan hanya sekadar penyedia jasa kami adalah partner kreatif yang siap tumbuh bersama Anda. Setiap proyek kami kerjakan dengan penuh riset, ide segar, dan sentuhan profesional, demi hasil yang tidak hanya indah dipandang, tapi juga berdampak nyata.
+
                     </p>
                 </div>
 

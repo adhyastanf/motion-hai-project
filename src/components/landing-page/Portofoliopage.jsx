@@ -1,52 +1,64 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 
-import footer from "../assets/footer.png"; // Import footer.png for background spinner
+import footer from "../assets/footer.png";
 
 const projects = [
   {
-    title: "Halodoc Project",
+    title: "HALODOC - Rumah Sakit Terapung 2021",
     src: require("../assets/halodoc.png"),
     videoId: "UPKm3q24C-w",
+    description:
+      "Sebuah perjalanan kemanusiaan di Pulau Bawean...",
   },
   {
-    title: "Lolica Project",
+    title: "LOLICA - Colorful Fashion Commercial 2019",
     src: require("../assets/lolica.png"),
     videoId: "6rrxsneWCkM",
+    description:
+      "LOLICA mempercayakan kami untuk merancang video iklan...",
   },
   {
-    title: "Mom Fest Project",
+    title: "MOMFEST - Mothers on Mission Festival 2021",
     src: require("../assets/momfest.png"),
     videoId: "tyoASAvKEMU",
+    description:
+      "Siaran langsung penuh makna untuk para ibu...",
   },
   {
-    title: "Pemkot Ambon Project",
+    title: "PEMKOT AMBON - Hari Kesaktian Pancasila 2020",
     src: require("../assets/pemkotambon.png"),
+    description:
+      "Merayakan nilai kebangsaan lewat layar...",
   },
   {
-    title: "Sharp Project",
+    title: "SHARP - Social Experiment Documentation 2021",
     src: require("../assets/sharp.png"),
     videoId: "qgsEQXtAeyg",
+    description:
+      "Berbagi kebahagiaan, menjangkau yang terlupakan...",
   },
   {
-    title: "Summarecon Serpong Project",
+    title: "SUMMARECON SERPONG - Annual Awards Documentation 2020",
     src: require("../assets/sms.jpg"),
     videoId: "T0DHUnyVsMY",
+    description:
+      "Prestasi dalam kemegahan...",
   },
 ];
 
 export default function Portfoliopage() {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const selectedProject = selectedIndex !== null ? projects[selectedIndex] : null;
 
   useEffect(() => {
     if (!swiperInstance) return;
@@ -54,215 +66,208 @@ export default function Portfoliopage() {
     const updateSlidesStyle = () => {
       swiperInstance.slides.forEach((slideEl) => {
         slideEl.style.filter = "grayscale(100%)";
-        slideEl.style.opacity = "0.3";
-        slideEl.style.transition =
-          "filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease";
+        slideEl.style.opacity = "0.2";
+        slideEl.style.transform = "scale(0.8)";
+        slideEl.style.transition = "all 0.4s ease";
         slideEl.style.zIndex = "0";
-        slideEl.style.transform = "scale(0.85)";
       });
 
-      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-      if (activeSlide) {
-        activeSlide.style.filter = "grayscale(0%)";
-        activeSlide.style.opacity = "1";
-        activeSlide.style.zIndex = "10";
-        activeSlide.style.transform = "scale(1)";
-      }
-
       const total = swiperInstance.slides.length;
-      const leftIndex = (swiperInstance.activeIndex - 1 + total) % total;
-      const rightIndex = (swiperInstance.activeIndex + 1) % total;
+      const activeIndex = swiperInstance.activeIndex;
+      const activeSlide = swiperInstance.slides[activeIndex];
 
-      const leftSlide = swiperInstance.slides[leftIndex];
-      if (leftSlide) {
-        leftSlide.style.filter = "grayscale(100%)";
-        leftSlide.style.opacity = "0.4";
-        leftSlide.style.zIndex = "5";
-        leftSlide.style.transform = "scale(0.9)";
+      if (activeSlide) {
+        activeSlide.style.filter = "none";
+        activeSlide.style.opacity = "1";
+        activeSlide.style.transform = "scale(1)";
+        activeSlide.style.zIndex = "10";
       }
 
-      const rightSlide = swiperInstance.slides[rightIndex];
-      if (rightSlide) {
-        rightSlide.style.filter = "grayscale(100%)";
-        rightSlide.style.opacity = "0.4";
-        rightSlide.style.zIndex = "5";
-        rightSlide.style.transform = "scale(0.9)";
-      }
+      const highlightIndexes = [
+        (activeIndex - 1 + total) % total,
+        (activeIndex - 2 + total) % total,
+        (activeIndex + 1) % total,
+        (activeIndex + 2) % total,
+      ];
+
+      highlightIndexes.forEach((i, idx) => {
+        const slide = swiperInstance.slides[i];
+        if (slide) {
+          slide.style.opacity = idx === 0 || idx === 2 ? "0.5" : "0.35";
+          slide.style.transform = idx === 0 || idx === 2 ? "scale(0.9)" : "scale(0.85)";
+          slide.style.zIndex = "5";
+        }
+      });
     };
 
     updateSlidesStyle();
     swiperInstance.on("slideChange", updateSlidesStyle);
 
     return () => {
-      if (swiperInstance) swiperInstance.off("slideChange", updateSlidesStyle);
+      swiperInstance.off("slideChange", updateSlidesStyle);
     };
   }, [swiperInstance]);
 
   return (
     <div
-      className="text-black pt-20 min-h-screen relative overflow-hidden"
+      className="text-white pt-20 pb-32 relative overflow-hidden"
       style={{
-        background: "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
-        zIndex: 0,
-        position: "relative",
+        background: "linear-gradient(to right, #603111, #000000, #7098C0)",
       }}
     >
-      {/* Spinning footer images above background but behind content */}
-      <div className="absolute top-[100px] left-[50px] w-[150px] h-[150px] opacity-10 animate-spin-slow pointer-events-none z-10">
-        <Image
-          src={footer}
-          alt="Background spinner"
-          fill
-          className="object-contain blur-sm"
-          unoptimized
-        />
+      {/* Background decorations */}
+      <div className="absolute top-[100px] left-[50px] w-[150px] h-[150px] opacity-10 animate-spin-slow z-10">
+        <Image src={footer} alt="Spinner" fill className="object-contain blur-sm" />
       </div>
-
-      <div className="absolute bottom-[100px] right-[50px] w-[200px] h-[200px] opacity-10 animate-spin-slow pointer-events-none z-10">
+      <div className="absolute bottom-[100px] right-[50px] w-[200px] h-[200px] opacity-10 animate-spin-slow z-10">
         <Image
           src={footer}
-          alt="Background spinner flipped"
+          alt="Spinner Flipped"
           fill
           className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
-          unoptimized
         />
       </div>
 
-      {/* Content container on top */}
-      <div className="relative z-20">
-        <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-16 text-center">
-          Motion <span className="text-orange-600">Projects</span>
+      {/* Section Title */}
+      <div className="relative z-20 text-center">
+        <h1 className="text-5xl font-bold mb-12">
+          Motion <span className="text-orange-500">Projects</span>
         </h1>
+      </div>
 
-        <Swiper
-          modules={[EffectCoverflow, Navigation]}
-          onSwiper={setSwiperInstance}
-          effect="coverflow"
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={"auto"}
-          loop={true}
-          pagination={false}
-          navigation={true}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 400,
-            modifier: 3.5,
-            slideShadows: false,
-          }}
-          style={{ paddingBottom: "4rem" }}
-          className="max-w-6xl mx-auto custom-swiper"
-        >
-          {projects.map((project, idx) => (
-            <SwiperSlide
-              key={idx}
-              style={{
-                width: "500px",
-                borderRadius: "1rem",
-                cursor: "pointer",
-              }}
-              onClick={() => setSelectedProject(project)}
-            >
-              <Image
-                src={project.src}
-                alt={project.title}
-                width={500}
-                height={350}
-                className="rounded-xl object-cover"
-                draggable={false}
-                unoptimized
-              />
-              <p className="text-center mt-4 font-semibold text-lg text-white">
-                {project.title}
-              </p>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {selectedProject && (
-          <div
-            className="fixed inset-0 flex bg-black/70 justify-center items-center z-50 p-4"
-            onClick={() => setSelectedProject(null)}
+      {/* Swiper Carousel */}
+      <Swiper
+        modules={[EffectCoverflow, Navigation]}
+        effect="coverflow"
+        grabCursor
+        centeredSlides
+        loop
+        slidesPerView="auto"
+        navigation
+        onSwiper={setSwiperInstance}
+        coverflowEffect={{
+          rotate: 0,
+          stretch: 0,
+          depth: 300,
+          modifier: 2,
+          slideShadows: false,
+        }}
+        className="max-w-6xl mx-auto relative z-20"
+      >
+        {projects.map((project, index) => (
+          <SwiperSlide
+            key={index}
+            style={{ width: "500px", cursor: "pointer", borderRadius: "1rem" }}
+            onClick={() => setSelectedIndex(index)}
           >
-            <div
-              className="bg-black p-6 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+            <Image
+              src={project.src}
+              alt={project.title}
+              width={500}
+              height={350}
+              className="rounded-xl object-cover"
+              draggable={false}
+              unoptimized
+            />
+            <p className="text-center mt-4 font-semibold text-lg">{project.title}</p>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* Modal Viewer */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedIndex(null)}
+          >
+            <motion.div
+              className="bg-zinc-900 text-white p-6 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-auto shadow-2xl relative"
+              initial={{ scale: 0.8, y: 50, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.8, y: 50, opacity: 0 }}
+              transition={{ duration: 0.3 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-white text-3xl font-semibold mb-4 text-center">
-                {selectedProject.title}
-              </h2>
+              <h2 className="text-2xl font-bold mb-4 text-center">{selectedProject.title}</h2>
 
               {selectedProject.videoId ? (
                 <iframe
-                  className="w-full aspect-video rounded-lg"
                   src={`https://www.youtube.com/embed/${selectedProject.videoId}?autoplay=1&rel=0`}
-                  title="YouTube video player"
+                  className="w-full aspect-video rounded-lg"
                   frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
+                  title={selectedProject.title}
                 />
               ) : (
                 <Image
                   src={selectedProject.src}
                   alt={selectedProject.title}
-                  className="w-full max-h-[500px] object-contain mx-auto rounded-lg border border-gray-300"
+                  className="w-full max-h-[500px] object-contain rounded-lg"
                   unoptimized
                 />
               )}
 
-              <p className="text-gray-300 mt-6 text-lg text-center">
-                This is a placeholder description. Add your project copy here.
+              <p className="mt-4 text-center text-gray-300 text-lg">
+                {selectedProject.description || "No description available."}
               </p>
-            </div>
-          </div>
-        )}
-      </div>
 
-      {/* Bottom gradient fade overlay */}
+              {/* Prev/Next Buttons */}
+              <div className="flex justify-between mt-6">
+                <button
+                  className="text-orange-400 hover:text-orange-300"
+                  onClick={() => {
+                    const newIndex = (selectedIndex - 1 + projects.length) % projects.length;
+                    setSelectedIndex(newIndex);
+                    swiperInstance?.slideToLoop(newIndex);
+                  }}
+                >
+                  Previous
+                </button>
+                <button
+                  className="text-blue-400 hover:text-blue-300"
+                  onClick={() => {
+                    const newIndex = (selectedIndex + 1) % projects.length;
+                    setSelectedIndex(newIndex);
+                    swiperInstance?.slideToLoop(newIndex);
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom fade effect */}
       <div
-        className="w-full pointer-events-none"
+        className="w-full h-20 absolute bottom-0 left-0 z-30 pointer-events-none"
         style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "80px",
           background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
-          zIndex: 30,
         }}
       />
 
-      {/* Custom Swiper Arrow Colors */}
+      {/* Custom styles */}
       <style jsx global>{`
         .swiper-button-prev {
-          color: #f97316; /* orange */
+          color: #f97316;
+          transition: color 0.3s;
         }
-
         .swiper-button-next {
-          color: #3b82f6; /* blue */
+          color: #60a5fa;
+          transition: color 0.3s;
         }
-
-        .swiper-button-prev,
-        .swiper-button-next {
-          transition: color 0.3s ease;
-        }
-
         .swiper-button-prev:hover {
-          color: #fb923c; /* lighter orange on hover */
+          color: #fb923c;
         }
-
         .swiper-button-next:hover {
-          color: #60a5fa; /* lighter blue on hover */
+          color: #3b82f6;
         }
-
-        .swiper-button-prev::after,
-        .swiper-button-next::after {
-          font-size: 24px;
-          font-weight: bold;
-        }
-
         @keyframes spin-slow {
           from {
             transform: rotate(0deg);
@@ -271,7 +276,6 @@ export default function Portfoliopage() {
             transform: rotate(360deg);
           }
         }
-
         .animate-spin-slow {
           animation: spin-slow 60s linear infinite;
         }

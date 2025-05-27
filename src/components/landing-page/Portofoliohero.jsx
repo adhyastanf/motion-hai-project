@@ -10,7 +10,7 @@ const Portofoliohero = () => {
             className="relative text-white py-24 px-6 md:px-20 overflow-hidden"
             style={{
                 background:
-                    "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
+                    "linear-gradient(to right, #603111, #000000, #7098C0)",
             }}
         >
             {/* Gradasi terang di bagian atas */}
@@ -54,7 +54,7 @@ const Portofoliohero = () => {
                     </h1>
 
                     <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
-                        Every line, every step — make it count.
+                        Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan
                     </p>
                 </motion.div>
 
