@@ -1,5 +1,4 @@
-import { mysqlTable, varchar, text, int, timestamp, boolean, datetime } from 'drizzle-orm/mysql-core';
-import { relations } from 'drizzle-orm';
+import { boolean, datetime, mysqlTable, text, timestamp, varchar } from 'drizzle-orm/mysql-core';
 
 export const users = mysqlTable('users', {
   id: varchar('id', { length: 36 }).primaryKey(),
@@ -103,8 +102,8 @@ export const projects = mysqlTable('projects', {
   createdBy: varchar('created_by', { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  dateFrom: datetime('date_from'), // Tanggal mulai proyek
-  dateTo: datetime('date_to'), // Tanggal selesai proyek
+  dateFrom: datetime('date_from'),
+  dateTo: datetime('date_to'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 });
@@ -127,7 +126,7 @@ export const tasks = mysqlTable('tasks', {
     .references(() => taskStatuses.id, { onDelete: 'set null' }),
   assigneeId: varchar('assignee_id', { length: 36 }) // 👈 Assignee baru
     .references(() => members.id, { onDelete: 'set null' }),
-  priority: text('priority'),
+  brand: text('brand'),
   dueDate: datetime('due_date'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
@@ -138,17 +137,6 @@ export const taskStatuses = mysqlTable('task_statuses', {
   name: text('name').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
-
-// export const taskAssignees = mysqlTable('task_assignees', {
-//   id: varchar('id', { length: 36 }).primaryKey(),
-//   taskId: varchar('task_id', { length: 36 })
-//     .notNull()
-//     .references(() => tasks.id, { onDelete: 'cascade' }),
-//   memberId: varchar('member_id', { length: 36 })
-//     .notNull()
-//     .references(() => members.id, { onDelete: 'cascade' }),
-//   assignedAt: timestamp('assigned_at').notNull().defaultNow(),
-// });
 
 export const taskComments = mysqlTable('task_comments', {
   id: varchar('id', { length: 36 }).primaryKey(),
@@ -172,133 +160,4 @@ export const activityLogs = mysqlTable('activity_logs', {
   timestamp: timestamp('timestamp').notNull().defaultNow(),
   ipAddress: varchar('ip_address', { length: 45 }),
 });
-
-// Users
-export const usersRelations = relations(users, ({ many }) => ({
-  sessions: many(sessions),
-  accounts: many(accounts),
-  members: many(members),
-  invitations: many(invitations, { relationName: 'inviter' }),
-  createdProjects: many(projects, { relationName: 'createdBy' }),
-  activityLogs: many(activityLogs),
-}));
-
-// Sessions
-export const sessionsRelations = relations(sessions, ({ one }) => ({
-  user: one(users, {
-    fields: [sessions.userId],
-    references: [users.id],
-  }),
-}));
-
-// Accounts
-export const accountsRelations = relations(accounts, ({ one }) => ({
-  user: one(users, {
-    fields: [accounts.userId],
-    references: [users.id],
-  }),
-}));
-
-// Verifications (no relations)
-
-// Organizations
-export const organizationsRelations = relations(organizations, ({ many }) => ({
-  members: many(members),
-  invitations: many(invitations),
-  projects: many(projects),
-  activityLogs: many(activityLogs),
-}));
-
-// Members
-export const membersRelations = relations(members, ({ one, many }) => ({
-  user: one(users, {
-    fields: [members.userId],
-    references: [users.id],
-  }),
-  organization: one(organizations, {
-    fields: [members.organizationId],
-    references: [organizations.id],
-  }),
-  taskComments: many(taskComments),
-}));
-
-// Invitations
-export const invitationsRelations = relations(invitations, ({ one }) => ({
-  organization: one(organizations, {
-    fields: [invitations.organizationId],
-    references: [organizations.id],
-  }),
-  inviter: one(users, {
-    fields: [invitations.inviterId],
-    references: [users.id],
-  }),
-}));
-
-// Projects
-export const projectsRelations = relations(projects, ({ one, many }) => ({
-  organization: one(organizations, {
-    fields: [projects.organizationId],
-    references: [organizations.id],
-  }),
-  status: one(projectStatuses, {
-    fields: [projects.statusId],
-    references: [projectStatuses.id],
-  }),
-  createdByUser: one(users, {
-    fields: [projects.createdBy],
-    references: [users.id],
-  }),
-  tasks: many(tasks),
-}));
-
-// Project Statuses
-export const projectStatusesRelations = relations(projectStatuses, ({ many }) => ({
-  projects: many(projects),
-}));
-
-// Tasks
-export const tasksRelations = relations(tasks, ({ one, many }) => ({
-  project: one(projects, {
-    fields: [tasks.projectId],
-    references: [projects.id],
-  }),
-  status: one(taskStatuses, {
-    fields: [tasks.statusId],
-    references: [taskStatuses.id],
-  }),
-  assignee: one(members, {
-    fields: [tasks.assigneeId],
-    references: [members.id],
-  }),
-  comments: many(taskComments),
-}));
-
-// Task Statuses
-export const taskStatusesRelations = relations(taskStatuses, ({ many }) => ({
-  tasks: many(tasks),
-}));
-
-// Task Comments
-export const taskCommentsRelations = relations(taskComments, ({ one }) => ({
-  task: one(tasks, {
-    fields: [taskComments.taskId],
-    references: [tasks.id],
-  }),
-  member: one(members, {
-    fields: [taskComments.memberId],
-    references: [members.id],
-  }),
-}));
-
-// Activity Logs
-export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
-  organization: one(organizations, {
-    fields: [activityLogs.organizationId],
-    references: [organizations.id],
-  }),
-  user: one(users, {
-    fields: [activityLogs.userId],
-    references: [users.id],
-  }),
-}));
 

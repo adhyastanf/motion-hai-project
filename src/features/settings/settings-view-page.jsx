@@ -19,11 +19,13 @@ import ButtonModalWorkspace from './components/modal-workspace';
 
 const MODAL_CONSTANT = ['update', 'delete'];
 export default function SettingsDashboardPage() {
-  const { orgId, projectId } = useParams();
+  const { orgId } = useParams();
   const { toast } = useToast();
   const [modal, setModal] = useState('');
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [openBulkModal, setOpenBulkModal] = useState(false);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const { data: members } = useGetMembers(orgId);
   const { data: organizations } = useGetOrganization(orgId);
   const { data: users } = useGetUsers(orgId);
@@ -74,13 +76,12 @@ export default function SettingsDashboardPage() {
       {
         onRequest: () => {
           toast({
-            title: 'Please wait...',
+            title: 'Please waittttt...',
           });
         },
         onSuccess: () => {
-          toast({
-            title: 'Member Deleted',
-            description: 'Member has been deleted successfully.',
+          queryClient.invalidateQueries({
+            queryKey: ['list-task'],
           });
           queryClient.invalidateQueries({
             queryKey: ['members', orgId],
@@ -88,8 +89,9 @@ export default function SettingsDashboardPage() {
           queryClient.invalidateQueries({
             queryKey: ['users', orgId],
           });
-          queryClient.invalidateQueries({
-            queryKey: ['list-task', projectId],
+          toast({
+            title: 'Member Deleted',
+            description: 'Member has been deleted successfully.',
           });
         },
         onError: (ctx) => {
@@ -127,6 +129,76 @@ export default function SettingsDashboardPage() {
       });
     },
   });
+
+  async function handleLeaveOrganization() {
+    await authClient.organization.leave(
+      {
+        organizationId: orgId,
+      },
+      {
+        onRequest: () => {
+          toast({ title: 'Leaving organization...' });
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['list-task'],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['members', orgId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['users', orgId],
+          });
+          toast({
+            title: 'Left Organization',
+            description: 'You have left the organization.',
+          });
+        },
+        onError: (ctx) => {
+          toast({
+            title: 'Something went wrong',
+            description: ctx.error.message ?? 'Failed to leave organization.',
+            variant: 'destructive',
+          });
+        },
+      }
+    );
+  }
+
+  async function handleDeleteOrganization() {
+    await authClient.organization.delete(
+      {
+        organizationId: orgId,
+      },
+      {
+        onRequest: () => {
+          toast({ title: 'Deleting organization...' });
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['list-task'],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['members', orgId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['users', orgId],
+          });
+          toast({
+            title: 'Delete Organization',
+            description: 'You have deleted the organization.',
+          });
+        },
+        onError: (ctx) => {
+          toast({
+            title: 'Something went wrong',
+            description: ctx.error.message ?? 'Failed to delete organization.',
+            variant: 'destructive',
+          });
+        },
+      }
+    );
+  }
 
   return (
     <PageContainer scrollable={false}>
@@ -200,6 +272,16 @@ export default function SettingsDashboardPage() {
           </CardContent>
         </Card>
 
+        <div className='space-y-2'>
+          <Button variant='destructive' onClick={() => setLeaveConfirmOpen(true)}>
+            Leave Organization
+          </Button>
+
+          <Button variant='destructive' onClick={() => setDeleteConfirmOpen(true)}>
+            Delete Organization
+          </Button>
+        </div>
+
         <Modal title='Add Member' description={'Select Members To Add :'} isOpen={openBulkModal} onClose={() => setOpenBulkModal(false)}>
           <div className='space-y-4'>
             <ScrollArea className='h-40 rounded-md px-2'>
@@ -238,6 +320,29 @@ export default function SettingsDashboardPage() {
               disabled={selectedMembers.length === 0 || isPending}
             >
               Add Member
+            </Button>
+          </div>
+        </Modal>
+
+        <Modal title='Leave Organization' description='Are you sure you want to leave this organization? You will lose access.' isOpen={leaveConfirmOpen} onClose={() => setLeaveConfirmOpen(false)}>
+          <div className='flex justify-end gap-2 mt-4'>
+            <Button variant='ghost' onClick={() => setLeaveConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant='destructive' onClick={handleLeaveOrganization}>
+              Leave
+            </Button>
+          </div>
+        </Modal>
+
+        {/* Modal Confirm Delete */}
+        <Modal title='Delete Organization' description='This action cannot be undone. All data will be permanently deleted.' isOpen={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+          <div className='flex justify-end gap-2 mt-4'>
+            <Button variant='ghost' onClick={() => setDeleteConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant='destructive' onClick={handleDeleteOrganization}>
+              Delete
             </Button>
           </div>
         </Modal>

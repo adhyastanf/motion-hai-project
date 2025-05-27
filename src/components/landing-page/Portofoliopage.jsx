@@ -9,7 +9,11 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 
+<<<<<<< HEAD
 import footer from "../assets/footer.png";
+=======
+import footer from "../assets/footer.png"; // Background spinner image
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
 
 const projects = [
   {
@@ -17,41 +21,65 @@ const projects = [
     src: require("../assets/halodoc.png"),
     videoId: "UPKm3q24C-w",
     description:
+<<<<<<< HEAD
       "Sebuah perjalanan kemanusiaan di Pulau Bawean...",
+=======
+      "Sebuah perjalanan kemanusiaan di Pulau Bawean. Kami dipercaya Halodoc untuk mendokumentasikan inisiatif sosial berupa Rumah Sakit Terapung menggunakan kapal Penisi tradisional yang menjangkau wilayah terpencil tanpa akses kesehatan.",
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
   },
   {
     title: "LOLICA - Colorful Fashion Commercial 2019",
     src: require("../assets/lolica.png"),
     videoId: "6rrxsneWCkM",
     description:
+<<<<<<< HEAD
       "LOLICA mempercayakan kami untuk merancang video iklan...",
+=======
+      "LOLICA mempercayakan kami untuk merancang video iklan penuh warna yang menampilkan keunikan fashion wanita dengan sentuhan trend Korea.",
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
   },
   {
     title: "MOMFEST - Mothers on Mission Festival 2021",
     src: require("../assets/momfest.png"),
     videoId: "tyoASAvKEMU",
     description:
+<<<<<<< HEAD
       "Siaran langsung penuh makna untuk para ibu...",
+=======
+      "Siaran langsung penuh makna untuk para ibu. Dalam event seminar ini, kami menangani produksi live Stream profesional.",
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
   },
   {
     title: "PEMKOT AMBON - Hari Kesaktian Pancasila 2020",
     src: require("../assets/pemkotambon.png"),
     description:
+<<<<<<< HEAD
       "Merayakan nilai kebangsaan lewat layar...",
+=======
+      "Merayakan nilai kebangsaan lewat layar. Kami mendokumentasikan dan menyiarkan secara langsung peringatan Hari Kesaktian Pancasila bersama pemerintah Kota Ambon.",
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
   },
   {
     title: "SHARP - Social Experiment Documentation 2021",
     src: require("../assets/sharp.png"),
     videoId: "qgsEQXtAeyg",
     description:
+<<<<<<< HEAD
       "Berbagi kebahagiaan, menjangkau yang terlupakan...",
+=======
+      "Sharp mempercayakan kami untuk mengabadikan momen spesial dalam aksi sosial mereka bersama anak - anak panti asuhan.",
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
   },
   {
     title: "SUMMARECON SERPONG - Annual Awards Documentation 2020",
     src: require("../assets/sms.jpg"),
     videoId: "T0DHUnyVsMY",
     description:
+<<<<<<< HEAD
       "Prestasi dalam kemegahan...",
+=======
+      "Kami memproduksi dokumentasi resmi acara penghargaan tahunan Summarecon Serpong di Royal Ballroom.",
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
   },
 ];
 
@@ -65,16 +93,26 @@ export default function Portfoliopage() {
 
     const updateSlidesStyle = () => {
       swiperInstance.slides.forEach((slideEl) => {
+<<<<<<< HEAD
         slideEl.style.filter = "grayscale(100%)";
         slideEl.style.opacity = "0.2";
         slideEl.style.transform = "scale(0.8)";
         slideEl.style.transition = "all 0.4s ease";
         slideEl.style.zIndex = "0";
+=======
+        slideEl.style.filter = "grayscale(100%) blur(10px)";
+        slideEl.style.opacity = "0.3";
+        slideEl.style.transition =
+          "filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease";
+        slideEl.style.zIndex = "0";
+        slideEl.style.transform = "scale(0.8)";
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
       });
 
       const total = swiperInstance.slides.length;
       const activeIndex = swiperInstance.activeIndex;
       const activeSlide = swiperInstance.slides[activeIndex];
+<<<<<<< HEAD
 
       if (activeSlide) {
         activeSlide.style.filter = "none";
@@ -96,6 +134,29 @@ export default function Portfoliopage() {
           slide.style.opacity = idx === 0 || idx === 2 ? "0.5" : "0.35";
           slide.style.transform = idx === 0 || idx === 2 ? "scale(0.9)" : "scale(0.85)";
           slide.style.zIndex = "5";
+=======
+      if (activeSlide) {
+        activeSlide.style.filter = "grayscale(0%)";
+        activeSlide.style.opacity = "1";
+        activeSlide.style.zIndex = "10";
+        activeSlide.style.transform = "scale(1)";
+      }
+
+      const sideIndices = [
+        (activeIndex - 1 + total) % total,
+        (activeIndex + 1) % total,
+        (activeIndex - 2 + total) % total,
+        (activeIndex + 2) % total,
+      ];
+
+      sideIndices.forEach((i, idx) => {
+        const slide = swiperInstance.slides[i];
+        if (slide) {
+          slide.style.filter = "grayscale(100%)";
+          slide.style.opacity = idx < 2 ? "0.4" : "0.2";
+          slide.style.zIndex = idx < 2 ? "5" : "1";
+          slide.style.transform = `scale(${idx < 2 ? "0.9" : "0.85"})`;
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
         }
       });
     };
@@ -112,6 +173,7 @@ export default function Portfoliopage() {
     <div
       className="text-white pt-20 pb-32 relative overflow-hidden"
       style={{
+<<<<<<< HEAD
         background: "linear-gradient(to right, #603111, #000000, #7098C0)",
       }}
     >
@@ -120,6 +182,23 @@ export default function Portfoliopage() {
         <Image src={footer} alt="Spinner" fill className="object-contain blur-sm" />
       </div>
       <div className="absolute bottom-[100px] right-[50px] w-[200px] h-[200px] opacity-10 animate-spin-slow z-10">
+=======
+        background: "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
+        zIndex: 0,
+      }}
+    >
+      {/* Background spinners */}
+      <div className="absolute top-[100px] left-[50px] w-[150px] h-[150px] opacity-10 animate-spin-slow pointer-events-none z-10">
+        <Image
+          src={footer}
+          alt="Background spinner"
+          fill
+          className="object-contain blur-sm"
+          unoptimized
+        />
+      </div>
+      <div className="absolute bottom-[100px] right-[50px] w-[200px] h-[200px] opacity-10 animate-spin-slow pointer-events-none z-10">
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
         <Image
           src={footer}
           alt="Spinner Flipped"
@@ -128,13 +207,20 @@ export default function Portfoliopage() {
         />
       </div>
 
+<<<<<<< HEAD
       {/* Section Title */}
       <div className="relative z-20 text-center">
         <h1 className="text-5xl font-bold mb-12">
           Motion <span className="text-orange-500">Projects</span>
+=======
+      <div className="relative z-20">
+        <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold mb-16 text-center">
+          Our <span className="text-orange-600">Portofolio</span>
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
         </h1>
       </div>
 
+<<<<<<< HEAD
       {/* Swiper Carousel */}
       <Swiper
         modules={[EffectCoverflow, Navigation]}
@@ -159,6 +245,57 @@ export default function Portfoliopage() {
             key={index}
             style={{ width: "500px", cursor: "pointer", borderRadius: "1rem" }}
             onClick={() => setSelectedIndex(index)}
+=======
+        <Swiper
+          modules={[EffectCoverflow, Navigation]}
+          onSwiper={setSwiperInstance}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          loop={true}
+          navigation={true}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 250,
+            modifier: 2.5,
+            slideShadows: false,
+          }}
+          style={{ paddingBottom: "4rem" }}
+          className="max-w-7xl mx-auto custom-swiper"
+        >
+          {projects.map((project, idx) => (
+            <SwiperSlide
+              key={idx}
+              style={{
+                width: "300px",
+                borderRadius: "1rem",
+                cursor: "pointer",
+              }}
+              onClick={() => setSelectedProject(project)}
+            >
+              <Image
+                src={project.src}
+                alt={project.title}
+                width={300}
+                height={200}
+                className="rounded-xl object-cover"
+                draggable={false}
+                unoptimized
+              />
+              <p className="text-center mt-4 font-semibold text-base text-white">
+                {project.title}
+              </p>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {selectedProject && (
+          <div
+            className="fixed inset-0 flex bg-black/70 justify-center items-center z-50 p-4"
+            onClick={() => setSelectedProject(null)}
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
           >
             <Image
               src={project.src}
@@ -212,6 +349,7 @@ export default function Portfoliopage() {
                 />
               )}
 
+<<<<<<< HEAD
               <p className="mt-4 text-center text-gray-300 text-lg">
                 {selectedProject.description || "No description available."}
               </p>
@@ -245,6 +383,18 @@ export default function Portfoliopage() {
       </AnimatePresence>
 
       {/* Bottom fade effect */}
+=======
+              {selectedProject.description && (
+                <p className="text-gray-300 mt-6 text-lg text-center whitespace-pre-line">
+                  {selectedProject.description}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
       <div
         className="w-full h-20 absolute bottom-0 left-0 z-30 pointer-events-none"
         style={{
@@ -252,6 +402,7 @@ export default function Portfoliopage() {
         }}
       />
 
+<<<<<<< HEAD
       {/* Custom styles */}
       <style jsx global>{`
         .swiper-button-prev {
@@ -261,13 +412,31 @@ export default function Portfoliopage() {
         .swiper-button-next {
           color: #60a5fa;
           transition: color 0.3s;
+=======
+      <style jsx global>{`
+        .swiper-button-prev {
+          color: #f97316;
+        }
+        .swiper-button-next {
+          color: #3b82f6;
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
         }
         .swiper-button-prev:hover {
           color: #fb923c;
         }
         .swiper-button-next:hover {
+<<<<<<< HEAD
           color: #3b82f6;
         }
+=======
+          color: #60a5fa;
+        }
+        .swiper-button-prev::after,
+        .swiper-button-next::after {
+          font-size: 24px;
+          font-weight: bold;
+        }
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
         @keyframes spin-slow {
           from {
             transform: rotate(0deg);

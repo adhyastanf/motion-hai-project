@@ -2,7 +2,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ButtonModalTask from '@/features/list-task/components/list-project-tables/modal-task';
-import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { ArrowLeft, ArrowRight, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useState } from 'react';
@@ -68,7 +68,6 @@ export default function TaskTable({ data, columns, totalItems, pageSizeOptions =
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => {
                     const task = row.original;
-
                     return (
                       <TableRow key={task.id}>
                         {row.getVisibleCells().map((cell) => (
@@ -86,7 +85,6 @@ export default function TaskTable({ data, columns, totalItems, pageSizeOptions =
                 )}
               </TableBody>
             </Table>
-            {/* {MODAL_CONSTANT.includes(modal) && <ButtonModalProject modal={modal} setModal={setModal} projectId={selectedProject?.id} initialData={selectedProject} />} */}
             {MODAL_CONSTANT.includes(modal) && <ButtonModalTask modal={modal} setModal={setModal} taskId={selectedTask?.id} initialData={selectedTask} statusOptions={statusOptions} memberOptions={memberOptions} />}
             <ScrollBar orientation='horizontal' />
           </ScrollArea>

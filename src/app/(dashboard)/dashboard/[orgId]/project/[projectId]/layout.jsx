@@ -12,8 +12,6 @@ export default async function ProjectLayout({ children, params }) {
 
   const { orgId, projectId } = await params;
 
-  const tasks = await getListTask(projectId);
-
   const projects = await getListProject(orgId);
 
   const checkProject = projects.data.find((project) => project?.id === projectId);

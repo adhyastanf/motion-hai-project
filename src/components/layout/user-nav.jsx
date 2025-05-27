@@ -3,8 +3,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { signOut } from '@/lib/client/auth-client';
+import { useRouter } from 'next/navigation';
 
 export function UserNav({ session }) {
+  const router = useRouter()
   async function handleSignOut() {
     await signOut();
     router.refresh();

@@ -21,22 +21,19 @@ import {
 } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
 import { signOut } from '@/lib/client/auth-client';
-import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, CreditCard, GalleryVerticalEnd, LogOut } from 'lucide-react';
+import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, CreditCard, LogOut, NotepadText } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Icons } from '../icons';
-import { OrgSwitcher } from '../org-switcher';
-
-export const company = {
-  name: 'Acme Inc',
-  logo: GalleryVerticalEnd,
-  plan: 'Enterprise',
-};
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Separator } from '../ui/separator';
 
 export default function AppSidebar({ session }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, isMobile } = useSidebar();
+  const [modal, setModal] = useState('');
 
   async function handleSignOut() {
     await signOut();
@@ -45,15 +42,41 @@ export default function AppSidebar({ session }) {
 
   return (
     <Sidebar collapsible='icon'>
-      <SidebarHeader>
-        {/* <OrgSwitcher projects={projects} defaultProject={defaultProject} onProjectSwitch={handleSwitchProject} /> */}
-      </SidebarHeader>
+      <SidebarHeader></SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
           <SidebarMenu>
             {navItems.map((item) => {
               const Icon = item.icon ? Icons[item.icon] : Icons.logo;
+
+              if (item.title === 'Projects') {
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <SidebarMenuButton tooltip={item.title}>
+                          <Icon />
+                          <span>{item.title}</span>
+                        </SidebarMenuButton>
+                      </PopoverTrigger>
+                      <PopoverContent side='right' align='start' className='w-64'>
+                        <p className='text-sm text-muted-foreground mb-2'>Projects</p>
+                        <div className='space-y-2'>
+                          <div className='cursor-pointer flex gap-1 items-center'>
+                            <NotepadText size={20}/> New Project
+                          </div>
+                          <Separator />
+                          <Link href='/projects/list' className='block hover:underline'>
+                            📁 All Projects
+                          </Link>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </SidebarMenuItem>
+                );
+              }
+
               return item?.items && item?.items?.length > 0 ? (
                 <Collapsible key={item.title} asChild defaultOpen={item.isActive} className='group/collapsible'>
                   <SidebarMenuItem>
@@ -93,7 +116,7 @@ export default function AppSidebar({ session }) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
@@ -147,7 +170,7 @@ export default function AppSidebar({ session }) {
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
+      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );

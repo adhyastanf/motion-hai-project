@@ -2,12 +2,11 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import ButtonModalTask from '@/features/list-task/components/list-project-tables/modal-task';
-import { useGetMembers, useGetStatusTask } from '@/hooks/use-query';
 import { addMonths, format, getDay, parse, startOfWeek, subMonths } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, StickyNote } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -57,6 +56,7 @@ export default function DataCalendar({data, isLoading, statusOptions, memberOpti
       end: new Date(task.dueDate),
       status: task.status || null,
       assignee: task.assignee || null,
+      brand: task.brand || null,
       id: task.id,
       ...task,
     }));
@@ -78,19 +78,19 @@ export default function DataCalendar({data, isLoading, statusOptions, memberOpti
       .toLowerCase();
     if (cleanStatus === 'todo') {
       return (
-        <Badge className='bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none rounded-full'>
+        <Badge className='bg-red-600/10 dark:bg-red-600/20 hover:bg-red-600/10 text-red-500 shadow-none rounded-full capitalize'>
           <div className='h-1.5 w-1.5 rounded-full bg-red-500 mr-2' /> {status}
         </Badge>
       );
     } else if (cleanStatus === 'inprogress') {
       return (
-        <Badge className='bg-amber-600/10 dark:bg-amber-600/20 hover:bg-amber-600/10 text-amber-500 shadow-none rounded-full'>
+        <Badge className='bg-amber-600/10 dark:bg-amber-600/20 hover:bg-amber-600/10 text-amber-500 shadow-none rounded-full capitalize'>
           <div className='h-1.5 w-1.5 rounded-full bg-amber-500 mr-2' /> {status}
         </Badge>
       );
     } else if (cleanStatus === 'done') {
       return (
-        <Badge className='bg-emerald-600/10 dark:bg-emerald-600/20 hover:bg-emerald-600/10 text-emerald-500 shadow-none rounded-full'>
+        <Badge className='bg-emerald-600/10 dark:bg-emerald-600/20 hover:bg-emerald-600/10 text-emerald-500 shadow-none rounded-full capitalize'>
           <div className='h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2' /> {status}
         </Badge>
       );
@@ -98,8 +98,9 @@ export default function DataCalendar({data, isLoading, statusOptions, memberOpti
   };
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <LoadingSkeleton />;
   }
+
   return (
     <>
       <Calendar
@@ -132,6 +133,7 @@ export default function DataCalendar({data, isLoading, statusOptions, memberOpti
                 </p>
                 {statusColor(event.status)}
                 <p>{event.assignee}</p>
+                <p>{event.brand}</p>
               </Badge>
             </div>
           ),
@@ -140,5 +142,22 @@ export default function DataCalendar({data, isLoading, statusOptions, memberOpti
       />
       {MODAL_CONSTANT.includes(modal) && <ButtonModalTask modal={modal} setModal={setModal} taskId={selectedTask?.id} initialData={selectedTask} statusOptions={statusOptions} memberOptions={memberOptions} />}
     </>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="p-4 space-y-4">
+      <div className="flex justify-between items-center mb-4">
+        <Skeleton className="h-8 w-10 rounded-md" />
+        <Skeleton className="h-8 w-40 rounded-md" />
+        <Skeleton className="h-8 w-10 rounded-md" />
+      </div>
+      <div className="grid grid-cols-7 gap-2">
+        {[...Array(35)].map((_, i) => (
+          <Skeleton key={i} className="h-20 rounded-md" />
+        ))}
+      </div>
+    </div>
   );
 }

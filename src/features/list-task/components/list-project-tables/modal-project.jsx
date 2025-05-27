@@ -2,7 +2,7 @@
 
 import { createProject, deleteProject, updateProject } from '@/app/actions';
 import { AlertModal } from '@/components/modal/alert-modal';
-import ModalInput from '@/components/modal/input-modal';
+import ModalProject from '@/components/modal/project-modal';
 import { useToast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -114,8 +114,8 @@ export default function ButtonModalProject({ modal, setModal, projectId, initial
 
   return (
     <>
-      <ModalInput title='Make a Project' fields={fields} open={modal === 'create'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
-      <ModalInput title='Update a Project' fields={fields} open={modal === 'update'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
+      <ModalProject title='Create a Project' fields={fields} open={modal === 'create'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
+      <ModalProject title='Update a Project' fields={fields} open={modal === 'update'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
       <AlertModal
         title={`Are you sure to delete project "${initialData?.name}"?`}
         description='This action cannot be undone. This will permanently delete your project.'

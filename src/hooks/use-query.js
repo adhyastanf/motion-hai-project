@@ -12,9 +12,9 @@ export function useGetListProject(orgId) {
 
 export function useGetListTask(projectId, filters) {
   return useQuery({
-    queryKey: ['list-task', projectId],
-    queryFn: () => getListTask(projectId),
-    refetchOnWindowFocus: true,
+    queryKey: ['list-task', projectId, filters],
+    queryFn: () => getListTask(projectId, filters),
+    refetchOnWindowFocus: 'always',
   });
 }
 

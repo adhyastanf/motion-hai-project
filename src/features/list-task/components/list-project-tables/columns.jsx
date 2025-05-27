@@ -9,7 +9,7 @@ export const columns = [
     header: 'Task',
     cell: ({ row }) => {
       const task = row.original;
-      return <span className='font-medium'>{task.name}</span>;
+      return <span className='font-medium capitalize'>{task.name}</span>;
     },
   },
   {
@@ -17,7 +17,7 @@ export const columns = [
     header: 'Status',
     cell: ({ row }) => {
       const {status} = row.original;
-      return <span className='font-medium'>{status || 'No Status'}</span>;
+      return <span className='font-medium capitalize'>{status || 'No Status'}</span>;
     },
   },
   {
@@ -34,6 +34,14 @@ export const columns = [
     cell: ({ row }) => {
       const { dueDate } = row.original;
       return <span className='font-medium'>{dueDate ? format(dueDate, 'MMM dd, yyyy') : 'No Due Date'}</span>;
+    },
+  },
+  {
+    accessorKey: 'brand',
+    header: 'Brand',
+    cell: ({ row }) => {
+      const { brand } = row.original;
+      return <span className='font-medium capitalize'>{brand || 'No Brand'}</span>;
     },
   },
   {

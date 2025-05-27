@@ -7,7 +7,6 @@ export default async function OverviewWorspace() {
     headers: await headers(),
   });
 
-  console.log(user)
 
   return <ViewOverviewWorspace users={user}/>;
 }

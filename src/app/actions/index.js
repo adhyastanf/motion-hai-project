@@ -16,7 +16,7 @@ export async function getUserForWorkspace(orgId) {
       .leftJoin(members, and(eq(users.id, members.userId), eq(members.organizationId, orgId)))
       .where(isNull(members.id));
 
-      const result = data.map(item => item.users);
+    const result = data.map((item) => item.users);
 
     return result;
   } catch (err) {
@@ -71,32 +71,11 @@ export async function createTask(values) {
     projectId: values.projectId,
     name: values.task,
     description: values.description,
+    brand: values.brand ? values.brand : null,
     statusId: values.status ? values.status : null,
     dueDate: values.due ? values.due : null,
     assigneeId: values.assigne ? values.assigne : null,
   });
-
-  const [newTask] = await db
-    .select({
-      id: tasks.id,
-      name: tasks.name,
-      description: tasks.description,
-      dueDate: tasks.dueDate,
-      createdAt: tasks.createdAt,
-      updatedAt: tasks.updatedAt,
-      statusId: tasks.statusId,
-      status: taskStatuses.name,
-      assigneeId: tasks.assigneeId,
-      assignee: users.name,
-      assigneeEmail: users.email,
-    })
-    .from(tasks)
-    .leftJoin(taskStatuses, eq(tasks.statusId, taskStatuses.id))
-    .leftJoin(members, eq(tasks.assigneeId, members.id))
-    .leftJoin(users, eq(members.userId, users.id))
-    .where(eq(tasks.id, taskId));
-
-  return newTask;
 }
 
 export async function deleteTask(taskId) {
@@ -109,6 +88,7 @@ export async function updateTask(values) {
     .set({
       name: values.task,
       description: values.description,
+      brand: values.brand ? values.brand : null,
       statusId: values.status ? values.status : null,
       dueDate: values.due ? values.due : null,
       assigneeId: values.assigne ? values.assigne : null,
@@ -141,19 +121,20 @@ export async function getListTask(projectId, filters) {
   try {
     const conditions = [eq(tasks.projectId, projectId)];
 
-    // if (filters.status) {
-    //   conditions.push(eq(tasks.statusId, filters.status));
-    // }
+    if (filters?.status) {
+      conditions.push(eq(tasks.statusId, filters?.status));
+    }
 
-    // if (filters.assignee) {
-    //   conditions.push(eq(tasks.assigneeId, filters.assignee));
-    // }
+    if (filters?.assignee) {
+      conditions.push(eq(tasks.assigneeId, filters?.assignee));
+    }
 
     const data = await db
       .select({
         id: tasks.id,
         name: tasks.name,
         description: tasks.description,
+        brand: tasks.brand,
         dueDate: tasks.dueDate,
         createdAt: tasks.createdAt,
         updatedAt: tasks.updatedAt,
@@ -170,7 +151,16 @@ export async function getListTask(projectId, filters) {
       .where(and(...conditions))
       .orderBy(desc(tasks.createdAt));
 
-    return data;
+
+    // .limit(filters.limit)
+    // .offset(offset)
+    const start = (filters?.page - 1) * filters?.limit;
+    const end = start + filters?.limit;
+    const paginatedData = data?.slice(start, end);
+
+    // console.log(paginatedData)
+
+    return { allData : data, data : paginatedData , totalData: data.length };
   } catch (err) {
     return err;
   }
@@ -178,52 +168,7 @@ export async function getListTask(projectId, filters) {
 
 export async function getListProject(organizationId) {
   try {
-    const rawData = await db
-      .select()
-      .from(projects)
-      .leftJoin(tasks, eq(tasks.projectId, projects.id))
-      .leftJoin(taskStatuses, eq(tasks.statusId, taskStatuses.id))
-      .leftJoin(members, eq(tasks.assigneeId, members.id))
-      .leftJoin(users, eq(members.userId, users.id))
-      .where(eq(projects.organizationId, organizationId));
-
-    const projectMap = new Map();
-
-    for (const row of rawData) {
-      const project = row.projects;
-      const task = row.tasks;
-      const assignee = row.users;
-      const taskStatus = row.task_statuses;
-
-      if (!projectMap.has(project.id)) {
-        projectMap.set(project.id, {
-          ...project,
-          tasks: [],
-        });
-      }
-
-      if (task && task.id) {
-        projectMap.get(project.id).tasks.push({
-          ...task,
-          status: taskStatus
-            ? {
-                id: taskStatus.id,
-                name: taskStatus.name,
-              }
-            : null,
-          assignee: assignee
-            ? {
-                id: assignee.id,
-                name: assignee.name,
-                email: assignee.email,
-                image: assignee.image,
-              }
-            : null,
-        });
-      }
-    }
-
-    const data = Array.from(projectMap.values());
+    const data = await db.select().from(projects).where(eq(projects.organizationId, organizationId)).orderBy(desc(projects.createdAt));
 
     return { success: true, data };
   } catch (error) {
@@ -313,8 +258,8 @@ export async function createBulkMember(userIds, orgId) {
         return auth.api.addMember({
           body: {
             userId,
-            organizationId : orgId,
-            role :' member',
+            organizationId: orgId,
+            role: ' member',
           },
         });
       })
@@ -338,11 +283,11 @@ export async function getCommentsByTaskId(taskId) {
 export async function createTaskComment(taskId, memberId, commentText) {
   try {
     const newComment = {
-      id: nanoid(), // generate ID unik
+      id: nanoid(),
       taskId,
       memberId,
       comment: commentText,
-      createdAt: new Date(), // timestamp saat ini
+      createdAt: new Date(),
     };
 
     await db.insert(taskComments).values(newComment);

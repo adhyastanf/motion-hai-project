@@ -47,14 +47,18 @@ const Portofoliohero = () => {
                     viewport={{ once: true }}
                 >
                     <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
-                        <span className="text-[#7CB4E3]">Create</span>{" "}
-                        <span className="text-white">with</span>
+                        <span className="text-[#7CB4E3]">Porto</span>
+                        <span className="text-white">folio</span>
                         <br />
-                        <span className="text-[#F6B042]">purpose.</span>
+                        <span className="text-[#F6B042]">Kami</span>
                     </h1>
 
                     <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
+<<<<<<< HEAD
                         Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan
+=======
+                    Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan.
+>>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
                     </p>
                 </motion.div>
 
