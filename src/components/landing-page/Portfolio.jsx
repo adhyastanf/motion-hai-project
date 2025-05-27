@@ -10,42 +10,23 @@ import pemkotambon from "../assets/pemkotambon.png";
 import sharp from "../assets/sharp.png";
 import sms from "../assets/sms.jpg";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
 const projects = [
-  {
-    title: "Halodoc Project",
-    src: halodoc,
-  },
-  {
-    title: "Lolica Project",
-    src: lolica,
-  },
-  {
-    title: "Mom Fest Project",
-    src: momfest,
-  },
-  {
-    title: "Pemkot Ambon Project",
-    src: pemkotambon,
-  },
-  {
-    title: "Sharp Project",
-    src: sharp,
-  },
+  { title: "Halodoc Project", src: halodoc },
+  { title: "Lolica Project", src: lolica },
+  { title: "Mom Fest Project", src: momfest },
+  { title: "Pemkot Ambon Project", src: pemkotambon },
+  { title: "Sharp Project", src: sharp },
+  { title: "SMS Project", src: sms },
 ];
 
 const Portfolio = () => {
   const router = useRouter();
 
   return (
-    <div className="text-white bg-gradient-to-b from-black to-[#381a5f] py-20" id="portfolio">
+    <div
+      className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111]  relative overflow-hidden"
+      id="portfolio"
+    >
       {/* Title */}
       <motion.div
         initial={{ opacity: 0, y: 75 }}
@@ -59,37 +40,27 @@ const Portfolio = () => {
         </h1>
       </motion.div>
 
-      {/* Carousel */}
-      <motion.div
-        initial={{ opacity: 0, y: 75 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.25 }}
-        className="max-w-7xl mx-auto mt-12"
-      >
-        <Carousel className="w-full">
-          <CarouselContent>
-            {projects.map((project, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <div className="p-4 flex flex-col items-center gap-4">
-                  <h3 className="text-xl font-semibold text-center text-white">
-                    {project.title}
-                  </h3>
-                  <Image
-                    src={project.src}
-                    alt={project.title}
-                    className="w-full object-cover rounded-md border border-gray-700"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </motion.div>
+      {/* Grid Images */}
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        {projects.map((project, index) => (
+          <motion.div
+            key={index}
+            className="rounded-lg overflow-hidden shadow-md"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+          >
+            <Image
+              src={project.src}
+              alt={project.title}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        ))}
+      </div>
 
-      {/* Button to Full Portfolio */}
+      {/* Button */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

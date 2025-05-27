@@ -1,118 +1,151 @@
 "use client";
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import book from "../assets/book.png";
-import pc from "../assets/pc.png";
-import card from "../assets/card.png";
-import screw from "../assets/icon1.png";
-import lighting from "../assets/icon2.png"
+
+// Images
+import halodoc from "../assets/halodoc.png";
+import lolica from "../assets/lolica.png";
+import momfest from "../assets/momfest.png";
+import pemkotambon from "../assets/pemkotambon.png";
+import footer from "../assets/footer.png"; // Spinning icon import
+
+// Card Data with titles split into two lines manually
+const cards = [
+  {
+    title: "Social Media\nManagement",
+    description:
+      "We help manage and grow your brand’s online presence across platforms with tailored content and strategic posting.",
+    img: halodoc,
+  },
+  {
+    title: "Video\nProduction",
+    description:
+      "From scripting to editing, we produce cinematic and impactful videos tailored to your vision and brand identity.",
+    img: lolica,
+  },
+  {
+    title: "Motion\nGraphics",
+    description:
+      "We create engaging animations and explainer videos that bring your ideas to life with dynamic visuals.",
+    img: momfest,
+  },
+  {
+    title: "Event\nCoverage",
+    description:
+      "Capture every important moment of your events with our full coverage services—from candid shots to highlights.",
+    img: pemkotambon,
+  },
+];
 
 const About = () => {
-  const router = useRouter();
-
-  const cards = [
-    {
-      img: book,
-      title: "Event & Birthdays",
-      text:
-        "We capture and record important memories on your truly special day—let us know if there's a special moment on it, and we’ll make it beautiful to remember.",
-      delay: 0.3,
-    },
-    {
-      img: screw,
-      title: "Creative Services",
-      text:
-        "We offer strategic communications created by creativity and in thoughtful ways. We will work with you to reach your audiences and brand story across digital, videos, photos and many more.",
-      delay: 0.4,
-    },
-    {
-      img: card,
-      title: "Wedding & Pre-Wed",
-      text:
-        "We experienced and have been involved a lot on wedding days, we understand your needs yet we follow your suggestion. Once in a lifetime, surely we’ll be giving our best for your most special day.",
-      delay: 0.5,
-    },
-    {
-      img: lighting,
-      title: "Live Stream",
-      text:
-        "Need a team to help make your brand/event/product streaming live in front of clients? We are here willing to help you organize it all.",
-      delay: 0.6,
-    },
-    {
-      img: pc,
-      title: "Photo Product",
-      text:
-        "Extra effort in creating such a promising product? We’re here to do it for you, taking photos or videos, we are in!",
-      delay: 0.7,
-    },
-  ];
+  const [selectedCard, setSelectedCard] = useState(null);
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 md:px-0" id="about">
-      
-      {/* Animated Title */}
-      <motion.div
+    <div
+      className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pb-12 text-white relative overflow-hidden"
+      id="about"
+    >
+      {/* Spinning Background Icons */}
+      <div className="absolute top-[100px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm"
+        />
+      </div>
+      <div className="absolute bottom-[100px] right-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+        />
+      </div>
+
+      {/* TOP GRADIENT OVERLAY */}
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-t from-transparent to-black pointer-events-none"></div>
+
+      {/* Section Title */}
+      <motion.h1
         initial={{ opacity: 0, y: 75 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.25 }}
-        className="text-center mt-12"
+        transition={{ duration: 0.5 }}
+        className="text-5xl md:text-6xl font-semibold text-center mt-8 pt-16 pb-20"
       >
-        <h1 className="text-white text-6xl w-[320px] mx-auto font-semibold p-4 mb-8">
-          About <span className="text-orange-400">Us</span>
-        </h1>
-      </motion.div>
+        What We <span className="text-orange-400">Do</span>
+      </motion.h1>
 
-      {/* Single-column long cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
-        {cards.map(({ img, title, text, delay }, idx) => {
-          const reverseIcon = idx % 2 === 1; // if you want to keep icon placement logic, but might want to simplify for grid
-          return (
+      {/* Grid and Lines */}
+      <div className="relative max-w-6xl mx-auto px-6">
+        {/* Cross Divider */}
+        <div className="absolute top-1/2 left-0 right-0 h-px bg-white/30 z-0"></div>
+        <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white/30 z-0"></div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+          {cards.map((card, index) => (
             <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 75 }}
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay }}
-              className="max-w-[450px] min-h-[420px] relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl overflow-hidden p-8"
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="cursor-pointer"
+              onClick={() => setSelectedCard(card)}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-purple-700 to-orange-800 opacity-20 animate-gradient-xy" />
-              <div className="flex flex-col items-center">
-                {/* Icon on top */}
-                <div className="mb-6">
-                  <Image src={img} alt={title} className="h-[130px] w-auto" />
+              {/* Left column: title above, right-aligned */}
+              {index % 2 === 0 && (
+                <div className="pb-2 px-2 text-xl md:text-2xl font-bold whitespace-pre-line text-white text-right text-glow">
+                  {card.title}
                 </div>
+              )}
 
-                {/* Title */}
-                <h2 className="text-3xl font-bold text-white text-left mb-4">{title}</h2>
-
-                {/* Text */}
-                <p className="text-lg text-white">{text}</p>
+              <div className="w-full h-[300px] relative">
+                <Image
+                  src={card.img}
+                  alt={card.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
+
+              {/* Right column: title below, left-aligned */}
+              {index % 2 !== 0 && (
+                <div className="pt-2 px-2 text-xl md:text-2xl font-bold whitespace-pre-line text-white text-left text-glow">
+                  {card.title}
+                </div>
+              )}
             </motion.div>
-          );
-        })}
+          ))}
+        </div>
       </div>
 
-      {/* Click for More Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-        className="flex justify-center mt-8 mb-16"
-      >
-        <button
-          onClick={() => router.push("/about")}
-          className="bg-orange-600 text-white px-6 py-3 text-xl rounded-lg font-semibold
-                    hover:bg-orange-500 hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-lg"
+      {/* Modal */}
+      {selectedCard && (
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+          onClick={() => setSelectedCard(null)}
         >
-          Click for More
-        </button>
-      </motion.div>
+          <div
+            className="bg-[#1a1a1a] p-8 rounded-2xl max-w-3xl w-[90%] shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-3xl text-white font-semibold text-center mb-6 whitespace-pre-line">
+              {selectedCard.title}
+            </h2>
+            <Image
+              src={selectedCard.img}
+              alt={selectedCard.title}
+              className="w-full h-[300px] object-cover rounded-lg border border-gray-700 mb-6"
+            />
+            <p className="text-gray-300 text-lg text-center">
+              {selectedCard.description}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

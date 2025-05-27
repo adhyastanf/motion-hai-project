@@ -61,8 +61,8 @@ const Navbar = () => {
               className="relative group hover:text-white transition-colors"
             >
               {link.title}
-              <span className="absolute left-0 -bottom-0.5 h-[2px] w-3/4 bg-[#E67E22] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                <span className="absolute left-0 -bottom-1 h-[2px] w-1/2 bg-[#B55527] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 delay-100"></span>
+              <span className="absolute left-0 -bottom-0.5 h-[2px] w-3/4 bg-[#3B495C] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                <span className="absolute left-0 -bottom-1 h-[2px] w-1/2 bg-[#CAD5E0] rounded origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 delay-100"></span>
             </Link>
           ))}
         </nav>

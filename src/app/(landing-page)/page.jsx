@@ -1,9 +1,9 @@
 import About from "@/components/landing-page/About";
-import Contact from "@/components/landing-page/Contact";
 import Homehero from "@/components/landing-page/Homehero";
 import Portfolio from "@/components/landing-page/Portfolio";
 import Client from "@/components/landing-page/Client";
-import Association from "@/components/landing-page/Association";
+import Faq from "@/components/landing-page/Faq";
+import Services from "@/components/landing-page/Services";
 
 
 export default function Home() {
@@ -13,9 +13,9 @@ export default function Home() {
     <Homehero />
     <About />
     <Portfolio />
+    <Services />
+    <Faq />
     <Client />
-    <Association />
-    <Contact />
 
     </>
   );

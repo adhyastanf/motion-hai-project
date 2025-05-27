@@ -2,21 +2,25 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import profilepic from "../assets/profilepic.png";
-import footer from "../assets/footer.png"; // Import spinning icon
+import footer from "../assets/footer.png"; // Spinning icon
 
-const Contacthero = () => {
+const Portofoliohero = () => {
     return (
         <section
             className="relative text-white py-24 px-6 md:px-20 overflow-hidden"
             style={{
-                background: "linear-gradient(180deg, #603111, #B55527)"
+                background:
+                    "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
             }}
         >
-            {/* Decorative Geometric Background Shape */}
-            <div className="absolute w-[400px] h-[400px] bg-[#170e0b] rounded-full top-[-100px] left-[-100px] opacity-30 blur-3xl"></div>
+            {/* Gradasi terang di bagian atas */}
+            <div className="absolute top-0 left-0 w-full h-15 bg-gradient-to-b from-white/15 to-transparent pointer-events-none z-10"></div>
+
+            {/* Background Gradients (subtle large circles for effect) */}
+            <div className="absolute w-[400px] h-[400px] bg-[#092433] rounded-full top-[-100px] left-[-100px] opacity-30 blur-3xl"></div>
 
             {/* Spinning Icons */}
-            <div className="absolute bottom-[-0px] left-[20px] w-[250px] h-[250px] opacity-10 animate-spin-slower z-0 pointer-events-none">
+            <div className="absolute bottom-[-0px] right-[-50px] w-[300px] h-[300px] opacity-10 animate-spin-slower z-0 pointer-events-none">
                 <Image
                     src={footer}
                     alt="Spinning Icon"
@@ -24,7 +28,7 @@ const Contacthero = () => {
                     className="object-contain blur-sm"
                 />
             </div>
-            <div className="absolute top-[40px] right-[25px] w-[200px] h-[200px] opacity-10 animate-spin-slower z-90 pointer-events-none">
+            <div className="absolute top-[40px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower z-90 pointer-events-none">
                 <Image
                     src={footer}
                     alt="Spinning Icon"
@@ -33,8 +37,8 @@ const Contacthero = () => {
                 />
             </div>
 
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center z-10 relative">
+            {/* Content */}
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center z-20 relative">
                 {/* Text Section */}
                 <motion.div
                     initial={{ opacity: 0, x: -40 }}
@@ -43,13 +47,14 @@ const Contacthero = () => {
                     viewport={{ once: true }}
                 >
                     <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
-                        <span className="text-[#E0A53D]">Create</span>{" "}
-                        <span className="text-white">with</span><br />
-                        <span className="text-[#000000]">purpose.</span>
+                        <span className="text-[#7CB4E3]">Porto</span>
+                        <span className="text-white">folio</span>
+                        <br />
+                        <span className="text-[#F6B042]">Kami</span>
                     </h1>
 
-                    <p className="mt-6 text-white text-lg max-w-lg">
-                        Every line, every step — make it count.
+                    <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
+                    Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan.
                     </p>
                 </motion.div>
 
@@ -72,4 +77,4 @@ const Contacthero = () => {
     );
 };
 
-export default Contacthero;
+export default Portofoliohero;

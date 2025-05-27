@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import {
   Carousel,
@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/carousel";
 
 import { Card } from "@/components/ui/card";
-
 import Autoplay from "embla-carousel-autoplay";
 
 import messi from "../assets/messi.png";
 import ronaldo from "../assets/ronaldo.png";
+import footer from "../assets/footer.png"; // spinning icon
 
 const images = [
   {
@@ -48,28 +48,43 @@ const Aboutus = () => {
         alignItems: "center",
         flexDirection: "column",
         padding: "3rem 1rem",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+
+      <div className="absolute top-[250px] left-[120px] w-[200px] h-[200px] opacity-10 animate-[spin_20s_linear_infinite] z-0 pointer-events-none">
+        <Image
+          src={footer}
+          alt="Top Right Spinner"
+          fill
+          className="object-contain blur-sm"
+        />
+      </div>
+
+      <div className="absolute bottom-[200px] right-[80px] w-[350px] h-[350px] opacity-10 animate-[spin_20s_linear_infinite] z-0 pointer-events-none">
+        <Image
+          src={footer}
+          alt="Bottom Left Spinner"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+        />
+      </div>
+
       <motion.h1
         initial={{ opacity: 0, y: 75 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.25 }}
-        className="text-center max-w-[900px] text-white text-6xl font-semibold p-12 -mt-16 -mb-4"
+        className="text-center max-w-[900px] text-white text-6xl font-semibold p-12 -mt-16 -mb-18"
       >
-        YOUR <span className="text-[#4D6499]">EXCELLENCE</span> IS OUR TOP{" "}
-        <span className="text-[#4D6499]">PRIORITY</span>
+        MEET OUR <span className="text-[#4D6499]">TEAM</span> OF{" "}
+        <span className="text-[#4D6499]">EXCELLENCE</span>
       </motion.h1>
 
       <Carousel
-        plugins={[
-          Autoplay({
-            delay: 4000,
-            stopOnInteraction: false,
-          }),
-        ]}
-        className="relative w-full max-w-[900px] mb-8 rounded-xl"
-        // You can add onSlideChange to sync current if supported
+        plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}
+        className="relative w-full max-w-[900px] mx-auto mb-8 rounded-xl"
       >
         <CarouselContent>
           {images.map(({ src, alt, caption }, index) => (
@@ -78,8 +93,10 @@ const Aboutus = () => {
               className="flex justify-center relative"
               aria-hidden={current !== index}
             >
-              <Card className="w-full mx-12 rounded-xl overflow-hidden bg-transparent shadow-none border-none relative">
-                {/* Background big text */}
+              <Card
+                className="w-full rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-md relative"
+                style={{ boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)" }}
+              >
                 <span
                   aria-hidden="true"
                   className="absolute top-1/2 left-0 w-full -translate-y-1/2
@@ -95,20 +112,25 @@ const Aboutus = () => {
                   {alt.split(" ").join("\n")}
                 </span>
 
-                <div className="flex justify-center items-center w-full h-[400px] md:h-[550px] relative z-10">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center justify-center relative z-10"
+                >
                   <Image
                     src={src}
                     alt={alt}
                     width={500}
                     height={500}
-                    className="object-contain mx-auto"
+                    className="object-contain mx-auto transition mt-4 duration-300 ease-in-out
+                              hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
                     priority
                   />
-                </div>
+                </motion.div>
 
-                <div className="text-white text-center mt-4 relative z-10">
+                <div className="text-white text-center mt-8 relative z-10">
                   <h2 className="text-4xl md:text-6xl font-extrabold">{alt}</h2>
-                  <p className="text-lg max-w-[600px] mx-auto mt-2 text-white/90">
+                  <p className="text-lg max-w-[600px] mx-auto mt-8 mb-4 text-white/90">
                     {caption}
                   </p>
                 </div>
@@ -118,15 +140,15 @@ const Aboutus = () => {
         </CarouselContent>
 
         <CarouselPrevious
-          className="absolute top-1/2 -left-8 transform -translate-y-1/2 bg-black bg-opacity-70 text-black rounded-full w-12 h-12 flex items-center justify-center
+          className="absolute top-1/2 -left-16 transform -translate-y-1/2 bg-black bg-opacity-70 text-black rounded-full w-12 h-12 flex items-center justify-center
             hover:bg-opacity-90 hover:scale-110 hover:shadow-lg hover:shadow-white/50 hover:text-black transition duration-300 z-30 cursor-pointer select-none border-none"
           aria-label="Previous"
         >
-          <ChevronLeft className="w-40 h-40" />
+          <ChevronLeft className="w-6 h-6" />
         </CarouselPrevious>
 
         <CarouselNext
-          className="absolute top-1/2 -right-8 transform -translate-y-1/2 bg-black bg-opacity-70 text-black rounded-full w-12 h-12 flex items-center justify-center
+          className="absolute top-1/2 -right-16 transform -translate-y-1/2 bg-black bg-opacity-70 text-black rounded-full w-12 h-12 flex items-center justify-center
             hover:bg-opacity-90 hover:scale-110 hover:shadow-lg hover:shadow-white/50 hover:text-black transition duration-300 z-30 cursor-pointer select-none border-none"
           aria-label="Next"
         >
@@ -153,12 +175,10 @@ const Aboutus = () => {
           </div>
 
           <div className="space-y-6">
-            {[
-              { label: "DESIGN", percent: 85 },
+            {[{ label: "DESIGN", percent: 85 },
               { label: "BRANDING", percent: 60 },
               { label: "ADVERTISING", percent: 67 },
-              { label: "COPYWRITING", percent: 93 },
-            ].map((item) => (
+              { label: "COPYWRITING", percent: 93 }].map((item) => (
               <div key={item.label} className="text-white">
                 <div className="flex justify-between mb-1">
                   <span className="font-semibold">{item.label}</span>

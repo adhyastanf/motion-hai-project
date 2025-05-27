@@ -14,12 +14,14 @@ import {
   FaLightbulb,
   FaUsers,
 } from "react-icons/fa";
+import Image from "next/image";
+import footer from "../assets/footer.png"; // adjust path if necessary
 
 const videoPackages = [
   {
     title: "VIDEO PRODUCT",
     subtitle: "Rate Card Video Production",
-    price: "Rp. 8JT",
+    price: "8JT",
     features: [
       { text: "Story Line", icon: <FaFilm /> },
       { text: "Story Board", icon: <FaClipboard /> },
@@ -34,7 +36,7 @@ const videoPackages = [
   {
     title: "DOCUMENTATION",
     subtitle: "Rate Card Video Production",
-    price: "Rp. 11JT",
+    price: "11JT",
     features: [
       { text: "Story Line", icon: <FaFilm /> },
       { text: "Story Board", icon: <FaClipboard /> },
@@ -50,7 +52,7 @@ const videoPackages = [
   {
     title: "SOCIAL MEDIA VIDEO",
     subtitle: "Rate Card Video Production",
-    price: "Rp. 13JT",
+    price: "13JT",
     features: [
       { text: "Story Line", icon: <FaFilm /> },
       { text: "Story Board", icon: <FaClipboard /> },
@@ -66,7 +68,7 @@ const videoPackages = [
   {
     title: "DIGITAL COMMERCIAL",
     subtitle: "Rate Card Video Production",
-    price: "Rp. 15JT",
+    price: "15JT",
     note: "Start From",
     features: [
       { text: "Story Line", icon: <FaFilm /> },
@@ -84,84 +86,99 @@ const videoPackages = [
 
 const Services = () => {
   return (
-    <div className="text-white bg-gradient-to-b from-black via-[#381a5f] to-black py-32">
-      <div className="max-w-[1700px] mx-auto px-8 text-center">
+    <div className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-24 relative overflow-hidden">
+      {/* Spinning Background Icons */}
+      <div className="absolute top-[100px] left-[20px] w-[150px] h-[150px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm"
+        />
+      </div>
+      <div className="absolute bottom-[100px] right-[20px] w-[150px] h-[150px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image
+          src={footer}
+          alt="Spinning Icon"
+          fill
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
+        />
+      </div>
+
+      <div className="max-w-[1600px] mx-auto px-6 relative z-10">
         <motion.h1
-          initial={{ opacity: 0, y: 75 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-4xl md:text-6xl font-bold mb-12"
-        >
-          <p className="text-white text-6xl w-[320px] mx-auto font-semibold p-4 mb-4">
-            Our <span className="text-orange-400">Services</span>
-          </p>
-        </motion.h1>
-
-        {/* Service Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 justify-center">
-          {videoPackages.map((pkg, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 75 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
-              className="bg-[#f3f4f6] text-black rounded-xl overflow-hidden shadow-lg flex flex-col justify-between mb-8 w-full max-w-[450px]"
-              style={{ minHeight: "700px", maxWidth: "500px" }}
-            >
-              {/* Title */}
-              <div className="bg-[#ff7b00] text-white p-6 text-center">
-                <h3 className="text-xl font-bold uppercase">{pkg.title}</h3>
-                <p className="text-base mt-1">{pkg.subtitle}</p>
-              </div>
-
-              {/* Pricing */}
-              <div className="bg-[#e5e7eb] text-[#1f2937] text-center p-6">
-                <span className="text-xl font-medium">Rp.</span>{" "}
-                <span className="text-5xl font-extrabold align-middle">
-                  {pkg.price.replace("Rp. ", "")}
-                </span>
-                {pkg.note && (
-                  <div className="text-sm mt-2 text-gray-500">{pkg.note}</div>
-                )}
-              </div>
-
-              {/* Features */}
-              <div className="px-8 pb-8 flex-grow bg-[#e5e7eb]">
-                <ul className="space-y-3">
-                  {pkg.features.map((feature, i) => (
-                    <li key={i} className="py-1">
-                      <div className="flex items-center justify-center gap-3">
-                        <span className="text-[#1f2937] text-lg">
-                          {feature.icon}
-                        </span>
-                        <p className="text-[#1f2937] text-base">{feature.text}</p>
-                      </div>
-                      {i < pkg.features.length - 1 && (
-                        <hr className="mt-3 border-gray-300 w-full" />
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Call-to-Action Banner */}
-        <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 1.2 }}
-          className="mt-16 bg-white text-black rounded-lg p-8 flex flex-col md:flex-row items-center md:justify-between"
+          transition={{ duration: 0.6 }}
+          className="text-center text-4xl md:text-6xl font-bold mb-16"
         >
-          <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-0">
-            INTERESTED TO WORK AND COOPERATE WITH US? CONTACT US!
-          </h1>
-          <Link href="/contact-us" passHref>
-            <button className="bg-orange-400 text-white px-6 py-3 rounded-lg font-semibold text-lg hover:bg-orange-500 transition-all">
+          Our <span className="text-orange-400">Services</span>
+        </motion.h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          {videoPackages.map((pkg, index) => {
+            const bgColor =
+              index % 2 === 0 ? "bg-[#7098C0]/20" : "bg-[#603111]/20";
+            const titleColor = index % 2 === 0 ? "#7098C0" : "#B55527";
+
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 * index }}
+                className={`${bgColor} backdrop-blur-xl rounded-2xl shadow-xl p-6 flex flex-col justify-between border border-white/20`}
+              >
+                <div className="text-center mb-4">
+                  <h3
+                    className="text-xl font-bold uppercase"
+                    style={{ color: titleColor }}
+                  >
+                    {pkg.title}
+                  </h3>
+                  <p className="text-sm text-gray-200">{pkg.subtitle}</p>
+                </div>
+
+                <div className="text-center text-white mb-6">
+                  <span className="text-xl">Rp.</span>{" "}
+                  <span className="text-5xl font-bold">{pkg.price}</span>
+                  {pkg.note && (
+                    <div className="text-sm mt-2 text-gray-300">{pkg.note}</div>
+                  )}
+                </div>
+
+                <ul className="space-y-4">
+                  {pkg.features.map((feature, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-3 text-gray-100"
+                    >
+                      <span className="text-lg text-orange-400">
+                        {feature.icon}
+                      </span>
+                      <p className="text-base">{feature.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 1 }}
+          className="mt-20 bg-white/10 backdrop-blur-lg rounded-xl p-8 text-center text-white border border-white/20"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            INTERESTED TO WORK AND COOPERATE WITH US?
+          </h2>
+          <Link href="/contact-us">
+            <button className="bg-orange-400 hover:bg-orange-500 transition px-6 py-3 rounded-lg text-lg font-semibold mt-2">
               Contact Us
             </button>
           </Link>
