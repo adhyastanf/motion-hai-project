@@ -54,11 +54,8 @@ const Portofoliohero = () => {
                     </h1>
 
                     <p className="mt-6 text-[#FFFFFF] text-lg max-w-lg">
-<<<<<<< HEAD
+
                         Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan
-=======
-                    Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan.
->>>>>>> 11fc0f0b2a3ea6de246784fc092b460d438ea451
                     </p>
                 </motion.div>
 

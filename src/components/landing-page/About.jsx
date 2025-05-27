@@ -133,7 +133,7 @@ const About = () => {
                       <Image
                         src={card.img}
                         alt={card.title}
-                        className="w-full h-full object-cover transition duration-300 group-hover:opacity-40"
+                        className="w-full h-full object-cover transition duration-300 group-hover:opacity-20"
                       />
                       <div className="absolute inset-0 flex items-center justify-center px-4 text-center opacity-0 group-hover:opacity-100 transition duration-300">
                         <p className="text-xs sm:text-sm md:text-base">{card.description}</p>
