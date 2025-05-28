@@ -17,23 +17,29 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-  useSidebar
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
+import { useGetListProject } from '@/hooks/use-query';
 import { signOut } from '@/lib/client/auth-client';
 import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, CreditCard, LogOut, NotepadText } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icons } from '../icons';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Separator } from '../ui/separator';
+import ProfilePic from '../assets/profilepic.png';
+import Image from 'next/image';
 
 export default function AppSidebar({ session }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { orgId } = useParams();
   const { state, isMobile } = useSidebar();
   const [modal, setModal] = useState('');
+  const { data: projects } = useGetListProject(orgId);
+  const isEmpty = projects.data.length === 0;
 
   async function handleSignOut() {
     await signOut();
@@ -42,13 +48,16 @@ export default function AppSidebar({ session }) {
 
   return (
     <Sidebar collapsible='icon'>
-      <SidebarHeader></SidebarHeader>
+      <SidebarHeader>
+        <Image src={ProfilePic} alt='Logo Hai Motion' width={60} height={60} />
+      </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
           <SidebarMenu>
             {navItems.map((item) => {
               const Icon = item.icon ? Icons[item.icon] : Icons.logo;
+              const href = typeof item.url === 'function' ? item.url(orgId) : item.url;
 
               if (item.title === 'Projects') {
                 return (
@@ -63,13 +72,19 @@ export default function AppSidebar({ session }) {
                       <PopoverContent side='right' align='start' className='w-64'>
                         <p className='text-sm text-muted-foreground mb-2'>Projects</p>
                         <div className='space-y-2'>
-                          <div className='cursor-pointer flex gap-1 items-center'>
-                            <NotepadText size={20}/> New Project
+                          <div className='cursor-pointer flex gap-1 items-center text-primary text-md'>
+                            <NotepadText size={20} /> New Project
                           </div>
                           <Separator />
-                          <Link href='/projects/list' className='block hover:underline'>
-                            📁 All Projects
-                          </Link>
+                          {!isEmpty ? (
+                            projects.data.map((project) => (
+                              <Link key={project.id} href={`project/${project.id}`} className='block capitalize text-sm hover:text-primary'>
+                                {project.name}
+                              </Link>
+                            ))
+                          ) : (
+                            <p className='text-md text-muted-foreground'>No projects found</p>
+                          )}
                         </div>
                       </PopoverContent>
                     </Popover>
@@ -89,15 +104,17 @@ export default function AppSidebar({ session }) {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        {item.items?.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton asChild isActive={pathname === subItem.url}>
-                              <Link href={subItem.url}>
-                                <span>{subItem.title}</span>
-                              </Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        ))}
+                        {item.items?.map((subItem) => {
+                          return (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton asChild isActive={pathname === subItem.url}>
+                                <Link href={subItem.url}>
+                                  <span>{subItem.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
                       </SidebarMenuSub>
                     </CollapsibleContent>
                   </SidebarMenuItem>
@@ -105,7 +122,7 @@ export default function AppSidebar({ session }) {
               ) : (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title} isActive={pathname === item.url}>
-                    <Link href={item.url}>
+                    <Link href={href}>
                       <Icon />
                       <span>{item.title}</span>
                     </Link>

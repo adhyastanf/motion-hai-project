@@ -5,7 +5,9 @@ import { LoaderProvider } from '@/components/providers/loader-provider';
 import LoadingScreen from '@/components/providers/loading-scree';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth } from '@/lib/auth';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { cookies, headers } from 'next/headers';
+import { getListProject } from '../actions';
 
 export const metadata = {
   title: 'Next Shadcn Dashboard Starter',
@@ -16,21 +18,11 @@ export default async function DashboardLayout({ children }) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
   return (
     <KBar>
       <LoaderProvider>
         <LoadingScreen />
-        <SidebarProvider defaultOpen={defaultOpen}>
-          <AppSidebar session={session} />
-          <SidebarInset>
-            <Header session={session} />
-            {children}
-          </SidebarInset>
-        </SidebarProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
       </LoaderProvider>
     </KBar>
   );
