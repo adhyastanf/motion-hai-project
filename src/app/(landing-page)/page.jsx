@@ -4,6 +4,8 @@ import Portfolio from "@/components/landing-page/Portfolio";
 import Client from "@/components/landing-page/Client";
 import Faq from "@/components/landing-page/Faq";
 import Services from "@/components/landing-page/Services";
+import Abouthome from "@/components/landing-page/Abouthome";
+import CompanyProfile from "@/components/landing-page/Companyprofile";
 
 
 export default function Home() {
@@ -11,6 +13,8 @@ export default function Home() {
     <>
 
     <Homehero />
+    <Abouthome />
+    <CompanyProfile />
     <About />
     <Portfolio />
     <Services />

@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 
 import { Card } from "@/components/ui/card";
@@ -18,26 +15,37 @@ import Autoplay from "embla-carousel-autoplay";
 
 import messi from "../assets/messi.png";
 import ronaldo from "../assets/ronaldo.png";
-import footer from "../assets/footer.png"; // spinning icon
+import footer from "../assets/footer.png";
 
-const images = [
+const teamMembers = [
   {
-    src: messi,
-    alt: "Lionel Messi",
-    caption:
-      "Lionel Messi is an Argentine professional footballer widely regarded as one of the greatest players of all time.",
+    name: "Georgio Gabriel",
+    role: "Chief Executive Officer",
+    images: [messi, ronaldo],
   },
   {
-    src: ronaldo,
-    alt: "Cristiano Ronaldo",
-    caption:
-      "Cristiano Ronaldo is a Portuguese professional footballer known for his athleticism, leadership.",
+    name: "Dimar Abiyya",
+    role: "Chief Technology Officer",
+    images: [messi, ronaldo],
+  },
+  {
+    name: "Meliada Dina",
+    role: "Social Media Specialist",
+    images: [messi, ronaldo],
+  },
+  {
+    name: "Bellanty Virginia",
+    role: "Personal Assistant",
+    images: [messi, ronaldo],
+  },
+  {
+    name: "Eroz Kamal",
+    role: "Graphic Designer",
+    images: [messi, ronaldo],
   },
 ];
 
 const Aboutus = () => {
-  const [current, setCurrent] = useState(0);
-
   return (
     <div
       style={{
@@ -52,11 +60,11 @@ const Aboutus = () => {
         overflow: "hidden",
       }}
     >
-
+      {/* Background Spinners */}
       <div className="absolute top-[250px] left-[120px] w-[200px] h-[200px] opacity-10 animate-[spin_20s_linear_infinite] z-0 pointer-events-none">
         <Image
           src={footer}
-          alt="Top Right Spinner"
+          alt="Top Left Spinner"
           fill
           className="object-contain blur-sm"
         />
@@ -65,7 +73,7 @@ const Aboutus = () => {
       <div className="absolute bottom-[200px] right-[80px] w-[350px] h-[350px] opacity-10 animate-[spin_20s_linear_infinite] z-0 pointer-events-none">
         <Image
           src={footer}
-          alt="Bottom Left Spinner"
+          alt="Bottom Right Spinner"
           fill
           className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
         />
@@ -82,86 +90,90 @@ const Aboutus = () => {
         <span className="text-[#4D6499]">EXCELLENCE</span>
       </motion.h1>
 
-      <Carousel
-        plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}
-        className="relative w-full max-w-[900px] mx-auto mb-8 rounded-xl"
-      >
-        <CarouselContent>
-          {images.map(({ src, alt, caption }, index) => (
-            <CarouselItem
-              key={alt}
-              className="flex justify-center relative"
-              aria-hidden={current !== index}
+      {/* Custom 2-3 Layout */}
+      <div className="flex flex-col items-center gap-10 z-10 w-full">
+        {/* First row - 2 cards */}
+        <div className="flex justify-center gap-8 flex-wrap">
+          {teamMembers.slice(0, 2).map(({ name, role, images }) => (
+            <motion.div
+              key={name}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3 }}
             >
-              <Card
-                className="w-full rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-md relative"
-                style={{ boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)" }}
-              >
-                <span
-                  aria-hidden="true"
-                  className="absolute top-1/2 left-0 w-full -translate-y-1/2
-                             text-6xl md:text-8xl font-extrabold text-white uppercase
-                             opacity-30 pointer-events-none whitespace-pre-line text-center
-                             leading-tight select-none border-none"
-                  style={{
-                    userSelect: "none",
-                    whiteSpace: "pre-line",
-                    wordBreak: "break-word",
-                  }}
+              <Card className="w-[420px] rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+                <Carousel
+                  plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+                  className="w-full"
                 >
-                  {alt.split(" ").join("\n")}
-                </span>
-
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center justify-center relative z-10"
-                >
-                  <Image
-                    src={src}
-                    alt={alt}
-                    width={500}
-                    height={500}
-                    className="object-contain mx-auto transition mt-4 duration-300 ease-in-out
-                              hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
-                    priority
-                  />
-                </motion.div>
-
-                <div className="text-white text-center mt-8 relative z-10">
-                  <h2 className="text-4xl md:text-6xl font-extrabold">{alt}</h2>
-                  <p className="text-lg max-w-[600px] mx-auto mt-8 mb-4 text-white/90">
-                    {caption}
-                  </p>
+                  <CarouselContent>
+                    {images.map((imgSrc, idx) => (
+                      <CarouselItem key={idx} className="flex justify-center">
+                        <Image
+                          src={imgSrc}
+                          alt={`${name} photo ${idx + 1}`}
+                          width={250}
+                          height={250}
+                          className="object-contain rounded-lg my-4"
+                          priority
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+                <div className="text-white text-center mt-6 relative z-10 px-4 pb-8">
+                  <h2 className="text-4xl font-extrabold">{name}</h2>
+                  <p className="text-lg mt-2 text-white/90">{role}</p>
                 </div>
               </Card>
-            </CarouselItem>
+            </motion.div>
           ))}
-        </CarouselContent>
+        </div>
 
-        <CarouselPrevious
-          className="absolute top-1/2 -left-16 transform -translate-y-1/2 bg-black bg-opacity-70 text-black rounded-full w-12 h-12 flex items-center justify-center
-            hover:bg-opacity-90 hover:scale-110 hover:shadow-lg hover:shadow-white/50 hover:text-black transition duration-300 z-30 cursor-pointer select-none border-none"
-          aria-label="Previous"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </CarouselPrevious>
+        {/* Second row - 3 cards */}
+        <div className="flex justify-center gap-8 flex-wrap">
+          {teamMembers.slice(2).map(({ name, role, images }) => (
+            <motion.div
+              key={name}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="w-[420px] rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+                <Carousel
+                  plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+                  className="w-full"
+                >
+                  <CarouselContent>
+                    {images.map((imgSrc, idx) => (
+                      <CarouselItem key={idx} className="flex justify-center">
+                        <Image
+                          src={imgSrc}
+                          alt={`${name} photo ${idx + 1}`}
+                          width={250}
+                          height={250}
+                          className="object-contain rounded-lg my-4"
+                          priority
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+                <div className="text-white text-center mt-6 relative z-10 px-4 pb-8">
+                  <h2 className="text-4xl font-extrabold">{name}</h2>
+                  <p className="text-lg mt-2 text-white/90">{role}</p>
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
-        <CarouselNext
-          className="absolute top-1/2 -right-16 transform -translate-y-1/2 bg-black bg-opacity-70 text-black rounded-full w-12 h-12 flex items-center justify-center
-            hover:bg-opacity-90 hover:scale-110 hover:shadow-lg hover:shadow-white/50 hover:text-black transition duration-300 z-30 cursor-pointer select-none border-none"
-          aria-label="Next"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </CarouselNext>
-      </Carousel>
-
+      {/* What We Do Section */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="max-w-[900px] mx-auto p-8 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md"
+        className="max-w-[900px] mx-auto mt-16 p-8 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md"
         style={{ boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)" }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -175,23 +187,20 @@ const Aboutus = () => {
           </div>
 
           <div className="space-y-6">
-            {[{ label: "DESIGN", percent: 85 },
+            {[
+              { label: "DESIGN", percent: 85 },
               { label: "BRANDING", percent: 60 },
               { label: "ADVERTISING", percent: 67 },
-              { label: "COPYWRITING", percent: 93 }].map((item) => (
+              { label: "COPYWRITING", percent: 93 },
+            ].map((item) => (
               <div key={item.label} className="text-white">
                 <div className="flex justify-between mb-1">
                   <span className="font-semibold">{item.label}</span>
                   <span className="font-semibold">{item.percent}%</span>
                 </div>
-                <div
-                  className="w-full bg-white/30 h-4 rounded-full overflow-hidden"
-                  style={{
-                    boxShadow: "inset 0 0 8px rgba(255,255,255,0.3)",
-                  }}
-                >
+                <div className="w-full bg-white/30 h-4 rounded-full overflow-hidden">
                   <div
-                    className="bg-black h-4 rounded-full transition-all duration-500"
+                    className="bg-black h-4 rounded-full"
                     style={{ width: `${item.percent}%` }}
                   />
                 </div>

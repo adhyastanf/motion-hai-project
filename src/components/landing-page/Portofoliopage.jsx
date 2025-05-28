@@ -18,45 +18,45 @@ const projects = [
     src: require("../assets/halodoc.png"),
     videoId: "UPKm3q24C-w",
     description:
-      "Sebuah perjalanan kemanusiaan di Pulau Bawean. Kami dipercaya Halodoc untuk mendokumentasikan inisiatif sosial berupa Rumah Sakit Terapung menggunakan kapal Penisi tradisional yang menjangkau wilayah terpencil tanpa akses kesehatan.",
+      "Sebuah perjalanan kemanusiaan di Pulau Bawean. Kami dipercaya Halodoc untuk mendokumentasikan inisiatif sosial berupa Rumah Sakit Terapung menggunakan kapal Penisi tradisional yang menjangkau wilayah terpencil tanpa akses kesehatan. Melalui video dokumentasi ini, kami menyampaikan pesan kuat tentang harapan dan dedikasi pelayanan medis.",
   },
   {
     title: "LOLICA - Colorful Fashion Commercial 2019",
     src: require("../assets/lolica.png"),
     videoId: "6rrxsneWCkM",
     description:
-      "LOLICA mempercayakan kami untuk merancang video iklan penuh warna yang menampilkan keunikan fashion wanita dengan sentuhan trend Korea.",
+      "LOLICA mempercayakan kami untuk merancang video iklan penuh warna yang menampilkan keunikan fashion wanita dengan sentuhan trend Korea. Kami merasakan ekspresi diri dan gaya hidup muda dengan konsep visual yang segar dan menarik.",
   },
   {
     title: "MOMFEST - Mothers on Mission Festival 2021",
     src: require("../assets/momfest.png"),
     videoId: "tyoASAvKEMU",
     description:
-      "Siaran langsung penuh makna untuk para ibu. Dalam event seminar ini, kami menangani produksi live Stream profesional.",
+      "Siaran langsung penuh makna untuk para ibu. Dalam event seminar ini, kami menangani produksi live Stream profesional. Menghadirkan koneksi yang intim dan nyata antara pembicara dan para peserta, baik secara luring maupun daring.",
   },
   {
     title: "PEMKOT AMBON - Hari Kesaktian Pancasila 2020",
     src: require("../assets/pemkotambon.png"),
     description:
-      "Merayakan nilai kebangsaan lewat layar. Kami mendokumentasikan dan menyiarkan secara langsung peringatan Hari Kesaktian Pancasila bersama pemerintah Kota Ambon.",
+      "Merayakan nilai kebangsaan lewat layar. Kami mendokumentasikan dan menyiarkan secara langsung peringatan Hari Kesaktian Pancasila bersama pemerintah Kota Ambon. Suatu kehormatan bagi kami untuk menjadi bagian dari peristiwa istimewa yang penuh makna.",
   },
   {
     title: "SHARP - Social Experiment Documentation 2021",
     src: require("../assets/sharp.png"),
     videoId: "qgsEQXtAeyg",
     description:
-      "Sharp mempercayakan kami untuk mengabadikan momen spesial dalam aksi sosial mereka bersama anak - anak panti asuhan.",
+      "Berbagi kebahagiaan, menjangkau yang terlupakan. Sharp mempercayakan kami untuk mengabadikan momen spesial dalam aksi sosial mereka bersama anak - anak panti asuhan. Video dokumentasi ini menangkap kehangatan interaksi, kebahagiaan, dan kepedulian dalam sebuah kisah yang menginspirasi.",
   },
   {
     title: "SUMMARECON SERPONG - Annual Awards Documentation 2020",
     src: require("../assets/sms.jpg"),
     videoId: "T0DHUnyVsMY",
     description:
-      "Kami memproduksi dokumentasi resmi acara penghargaan tahunan Summarecon Serpong di Royal Ballroom.",
+      "Prestasi dalam kemegahan. Kami memproduksi dokumentasi resmi acara penghargaan tahunan Summarecom Serpong di Royal Ballrom, The Springs Club. Menghadirkan kesan elegan dan profesional dalam setiap frame yang kami rekam.",
   },
 ];
 
-export default function Portfoliopage() {
+const Portfoliopage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [swiperInstance, setSwiperInstance] = useState(null);
 
@@ -111,9 +111,9 @@ export default function Portfoliopage() {
 
   return (
     <div
-      className="text-black pt-20 min-h-screen relative overflow-hidden"
+      className="text-black pt-20 pb-32 relative overflow-hidden"
       style={{
-        background: "linear-gradient(to right, #a84b2f, #000000, #285c8d)",
+        background: "linear-gradient(to right, #603111, #000000, #7098C0)",
         zIndex: 0,
       }}
     >
@@ -158,7 +158,7 @@ export default function Portfoliopage() {
             modifier: 2.5,
             slideShadows: false,
           }}
-          style={{ paddingBottom: "4rem" }}
+          style={{ paddingBottom: "2rem" }}
           className="max-w-7xl mx-auto custom-swiper"
         >
           {projects.map((project, idx) => (
@@ -229,18 +229,8 @@ export default function Portfoliopage() {
         )}
       </div>
 
-      <div
-        className="w-full pointer-events-none"
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "80px",
-          background: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0))",
-          zIndex: 30,
-        }}
-      />
+      {/* Black overlay at bottom */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-black pointer-events-none z-10"></div>
 
       <style jsx global>{`
         .swiper-button-prev {
@@ -269,9 +259,11 @@ export default function Portfoliopage() {
           }
         }
         .animate-spin-slow {
-          animation: spin-slow 60s linear infinite;
+          animation: spin-slow 20s linear infinite;
         }
       `}</style>
     </div>
   );
-}
+};
+
+export default Portfoliopage;

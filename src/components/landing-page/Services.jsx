@@ -86,7 +86,7 @@ const videoPackages = [
 
 const Services = () => {
   return (
-    <div className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-24 relative overflow-hidden">
+    <div className="text-white bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pt-12 pb-12 relative overflow-hidden">
       {/* Spinning Background Icons */}
       <div className="absolute top-[100px] left-[20px] w-[150px] h-[150px] opacity-10 animate-spin-slower pointer-events-none z-0">
         <Image
@@ -113,7 +113,7 @@ const Services = () => {
           transition={{ duration: 0.6 }}
           className="text-center text-4xl md:text-6xl font-bold mb-16"
         >
-          Our <span className="text-orange-400">Services</span>
+          Our <span className="text-[#7098C0]">Pricing</span>
         </motion.h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">

@@ -5,14 +5,44 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BsHeadphones, BsBook } from "react-icons/bs";
 import Image from "next/image";
-import footer from "../assets/footer.png"; // Adjust path if needed
+import footer from "../assets/footer.png"; // adjust the path as needed
 
-const questions = [
-  "What is Nuron? How does it work?",
-  "How can I get the customer support?",
-  "Can I get update regularly and for how long do I get updates?",
-  "Can I change any Elements as I like?",
-  "Can I build a complete project with this template?",
+const faqData = [
+  {
+    question: "Apa itu creative agency?",
+    answer:
+      "Creative agency adalah perusahaan yang menyediakan layanan kreatif untuk membantu brand atau bisnis membangun identitas visual, strategi pemasaran, serta menciptakan konten yang menarik dan efektif. Layanannya bisa mencakup branding, desain grafis, pembuatan konten digital, kampanye iklan, hingga manajemen media sosial.",
+  },
+  {
+    question: "Apa saja layanan yang ditawarkan oleh creative agency Anda?",
+    answer: `Kami menawarkan layanan lengkap, mulai dari:
+- Branding dan rebranding
+- Desain grafis (logo, kemasan, materi promosi)
+- Social media management
+- Pembuatan konten (foto, video, copywriting)
+- Strategi pemasaran digital
+- Kampanye iklan (online & offline)
+Jika Anda memiliki kebutuhan khusus, kami siap menyesuaikan solusi terbaik untuk bisnis Anda.`,
+  },
+  {
+    question: "Apa bedanya creative agency dengan digital marketing agency?",
+    answer:
+      "Creative agency lebih fokus pada aspek visual dan kreatif—mulai dari konsep ide hingga eksekusi visual. Sementara digital marketing agency biasanya lebih menekankan pada analisis data, optimasi iklan, dan strategi pemasaran berbasis performa. Namun, banyak agency (termasuk kami) yang menggabungkan keduanya untuk hasil yang lebih menyeluruh.",
+  },
+  {
+    question: "Apakah saya perlu memiliki brand guideline sebelum bekerja sama dengan agency?",
+    answer:
+      "Tidak wajib. Jika Anda belum memiliki brand guideline, kami bisa membantu membuatkannya sebagai bagian dari proses awal kerja sama. Justru di situlah peran kami—membantu membentuk fondasi branding yang kuat untuk bisnis Anda.",
+  },
+  {
+    question: "Bagaimana proses kerja sama dengan creative agency?",
+    answer: `Proses kami biasanya melalui beberapa tahap:
+1. Konsultasi awal – memahami kebutuhan dan tujuan Anda.
+2. Penyusunan proposal – berisi rencana kerja, timeline, dan estimasi biaya.
+3. Produksi – pembuatan konten, desain, atau kampanye sesuai brief.
+4. Revisi & finalisasi – kami pastikan hasil akhir sesuai ekspektasi.
+5. Delivery & evaluasi – kami serahkan hasil akhir dan melakukan evaluasi bersama.`,
+  },
 ];
 
 const Faq = () => {
@@ -25,21 +55,15 @@ const Faq = () => {
       if (leftColRef.current) {
         setCardHeight(leftColRef.current.clientHeight);
       }
-    }, 100); // Wait for layout to settle
-
+    }, 100);
     return () => clearTimeout(timeout);
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-32 text-white relative overflow-hidden">
+    <div className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pb-12 text-white relative overflow-hidden">
       {/* Spinning Background Icons */}
       <div className="absolute top-[100px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
-        <Image
-          src={footer}
-          alt="Spinning Icon"
-          fill
-          className="object-contain blur-sm"
-        />
+        <Image src={footer} alt="Spinning Icon" fill className="object-contain blur-sm" />
       </div>
       <div className="absolute bottom-[100px] right-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
         <Image
@@ -52,23 +76,22 @@ const Faq = () => {
 
       {/* Main Title */}
       <motion.h1
-        className="text-6xl font-bold text-center text-[#603111] mb-16 relative z-10"
+        className="text-6xl font-bold text-center text-white mb-16 relative z-10"
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        F<span className="text-white">a</span>
-        <span className="text-[#7098C0]">q</span>
+        Faq
       </motion.h1>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6 relative z-10">
+      <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 relative z-10">
         {/* Left Side - FAQs */}
         <div ref={leftColRef} className="col-span-2 flex flex-col gap-4">
           <h2 className="text-4xl font-bold mb-4">
             Have a <span className="text-[#7098C0]">Question?</span>
           </h2>
-          {questions.map((q, index) => (
+          {faqData.map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -80,18 +103,15 @@ const Faq = () => {
                 activeIndex === index ? "border-white/40" : "hover:bg-white/5"
               }`}
             >
-              <h3 className="text-lg font-semibold text-white">{q}</h3>
+              <h3 className="text-xl font-bold text-white">{item.question}</h3>
               {activeIndex === index && (
-                <p className="mt-2 text-sm text-white/80">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  euismod, nisl vel tincidunt lacinia, nunc est gravida justo.
-                </p>
+                <p className="mt-3 text-base font-medium text-white/80 whitespace-pre-line">{item.answer}</p>
               )}
             </motion.div>
           ))}
         </div>
 
-        {/* Right Side - Two Stacked Cards */}
+        {/* Right Side - Cards */}
         <div className="flex flex-col gap-6" style={{ height: cardHeight || "auto" }}>
           {/* Card 1: Online Documentation */}
           <motion.div
@@ -105,16 +125,14 @@ const Faq = () => {
               boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)",
             }}
           >
-            <div>
-              <h3 className="text-xl font-semibold flex items-center gap-2 text-[#7098C0]">
-                <BsBook className="text-[#7098C0]" />
-                Online Documentation
-              </h3>
-              <p className="text-base text-white/70 mt-2">Well organized and up to date</p>
+            <div className="flex flex-col items-center text-center">
+              <BsBook className="text-4xl text-[#7098C0] mb-2" />
+              <h3 className="text-2xl font-bold text-[#7098C0]">Online Documentation</h3>
+              <p className="text-lg font-medium text-white/70 mt-2">Well organized and up to date</p>
             </div>
             <Link
               href="/about"
-              className="w-[175px] px-4 py-2 text-sm font-medium bg-[#7098C0] hover:bg-[#5a7fa6] rounded transition"
+              className="w-[175px] mx-auto mt-4 px-4 py-2 text-sm font-medium bg-[#7098C0] hover:bg-[#5a7fa6] rounded transition"
             >
               Online Documentation
             </Link>
@@ -132,19 +150,17 @@ const Faq = () => {
               boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)",
             }}
           >
-            <div>
-              <h3 className="text-xl font-semibold flex items-center gap-2 text-[#B55527]">
-                <BsHeadphones className="text-[#B55527]" />
-                Dedicated Support
-              </h3>
-              <p className="text-base text-white/70 mt-2">
+            <div className="flex flex-col items-center text-center">
+              <BsHeadphones className="text-4xl text-[#B55527] mb-2" />
+              <h3 className="text-2xl font-bold text-[#B55527]">Dedicated Support</h3>
+              <p className="text-lg font-medium text-white/70 mt-2">
                 Need support? Submit a ticket. We’ll be happy to assist you.
               </p>
             </div>
-            <div>
+            <div className="mt-4 text-center">
               <Link
                 href="/contact-us"
-                className="mt-4 px-4 py-2 text-sm font-medium bg-[#B55527] hover:bg-[#9e461f] rounded transition"
+                className="px-4 py-2 text-sm font-medium bg-[#B55527] hover:bg-[#9e461f] rounded transition"
               >
                 Get Support
               </Link>
