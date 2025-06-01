@@ -17,6 +17,6 @@ export default async function Dashboard() {
     redirect('/dashboard/create')
   }else {
     const workspace = workspaces[0]
-    return redirect(`/dashboard/${workspace.id}`);
+    return redirect(`/dashboard/${workspace?.id}`);
   }
 }

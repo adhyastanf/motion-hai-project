@@ -16,6 +16,14 @@ export const navItems = [
     shortcut: ['p', 'p'],
     items: [],
   },
+  {
+    title: 'Settings',
+    url: (orgId) => `/dashboard/${orgId}/settings`,
+    icon: 'settings',
+    isActive: false,
+    shortcut: ['s', 's'],
+    items: [],
+  },
 ];
 
 export const recentSalesData = [

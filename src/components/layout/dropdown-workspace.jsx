@@ -1,15 +1,14 @@
 'use client';
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { getWorkspace } from '@/app/actions';
 import { Button } from '@/components/ui/button';
-import { Plus, LayoutGrid, Settings, Check } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import ButtonCreateWorkspace from '@/features/overview/components/area-project/button-create-workspace';
 import { authClient } from '@/lib/client/auth-client';
 import { useQuery } from '@tanstack/react-query';
-import { getWorkspace } from '@/app/actions';
+import { Check, LayoutGrid, Plus } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import ButtonCreateWorkspace from '@/features/overview/components/area-project/button-create-workspace';
-import Link from 'next/link';
 
 export default function WorkspaceDropdown() {
   const [modal, setModal] = useState(false);
@@ -54,14 +53,6 @@ export default function WorkspaceDropdown() {
             <Plus size={16} className='mr-2' />
             Create Workspace
           </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-          <Link href={`/dashboard/${orgId}/settings`} shallow={false}>
-            <DropdownMenuItem className='text-primary'>
-              <Settings size={16} className='mr-2' />
-              Settings Workspace
-            </DropdownMenuItem>
-          </Link>
         </DropdownMenuContent>
       </DropdownMenu>
       <ButtonCreateWorkspace modal={modal} setModal={setModal} />
