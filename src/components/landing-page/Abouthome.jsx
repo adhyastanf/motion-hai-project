@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import footer from "../assets/footer.png"; // Adjust path if needed
 import aboutLogo from "../assets/aboutlogo.webp"; // Correct logo path
 
 const Abouthome = () => {
   return (
-    <div className="relative bg-gradient-to-r from-[#7098C0] via-black to-[#603111] py-24 px-8 overflow-hidden"
+    <div className="relative bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pt-16 px-8 overflow-hidden"
     id="abouthome"
     >
 
@@ -56,6 +57,18 @@ const Abouthome = () => {
             className="object-contain w-full max-w-sm drop-shadow-xl"
           />
         </motion.div>
+      </div>
+      
+      {/* CTA Button */}
+      <div className="flex justify-center mt-12 pt-4 px-4">
+        <Link href="/about" legacyBehavior>
+          <a
+            className="px-6 sm:px-8 py-3 text-lg sm:text-xl text-white font-semibold rounded-md bg-[#603111] hover:bg-[#53321c] transition-colors duration-300"
+            aria-label="Go to About page"
+          >
+            Click For More
+          </a>
+        </Link>
       </div>
     </div>
   );

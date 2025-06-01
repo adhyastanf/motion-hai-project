@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 
 // Images
@@ -58,7 +57,7 @@ const About = () => {
 
   return (
     <div
-      className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] text-white relative overflow-hidden"
+      className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pb-24 text-white relative overflow-hidden"
       id="about"
     >
       {/* Background spinning icons */}
@@ -106,9 +105,8 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 relative z-10">
               {pair.map((card, index) => {
                 const isRight = index === 1;
-                const wordCount = card.title.replace("\n", " ").split(" ").length;
-                const titleClass =
-                  wordCount > 2 ? "whitespace-pre-line break-words" : "whitespace-nowrap";
+                const titleClass = "whitespace-pre-line text-2xl sm:text-3xl md:text-4xl leading-snug";
+
 
                 return (
                   <motion.div
@@ -129,7 +127,7 @@ const About = () => {
                     )}
 
                     {/* Image with overlay description */}
-                    <div className="relative w-full h-[220px] sm:h-[280px] md:h-[360px] overflow-hidden">
+                    <div className="relative w-full h-[220px] sm:h-[280px] md:h-[360px] overflow-hidden border-4 border-white/30">
                       <Image
                         src={card.img}
                         alt={card.title}
@@ -159,18 +157,6 @@ const About = () => {
             )}
           </div>
         ))}
-      </div>
-
-      {/* CTA Button */}
-      <div className="flex justify-center mt-12 mb-16 pt-4 px-4">
-        <Link href="/about" legacyBehavior>
-          <a
-            className="px-6 sm:px-8 py-3 text-lg sm:text-xl text-white font-semibold rounded-md bg-[#7098C0] hover:bg-[#5f7b9b] transition-colors duration-300"
-            aria-label="Go to About page"
-          >
-            Click For More
-          </a>
-        </Link>
       </div>
     </div>
   );

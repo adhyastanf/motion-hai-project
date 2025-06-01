@@ -2,47 +2,61 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import footer from "../assets/footer.png"; // Adjust path as needed
+import footer from "../assets/footer.png";
 
-import {
-  FaHtml5,
-  FaCss3Alt,
-  FaReact,
-  FaJsSquare,
-  FaApple,
-  FaGoogle,
-  FaAmazon,
-  FaMicrosoft,
-} from "react-icons/fa";
+// Association images
+import Cukonghood from "../assets/CukongHood.png";
+import Societee from "../assets/SocieTee.png";
 
-const clientLogos = [
-  { icon: FaApple, label: "Apple", hoverTextColor: "group-hover:text-[#a2aaad]" },
-  { icon: FaGoogle, label: "Google", hoverTextColor: "group-hover:text-[#4285F4]" },
-  { icon: FaAmazon, label: "Amazon", hoverTextColor: "group-hover:text-[#ff9900]" },
-  { icon: FaMicrosoft, label: "Microsoft", hoverTextColor: "group-hover:text-[#00a4ef]" },
-];
-
-const techStack = [
-  { icon: FaHtml5, label: "HTML", hoverTextColor: "group-hover:text-[#e34c26]" },
-  { icon: FaCss3Alt, label: "CSS", hoverTextColor: "group-hover:text-[#264de4]" },
-  { icon: FaReact, label: "React", hoverTextColor: "group-hover:text-[#61dafb]" },
-  { icon: FaJsSquare, label: "JavaScript", hoverTextColor: "group-hover:text-[#f0db4f]" },
-];
+// Client images
+import BBKSDA from "../assets/BBKSDA.png";
+import BO from "../assets/BO.png";
+import CP from "../assets/CP.png";
+import CU from "../assets/CU.png";
+import FC from "../assets/FC.png";
+import GNC from "../assets/GNC.png";
+import GA from "../assets/GA.png";
+import HLOGO from "../assets/HLOGO.png";
+import HH from "../assets/HH.png";
+import LLOGO from "../assets/LLOGO.png";
+import MO from "../assets/MO.png";
+import MF from "../assets/MF.png";
+import MOM from "../assets/MOM.png";
+import MP from "../assets/MP.png";
+import NCCG from "../assets/NCCG.png";
+import PNC from "../assets/PNC.png";
+import PAN from "../assets/PAN.png";
+import PKA from "../assets/PKA.png";
+import PCE from "../assets/PCE.png";
+import PP from "../assets/PP.png";
+import SHO from "../assets/SHO.png";
+import SHA from "../assets/SHA.png";
+import SMS from "../assets/SMS.png";
+import TNGHS from "../assets/TNGHS.png";
+import TWAGP from "../assets/TWAGP.png";
+import TWAP from "../assets/TWAP.png";
+import TT from "../assets/TT.png";
+import TR from "../assets/TR.png";
 
 const Client = () => {
   return (
     <div className="bg-gradient-to-r from-[#7098C0] via-black to-[#603111] pb-32 text-white relative overflow-hidden">
-      
-      {/* Spinning Background Icons, similar to About */}
-      <div className="absolute top-[100px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+      {/* Spinning Background Icons */}
+      <div className="absolute top-[50px] left-[100px] w-[250px] h-[250px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image src={footer} alt="Spinning Icon" fill className="object-contain blur-sm" />
+      </div>
+      <div className="absolute top-[500px] right-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+        <Image src={footer} alt="Spinning Icon" fill className="object-contain blur-sm" />
+      </div>
+      <div className="absolute bottom-[600px] left-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
         <Image
           src={footer}
           alt="Spinning Icon"
           fill
-          className="object-contain blur-sm"
+          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
         />
       </div>
-      <div className="absolute bottom-[100px] right-[20px] w-[200px] h-[200px] opacity-10 animate-spin-slower pointer-events-none z-0">
+      <div className="absolute bottom-[100px] right-[20px] w-[300px] h-[300px] opacity-10 animate-spin-slower pointer-events-none z-0">
         <Image
           src={footer}
           alt="Spinning Icon"
@@ -51,76 +65,78 @@ const Client = () => {
         />
       </div>
 
-      <div className="w-[400px] md:min-w-[1100px] mx-auto p-8 text-center z-10">
+      <div className="w-full max-w-[1300px] mx-auto px-4 md:px-8 text-center z-10">
 
-        {/* OUR CLIENT SECTION */}
+
+        {/* ASSOCIATION SECTION */}
         <motion.h2
           initial={{ opacity: 0, y: 75 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-6xl font-bold mb-8 relative z-10"
-        >
-          Our <span className="text-[#B55527]">Client</span>
-        </motion.h2>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 pt-8 gap-6 mb-20 relative z-10">
-          {clientLogos.map((client, index) => {
-            const Icon = client.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 75 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0 }}
-                whileHover={{ scale: 1.05 }}
-                className="group h-[160px] w-[160px] md:h-[220px] md:w-[220px] flex flex-col justify-between 
-                  items-center bg-white/10 p-4 rounded-xl cursor-pointer 
-                  transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]"
-              >
-                <div className={`transition-colors duration-300 ${client.hoverTextColor}`}>
-                  <Icon size={140} />
-                </div>
-                <p className="mt-2">{client.label}</p>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* IN ASSOCIATE WITH SECTION */}
-        <motion.h2
-          initial={{ opacity: 0, y: 75 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5 }}
           className="text-6xl font-bold mb-8 relative z-10"
         >
           In <span className="text-[#7098C0]">Associate </span>with
         </motion.h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 pt-8 gap-6 relative z-10">
-          {techStack.map((tech, index) => {
-            const Icon = tech.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 75 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0 }}
-                whileHover={{ scale: 1.05 }}
-                className="group h-[160px] w-[160px] md:h-[220px] md:w-[220px] flex flex-col justify-between 
-                  items-center bg-white/10 p-4 rounded-xl cursor-pointer 
-                  transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]"
-              >
-                <div className={`transition-colors duration-300 ${tech.hoverTextColor}`}>
-                  <Icon size={140} />
-                </div>
-                <p className="mt-2">{tech.label}</p>
-              </motion.div>
-            );
-          })}
+        <div className="flex flex-wrap justify-center gap-6 pt-8 relative z-10">
+          {[Cukonghood, Societee].map((imgSrc, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 75 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 * index }}
+              whileHover={{ scale: 1.05 }}
+              className="group cursor-pointer rounded-xl overflow-hidden shadow-lg border border-white/20 bg-white/10"
+              style={{ width: "180px", height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
+              <Image
+                src={imgSrc}
+                alt={`Association ${index + 1}`}
+                width={120}
+                height={120}
+                className="object-contain transition-all duration-300 filter grayscale group-hover:grayscale-0"
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* CLIENT LOGOS SECTION */}
+        <motion.h2
+          initial={{ opacity: 0, y: 75 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-6xl font-bold mb-8 mt-20 relative z-10"
+        >
+          Our <span className="text-[#B55527]">Clients</span>
+        </motion.h2>
+
+        <div className="flex flex-wrap justify-center gap-6 pt-8 relative z-10">
+          {[
+            BBKSDA, BO, CP, CU, FC, GNC, GA, HLOGO, HH, LLOGO, MO, MF, MOM, MP,
+            NCCG, PNC, PAN, PKA, PCE, PP, SHO, SHA, SMS, TNGHS, TWAGP, TWAP, TT, TR
+          ].map((imgSrc, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 75 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.02 * index }}
+              whileHover={{ scale: 1.05 }}
+              className="group cursor-pointer rounded-xl overflow-hidden shadow-lg border border-white/20 bg-white/10"
+              style={{ width: "180px", height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
+              <Image
+                src={imgSrc}
+                alt={`Client ${index + 1}`}
+                width={120}
+                height={120}
+                className="object-contain transition-all duration-300 filter grayscale group-hover:grayscale-0"
+              />
+            </motion.div>
+          ))}
         </div>
       </div>
 

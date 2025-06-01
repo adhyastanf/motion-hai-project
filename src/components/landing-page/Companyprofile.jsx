@@ -42,7 +42,7 @@ const Companyprofile = () => {
         transition={{ duration: 0.5 }}
         className="text-4xl sm:text-5xl md:text-6xl font-semibold pb-8 text-center mt-12 px-4 relative z-10"
       >
-        Company <span className="text-[#B55527]">Profile</span>
+        Company <span className="text-[#7098C0]">Profile</span>
       </motion.h1>
 
       {/* Video Section */}
@@ -51,7 +51,7 @@ const Companyprofile = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="relative max-w-5xl mx-auto mt-12 rounded-lg overflow-hidden shadow-lg aspect-video z-10"
+        className="relative max-w-5xl mx-auto mt-12 rounded-xl overflow-hidden border-4 border-white/10 shadow-[0_10px_25px_rgba(0,0,0,0.5)] aspect-video z-10"
       >
         <iframe
           width="100%"
