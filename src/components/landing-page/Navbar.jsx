@@ -97,15 +97,6 @@ const Navbar = () => {
             />
           </div>
 
-          {/* Top Right Close Button */}
-          <button
-            onClick={closeNav}
-            className="absolute top-4 right-4 text-white p-2 border border-white/50 rounded-full hover:bg-white/10 transition"
-            aria-label="Close Menu"
-          >
-            <AiOutlineClose size={24} />
-          </button>
-
           {/* Nav Links */}
           {navLinks.map((link, index) => (
             <Link
