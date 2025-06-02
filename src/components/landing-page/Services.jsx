@@ -28,6 +28,7 @@ const videoPackages = [
       { text: "Sony A7S", icon: <FaCamera /> },
       { text: "Lensa", icon: <FaGlasses /> },
       { text: "1 Videographer", icon: <FaUser /> },
+      { text: "1 Soundman", icon: <FaMicrophone /> },
       { text: "7 hrs Shooting", icon: <FaClock /> },
       { text: "Revisi Offline 1x", icon: <FaSync /> },
       { text: "Revisi Online 1x", icon: <FaSync /> },
@@ -118,9 +119,10 @@ const Services = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {videoPackages.map((pkg, index) => {
-            const bgColor =
-              index % 2 === 0 ? "bg-[#7098C0]/20" : "bg-[#603111]/20";
-            const titleColor = index % 2 === 0 ? "#7098C0" : "#B55527";
+            const isBlue = index < 2;
+            const bgColor = isBlue ? "bg-[#7098C0]/20" : "bg-[#B55527]/20";
+            const titleColor = isBlue ? "#7098C0" : "#B55527";
+            const iconColor = isBlue ? "text-orange-400" : "text-blue-400";
 
             return (
               <motion.div
@@ -142,20 +144,18 @@ const Services = () => {
                 </div>
 
                 <div className="text-center text-white mb-6">
+                  <div className="text-sm text-gray-300 mb-1">Start From</div>
                   <span className="text-xl">Rp.</span>{" "}
                   <span className="text-5xl font-bold">{pkg.price}</span>
-                  {pkg.note && (
-                    <div className="text-sm mt-2 text-gray-300">{pkg.note}</div>
-                  )}
                 </div>
 
                 <ul className="space-y-4">
                   {pkg.features.map((feature, i) => (
                     <li
                       key={i}
-                      className="flex items-center gap-3 text-gray-100"
+                      className="flex items-center gap-3 text-gray-100 justify-center"
                     >
-                      <span className="text-lg text-orange-400">
+                      <span className={`text-lg ${iconColor}`}>
                         {feature.icon}
                       </span>
                       <p className="text-base">{feature.text}</p>
