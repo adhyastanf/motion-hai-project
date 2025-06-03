@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Heading } from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { authClient } from '@/lib/client/auth-client';
@@ -10,16 +11,21 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const formSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+
   email: z.string().min(1, { message: 'Email is required' }).email({ message: 'Invalid email address' }),
+
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }).max(32, { message: 'Password must be at most 32 characters' }),
 });
 
-export default function UserAuthLoginForm() {
+export default function ProfileForm() {
   const { toast } = useToast();
   const router = useRouter();
   const defaultValues = {
+    name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   };
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -29,12 +35,14 @@ export default function UserAuthLoginForm() {
   const isLoadingForm = form.formState.isSubmitting;
 
   const onSubmit = async (data) => {
-    const { email, password } = data;
+    const { name, email, password } = data;
 
-    await authClient.signIn.email(
+    await authClient.signUp.email(
       {
+        name,
         email,
         password,
+        // callbackURL: '/dashboard',
       },
       {
         onRequest: () => {
@@ -44,9 +52,8 @@ export default function UserAuthLoginForm() {
         },
         onSuccess: () => {
           toast({
-            title: 'You has login',
+            title: 'You has Registered',
           });
-
           router.push('/dashboard');
           form.reset();
         },
@@ -62,9 +69,23 @@ export default function UserAuthLoginForm() {
   };
 
   return (
-    <>
+    <div className='space-y-4'>
+      <Heading title='Profiles' description='Description' />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-2'>
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input type='text' placeholder='Enter your name...' disabled={isLoadingForm} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name='email'
@@ -72,7 +93,7 @@ export default function UserAuthLoginForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type='email' placeholder='Enter Your Email' disabled={isLoadingForm} {...field} />
+                  <Input type='email' placeholder='Enter your email...' disabled={isLoadingForm} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,18 +106,30 @@ export default function UserAuthLoginForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type='password' placeholder='Enter Your Password' disabled={isLoadingForm} {...field} />
+                  <Input type='password' placeholder='Enter your password...' disabled={isLoadingForm} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name='confirmPassword'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type='password' placeholder='Confirm your password...' disabled={isLoadingForm} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button disabled={isLoadingForm} className='ml-auto w-full' type='submit'>
-            Login
+            Submit
           </Button>
         </form>
       </Form>
-    </>
+    </ div>
   );
 }

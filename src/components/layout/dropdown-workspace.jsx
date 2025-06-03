@@ -33,14 +33,14 @@ export default function WorkspaceDropdown() {
         <DropdownMenuTrigger asChild>
           <Button variant='outline' className='flex items-center space-x-2'>
             <LayoutGrid size={16} />
-            <span>Select Workspace</span>
+            <span className='hidden md:inline-block'>Select Workspace</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='start' className='w-56'>
           <DropdownMenuLabel>My Workspaces</DropdownMenuLabel>
           {workspaces.map((workspace) => {
             return (
-              <DropdownMenuItem key={workspace.id} onSelect={() => handleWorkspaceSwitch(workspace)}>
+              <DropdownMenuItem key={workspace.id} onSelect={() => handleWorkspaceSwitch(workspace)} className='capitalize'>
                 {workspace.name}
                 {workspace?.id === defaultProject?.id && <Check className='ml-auto' />}
               </DropdownMenuItem>

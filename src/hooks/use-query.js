@@ -1,7 +1,14 @@
-import { getListProject, getListTask, getMemberOfOrganization, getStatusTask, getUserForWorkspace } from '@/app/actions';
+import { getListProject, getListTask, getMe, getMemberOfOrganization, getStatusTask, getUserForWorkspace } from '@/app/actions';
 import { authClient } from '@/lib/client/auth-client';
 import { useQuery } from '@tanstack/react-query';
 
+export function useGetMe(userId) {
+  return useQuery({
+    queryKey: ['get-me'],
+    queryFn: () => getMe(userId),
+    refetchOnWindowFocus: true,
+  });
+}
 export function useGetListProject(orgId) {
   return useQuery({
     queryKey: ['list-project', orgId],

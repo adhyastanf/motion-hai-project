@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import { Modal } from '../ui/modal';
 
-export default function ModalInput({ title, description, open, onClose, onConfirm, isLoading, form, disabled, fields }) {
+export default function ModalInput({ title, description, open, onClose, onConfirm, isLoading, form, disabled, fields, buttonYesText='Submit' }) {
   return (
     <Modal title={title} description={description} isOpen={open} onClose={onClose}>
       <Form {...form}>
@@ -40,7 +40,7 @@ export default function ModalInput({ title, description, open, onClose, onConfir
 
           {!isLoading && (
             <Button type='submit' disabled={!disabled} className='w-full'>
-              Continue
+              {buttonYesText}
             </Button>
           )}
         </form>

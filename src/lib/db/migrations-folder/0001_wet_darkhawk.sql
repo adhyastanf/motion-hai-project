@@ -1,0 +1,1 @@
+ALTER TABLE `members` ADD `updated_at` timestamp DEFAULT (now()) NOT NULL ON UPDATE CURRENT_TIMESTAMP;

@@ -125,6 +125,7 @@ export default function ButtonModalWorkspace({ modal, setModal, initialData }) {
         onConfirm={onSubmit}
         isLoading={form.formState.isSubmitting}
         disabled={disabledForm}
+        buttonYesText='Update Workspace'
       />
       <AlertModal
         title={`Are you sure to delete workspace "${initialData?.name}"?`}

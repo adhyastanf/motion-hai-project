@@ -1,13 +1,6 @@
 import KBar from '@/components/kbar';
-import AppSidebar from '@/components/layout/app-sidebar';
-import Header from '@/components/layout/header';
-import { LoaderProvider } from '@/components/providers/loader-provider';
-import LoadingScreen from '@/components/providers/loading-scree';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { auth } from '@/lib/auth';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { cookies, headers } from 'next/headers';
-import { getListProject } from '../actions';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: 'Next Shadcn Dashboard Starter',
@@ -20,10 +13,7 @@ export default async function DashboardLayout({ children }) {
 
   return (
     <KBar>
-      <LoaderProvider>
-        <LoadingScreen />
         <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
-      </LoaderProvider>
     </KBar>
   );
 }

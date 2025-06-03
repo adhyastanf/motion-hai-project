@@ -1,50 +1,30 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarRail,
-  useSidebar,
-} from '@/components/ui/sidebar';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarRail } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
+import ButtonModalProject from '@/features/list-task/components/list-project-tables/modal-project';
 import { useGetListProject } from '@/hooks/use-query';
-import { signOut } from '@/lib/client/auth-client';
-import { BadgeCheck, Bell, ChevronRight, ChevronsUpDown, CreditCard, LogOut, NotepadText } from 'lucide-react';
+import { ChevronRight, NotepadText } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useState } from 'react';
+import ProfilePic from '../assets/profilepic.png';
 import { Icons } from '../icons';
+import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Separator } from '../ui/separator';
-import ProfilePic from '../assets/profilepic.png';
-import Image from 'next/image';
 
-export default function AppSidebar({ session }) {
+export default function AppSidebar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { orgId } = useParams();
-  const { state, isMobile } = useSidebar();
   const [modal, setModal] = useState('');
   const { data: projects } = useGetListProject(orgId);
   const isEmpty = projects.data.length === 0;
-
-  async function handleSignOut() {
-    await signOut();
-    router.refresh();
-  }
 
   return (
     <Sidebar collapsible='icon'>
@@ -71,20 +51,30 @@ export default function AppSidebar({ session }) {
                       </PopoverTrigger>
                       <PopoverContent side='right' align='start' className='w-64'>
                         <p className='text-sm text-muted-foreground mb-2'>Projects</p>
+
                         <div className='space-y-2'>
-                          <div className='cursor-pointer flex gap-1 items-center text-primary text-md'>
+                          <Button className='cursor-pointer flex gap-1 items-center text-sm w-full' onClick={() => setModal('create')}>
                             <NotepadText size={20} /> New Project
-                          </div>
+                          </Button>
                           <Separator />
-                          {!isEmpty ? (
-                            projects.data.map((project) => (
-                              <Link key={project.id} href={`project/${project.id}`} className='block capitalize text-sm hover:text-primary'>
-                                {project.name}
-                              </Link>
-                            ))
-                          ) : (
-                            <p className='text-md text-muted-foreground'>No projects found</p>
-                          )}
+                          <ButtonModalProject modal={modal} setModal={setModal}/>
+
+                          <ScrollArea className='h-20 pr-2'>
+                            {!isEmpty ? (
+                              <div className='space-y-2'>
+                                {projects.data.map((project) => (
+                                  <Link key={project.id} href={`project/${project.id}`} className='flex items-center gap-2 text-sm capitalize hover:text-primary transition-colors duration-200'>
+                                    <Avatar className='h-6 w-6'>
+                                      <AvatarFallback>{project.name.charAt(0).toUpperCase()}</AvatarFallback>
+                                    </Avatar>
+                                    {project.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className='text-md text-muted-foreground'>No projects found</p>
+                            )}
+                          </ScrollArea>
                         </div>
                       </PopoverContent>
                     </Popover>
@@ -133,61 +123,6 @@ export default function AppSidebar({ session }) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      {/* <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
-                  <Avatar className='h-8 w-8 rounded-lg'>
-                    <AvatarImage src={session.user.image || ''} alt={session.user.name || ''} />
-                    <AvatarFallback className='rounded-lg'>{session.user.name.slice(0, 2).toUpperCase() || 'CN'}</AvatarFallback>
-                  </Avatar>
-                  <div className='grid flex-1 text-left text-sm leading-tight'>
-                    <span className='truncate font-semibold'>{session.user.name || ''}</span>
-                    <span className='truncate text-xs'>{session.user.email || ''}</span>
-                  </div>
-                  <ChevronsUpDown className='ml-auto size-4' />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg' side='bottom' align='end' sideOffset={4}>
-                <DropdownMenuLabel className='p-0 font-normal'>
-                  <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
-                    <Avatar className='h-8 w-8 rounded-lg'>
-                      <AvatarImage src={session.user.image || ''} alt={session.user.name || ''} />
-                      <AvatarFallback className='rounded-lg'>{session.user.name.slice(0, 2).toUpperCase() || 'CN'}</AvatarFallback>
-                    </Avatar>
-                    <div className='grid flex-1 text-left text-sm leading-tight'>
-                      <span className='truncate font-semibold'>{session.user.name || ''}</span>
-                      <span className='truncate text-xs'> {session.user.email || ''}</span>
-                    </div>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell />
-                    Notifications
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleSignOut()}>
-                  <LogOut />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );

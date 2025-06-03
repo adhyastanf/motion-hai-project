@@ -7,6 +7,17 @@ import { and, desc, eq, isNull } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { redirect } from 'next/dist/server/api-utils';
 import { headers } from 'next/headers';
+import nodemailer from 'nodemailer';
+
+export async function getMe(userId) {
+  try {
+    const [data] = await db.select().from(users).where(eq(users.id, userId));
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+}
 
 export async function getUserForWorkspace(orgId) {
   try {
@@ -151,16 +162,11 @@ export async function getListTask(projectId, filters) {
       .where(and(...conditions))
       .orderBy(desc(tasks.createdAt));
 
-
-    // .limit(filters.limit)
-    // .offset(offset)
     const start = (filters?.page - 1) * filters?.limit;
     const end = start + filters?.limit;
     const paginatedData = data?.slice(start, end);
 
-    // console.log(paginatedData)
-
-    return { allData : data, data : paginatedData , totalData: data.length };
+    return { allData: data, data: paginatedData, totalData: data.length };
   } catch (err) {
     return err;
   }
@@ -271,7 +277,19 @@ export async function createBulkMember(userIds, orgId) {
 
 export async function getCommentsByTaskId(taskId) {
   try {
-    const data = await db.select().from(taskComments).where(eq(taskComments.taskId, taskId)).orderBy(taskComments.createdAt);
+    const data = await db
+      .select({
+        id: taskComments.id,
+        comment: taskComments.comment,
+        createdAt: taskComments.createdAt,
+        userName: users.name,
+        userImage: users.image,
+      })
+      .from(taskComments)
+      .where(eq(taskComments.taskId, taskId))
+      .innerJoin(members, eq(taskComments.memberId, members.id))
+      .innerJoin(users, eq(members.userId, users.id))
+      .orderBy(taskComments.createdAt);
 
     return { success: true, data };
   } catch (error) {
@@ -296,5 +314,33 @@ export async function createTaskComment(taskId, memberId, commentText) {
   } catch (error) {
     console.error('Failed to create comment:', error);
     return { success: false, error: 'Failed to create comment' };
+  }
+}
+
+export async function sendEmail({ email, subject, text }) {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // SSL
+      auth: {
+        user: 'it.haimotion@gmail.com',
+        pass: process.env.pass_SMTP, // Gunakan App Password Gmail
+      },
+    });
+
+    const mailOptions = {
+      from: '"Hai Motion" <it.haimotion@gmail.com>',
+      to: email,
+      subject: subject,
+      html: text,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email terkirim:', info.response);
+    return { success: true };
+  } catch (error) {
+    console.error('Gagal kirim email:', error);
+    return { success: false, error: error };
   }
 }

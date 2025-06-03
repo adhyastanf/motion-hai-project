@@ -72,6 +72,7 @@ export const members = mysqlTable('members', {
     .references(() => users.id, { onDelete: 'cascade' }),
   role: text('role').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
 });
 
 export const invitations = mysqlTable('invitations', {
@@ -110,7 +111,7 @@ export const projects = mysqlTable('projects', {
 
 export const projectStatuses = mysqlTable('project_statuses', {
   id: varchar('id', { length: 36 }).primaryKey(),
-  name: text('name').notNull(), // Nama status proyek, misalnya: "Not Started", "In Progress", "Completed"
+  name: text('name').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 

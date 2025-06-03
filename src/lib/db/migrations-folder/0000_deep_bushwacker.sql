@@ -28,10 +28,10 @@ CREATE TABLE `activity_logs` (
 CREATE TABLE `invitations` (
 	`id` varchar(36) NOT NULL,
 	`organization_id` varchar(36) NOT NULL,
-	`email` text NOT NULL,
+	`email` text,
 	`role` text,
 	`status` text NOT NULL,
-	`expires_at` timestamp NOT NULL,
+	`is_active` boolean NOT NULL DEFAULT true,
 	`inviter_id` varchar(36) NOT NULL,
 	CONSTRAINT `invitations_id` PRIMARY KEY(`id`)
 );
@@ -92,14 +92,6 @@ CREATE TABLE `sessions` (
 	CONSTRAINT `sessions_token_unique` UNIQUE(`token`)
 );
 --> statement-breakpoint
-CREATE TABLE `task_assignees` (
-	`id` varchar(36) NOT NULL,
-	`task_id` varchar(36) NOT NULL,
-	`member_id` varchar(36) NOT NULL,
-	`assigned_at` timestamp NOT NULL DEFAULT (now()),
-	CONSTRAINT `task_assignees_id` PRIMARY KEY(`id`)
-);
---> statement-breakpoint
 CREATE TABLE `task_comments` (
 	`id` varchar(36) NOT NULL,
 	`task_id` varchar(36) NOT NULL,
@@ -122,7 +114,8 @@ CREATE TABLE `tasks` (
 	`name` text NOT NULL,
 	`description` text,
 	`status_id` varchar(36),
-	`priority` text,
+	`assignee_id` varchar(36),
+	`brand` text,
 	`due_date` datetime,
 	`created_at` timestamp NOT NULL DEFAULT (now()),
 	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
@@ -163,9 +156,8 @@ ALTER TABLE `projects` ADD CONSTRAINT `projects_organization_id_organizations_id
 ALTER TABLE `projects` ADD CONSTRAINT `projects_status_id_project_statuses_id_fk` FOREIGN KEY (`status_id`) REFERENCES `project_statuses`(`id`) ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `projects` ADD CONSTRAINT `projects_created_by_users_id_fk` FOREIGN KEY (`created_by`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `sessions` ADD CONSTRAINT `sessions_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `task_assignees` ADD CONSTRAINT `task_assignees_task_id_tasks_id_fk` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `task_assignees` ADD CONSTRAINT `task_assignees_member_id_members_id_fk` FOREIGN KEY (`member_id`) REFERENCES `members`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `task_comments` ADD CONSTRAINT `task_comments_task_id_tasks_id_fk` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `task_comments` ADD CONSTRAINT `task_comments_member_id_members_id_fk` FOREIGN KEY (`member_id`) REFERENCES `members`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `tasks` ADD CONSTRAINT `tasks_project_id_projects_id_fk` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `tasks` ADD CONSTRAINT `tasks_status_id_task_statuses_id_fk` FOREIGN KEY (`status_id`) REFERENCES `task_statuses`(`id`) ON DELETE set null ON UPDATE no action;
+ALTER TABLE `tasks` ADD CONSTRAINT `tasks_status_id_task_statuses_id_fk` FOREIGN KEY (`status_id`) REFERENCES `task_statuses`(`id`) ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `tasks` ADD CONSTRAINT `tasks_assignee_id_members_id_fk` FOREIGN KEY (`assignee_id`) REFERENCES `members`(`id`) ON DELETE set null ON UPDATE no action;

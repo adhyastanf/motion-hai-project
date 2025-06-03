@@ -5,50 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1746350132314,
-      "tag": "0000_strange_longshot",
+      "when": 1748785005977,
+      "tag": "0000_deep_bushwacker",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1746791694138,
-      "tag": "0001_curvy_fixer",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1747031692493,
-      "tag": "0002_sparkling_nemesis",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1747045986927,
-      "tag": "0003_supreme_ultragirl",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1747930956786,
-      "tag": "0004_boring_may_parker",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1747931639300,
-      "tag": "0005_tan_warbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1748159076337,
-      "tag": "0006_clammy_iron_lad",
+      "when": 1748791027816,
+      "tag": "0001_wet_darkhawk",
       "breakpoints": true
     }
   ]

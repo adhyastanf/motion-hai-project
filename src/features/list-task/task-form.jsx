@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Calendar1Icon, Loader2 } from 'lucide-react';
 
-export default function TaskForm({ form, disabled, isLoading, onConfirm, statusOptions, memberOptions }) {
+export default function TaskForm({ form, disabled, isLoading, onConfirm, statusOptions, memberOptions, buttonTextYes='Submit' }) {
   function onSubmit(values) {
     onConfirm(values);
   }
@@ -140,7 +140,7 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, statusO
 
         {!isLoading && (
           <Button type='submit' disabled={!disabled} className='w-full'>
-            Submit
+            {buttonTextYes}
           </Button>
         )}
       </form>
