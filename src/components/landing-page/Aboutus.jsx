@@ -132,10 +132,13 @@ const Aboutus = () => {
   return (
     <div className="bg-gradient-to-b from-[#91A5BB] via-[#CAD5E0] to-black min-h-screen flex flex-col px-4 md:px-8 pt-16 relative overflow-visible">
       {/* Spinners */}
-      <div className="absolute top-[250px] left-[20px] w-[150px] h-[150px] md:w-[200px] md:h-[200px] opacity-10 animate-spin z-0 pointer-events-none">
+      <div className="absolute top-[250px] left-[70px] w-[100px] h-[100px] md:w-[200px] md:h-[200px] opacity-10 animate-spin-slower z-0 pointer-events-none">
         <Image src={footer} alt="Top Left Spinner" fill className="object-contain blur-sm" />
       </div>
-      <div className="absolute bottom-[100px] right-[30px] w-[250px] h-[250px] md:w-[350px] md:h-[350px] opacity-10 animate-spin z-0 pointer-events-none scale-x-[-1] scale-y-[-1]">
+      <div className="absolute bottom-[100px] left-[30px] w-[250px] h-[250px] md:w-[350px] md:h-[350px] opacity-10 animate-spin-slower z-0 pointer-events-none scale-x-[-1] scale-y-[-1]">
+        <Image src={footer} alt="Bottom Right Spinner" fill className="object-contain blur-sm" />
+      </div>
+      <div className="absolute top-[700px] right-[120px] w-[150px] h-[150px] md:w-[250px] md:h-[250px] opacity-10 animate-spin-slower z-0 pointer-events-none scale-x-[-1] scale-y-[-1]">
         <Image src={footer} alt="Bottom Right Spinner" fill className="object-contain blur-sm" />
       </div>
 
@@ -210,7 +213,7 @@ const Aboutus = () => {
             modifier: 2.5,
             slideShadows: false,
           }}
-          style={{ paddingBottom: "2rem", paddingTop: "2rem" }}
+          style={{ paddingBottom: "6rem", paddingTop: "2rem" }}
           className="mx-auto max-w-[1600px]"
         >
           {teamMembers.slice(4).map((member) => (
@@ -218,7 +221,7 @@ const Aboutus = () => {
               key={member.name}
               style={{
                 width: "100%",
-                maxWidth: "320px",
+                maxWidth: "380px",
                 borderRadius: "1rem",
                 display: "flex",
                 justifyContent: "center",
@@ -228,45 +231,6 @@ const Aboutus = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </motion.div>
-
-      {/* What We Do Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="max-w-[900px] mx-auto mt-16 p-6 md:p-8 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md text-white"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-          <div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-4">WHAT WE DO ?</h1>
-            <p className="text-lg text-white/80 leading-relaxed">
-              Hai Motion is a Production House based in Jakarta-Tangerang, Indonesia. Our vision is to deliver more than expected in producing high-quality contents, we focus on attention to details.
-            </p>
-          </div>
-          <div className="space-y-6">
-            {[
-              { label: "DESIGN", percent: 85 },
-              { label: "BRANDING", percent: 60 },
-              { label: "ADVERTISING", percent: 67 },
-              { label: "COPYWRITING", percent: 93 },
-            ].map((item) => (
-              <div key={item.label}>
-                <div className="flex justify-between mb-1">
-                  <span className="font-semibold">{item.label}</span>
-                  <span className="font-semibold">{item.percent}%</span>
-                </div>
-                <div className="w-full bg-white/20 h-2 rounded">
-                  <div
-                    className="bg-black h-2 rounded transition-all duration-700 ease-in-out"
-                    style={{ width: `${item.percent}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </motion.div>
     </div>
   );
@@ -280,14 +244,14 @@ const TeamCard = ({ name, role, images }) => {
     <motion.div
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.3 }}
-      className="relative w-[280px] sm:w-[320px] md:w-[360px] group text-center"
+      className="relative w-[320px] sm:w-[360px] md:w-[400px] group text-center"
     >
       <Card className="rounded-xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-md relative">
         <div className="relative flex justify-center items-center py-6">
           <div
             aria-hidden="true"
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-40 font-extrabold uppercase leading-tight text-5xl whitespace-pre-line text-center z-0 pointer-events-none"
-            style={{ maxWidth: "260px", lineHeight: 1.1 }}
+            style={{ maxWidth: "300px", lineHeight: 1.1 }}
           >
             {firstName}
             <br />
@@ -303,8 +267,8 @@ const TeamCard = ({ name, role, images }) => {
             }}
             loop
             slidesPerView={1}
-            style={{ width: 260, height: 260 }}
-            className="relative z-10 rounded-full overflow-hidden"
+            style={{ width: 300, height: 300 }}
+            className="relative z-10 overflow-hidden"
           >
             {images.map((imgSrc, idx) => (
               <SwiperSlide
@@ -314,9 +278,9 @@ const TeamCard = ({ name, role, images }) => {
                 <Image
                   src={imgSrc}
                   alt={`${name} photo ${idx + 1}`}
-                  width={260}
-                  height={260}
-                  className="rounded-full object-cover"
+                  width={300}
+                  height={300}
+                  className="object-cover"
                   quality={100}
                 />
               </SwiperSlide>
@@ -324,7 +288,7 @@ const TeamCard = ({ name, role, images }) => {
           </Swiper>
         </div>
 
-        <div className="p-4 relative z-20 text-white">
+        <div className="p-4 relative z-20  text-white">
           <h3 className="text-xl font-semibold">{name}</h3>
           <p className="text-white font-semibold">{role}</p>
         </div>

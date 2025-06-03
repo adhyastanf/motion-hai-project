@@ -2,14 +2,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaLinkedin, FaYoutube, FaInstagram } from "react-icons/fa";
+import { FaLinkedin, FaYoutube, FaInstagram, FaEnvelope } from "react-icons/fa";
 import footerLogo from "../assets/footer.png";
 
 const Footer = () => {
     return (
         <footer className="bg-black text-white text-sm">
             {/* Top Grid Section */}
-            <div className="max-w-full mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 border-b border-gray-700">
+            <div className="max-w-full mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10 border-b border-gray-700">
 
                 {/* Logo & Company Info */}
                 <div className="col-span-1">
@@ -21,11 +21,9 @@ const Footer = () => {
                         />
                         <span className="text-xl font-bold">Hai Motion</span>
                     </div>
-
                     <p className="text-white/70 leading-relaxed">
                         Kami bukan hanya sekadar penyedia jasa kami adalah partner kreatif yang siap tumbuh bersama Anda. Setiap proyek kami kerjakan dengan penuh riset, ide segar, dan sentuhan profesional, demi hasil yang tidak hanya indah dipandang, tapi juga berdampak nyata.
                     </p>
-
                 </div>
 
                 {/* Hai Motion Pages */}
@@ -39,15 +37,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Studio Address */}
-                <div>
-                    <h4 className="text-white font-semibold mb-3">Studio</h4>
-                    <p className="text-white/70 leading-relaxed">
-                        Jl. Rawa Jaya iii RT 01/04 no 14, Pd. Kopi, Kec. Duren Sawit, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13460
-                    </p>
-                </div>
-
-                {/* Career Section */}
+                {/* Our Services */}
                 <div>
                     <h4 className="text-white font-semibold mb-3">Our Services</h4>
                     <ul className="space-y-2 text-white/70">
@@ -59,11 +49,16 @@ const Footer = () => {
                 </div>
 
                 {/* Contact Info */}
-                <div>
+                <div className="pr-4">
                     <h4 className="text-white font-semibold mb-3">Contact Us</h4>
-                    <p className="text-white/70">
+                    <p className="text-white/70 mb-4">
                         WhatsApp: 089629627075 <br />
-                        Email: contact@haimotion.com
+                        Email: contact.haimotion@gmail.com
+                    </p>
+
+                    <h4 className="text-white font-semibold mb-3">Studio</h4>
+                    <p className="text-white/70 leading-relaxed">
+                        Jl. Rawa Jaya III RT 01/04 No. 14, Pd. Kopi, Kec. Duren Sawit, Kota Jakarta Timur, DKI Jakarta 13460
                     </p>
                 </div>
             </div>
@@ -77,6 +72,12 @@ const Footer = () => {
                     </a>
                     <a href="https://www.instagram.com/haimotion/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                         <FaInstagram size={18} />
+                    </a>
+                    <a href="https://www.linkedin.com/company/hai-motion/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
+                        <FaLinkedin size={18} />
+                    </a>
+                    <a href="mailto:contact.haimotion@gmail.com" className="hover:text-white">
+                        <FaEnvelope size={18} />
                     </a>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaInstagram, FaYoutube, FaFacebook, FaLinkedin } from "react-icons/fa";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import Image from "next/image";
 import footer from "../assets/footer.png";
 
@@ -10,25 +10,15 @@ const Contact = () => {
   return (
     <div className="relative bg-[linear-gradient(to_bottom,_#B55527_0%,_#E0A53D_80%,_rgba(255,255,255,0.1)_90%,_black_100%)] px-4 sm:px-6 md:px-0 text-white overflow-hidden">
 
-      {/* Spinning Icon Background */}
+      {/* Spinning Icons */}
       <div className="absolute bottom-[150px] left-[10px] w-[180px] h-[180px] opacity-10 animate-spin-slower pointer-events-none z-0 sm:w-[220px] sm:h-[220px] md:w-[250px] md:h-[250px]">
-        <Image
-          src={footer}
-          alt="Spinning Icon"
-          fill
-          className="object-contain blur-sm"
-        />
+        <Image src={footer} alt="Spinning Icon" fill className="object-contain blur-sm" />
       </div>
       <div className="absolute top-[350px] right-[10px] w-[150px] h-[150px] opacity-10 animate-spin-slower pointer-events-none z-0 sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px]">
-        <Image
-          src={footer}
-          alt="Spinning Icon"
-          fill
-          className="object-contain blur-sm scale-x-[-1] scale-y-[-1]"
-        />
+        <Image src={footer} alt="Spinning Icon" fill className="object-contain blur-sm scale-x-[-1] scale-y-[-1]" />
       </div>
 
-      {/* Contact Info Section */}
+      {/* Contact Info */}
       <div className="pt-8 px-2 sm:px-6 md:px-0">
         <div className="max-w-7xl mx-auto text-center">
           <motion.h2
@@ -50,24 +40,21 @@ const Contact = () => {
             style={{ boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)" }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-white">
-              {/* Phone */}
-              <div className="rounded-xl p-4 sm:p-6 transition flex flex-col items-center">
+              <div className="rounded-xl p-4 sm:p-6 flex flex-col items-center">
                 <Phone size={24} className="mb-2 sm:mb-4" />
                 <h3 className="text-lg sm:text-xl font-semibold mb-2">Call us</h3>
                 <p className="text-white/80 text-sm sm:text-base">0896-2962-7075</p>
                 <p className="text-white/80 text-sm sm:text-base">0882-3465-3278</p>
               </div>
 
-              {/* Email */}
-              <div className="rounded-xl p-4 sm:p-6 transition flex flex-col items-center">
+              <div className="rounded-xl p-4 sm:p-6 flex flex-col items-center">
                 <Mail size={24} className="mb-2 sm:mb-4" />
                 <h3 className="text-lg sm:text-xl font-semibold mb-2">Email us</h3>
                 <p className="text-white/80 text-sm sm:text-base">contact@haimotion.com</p>
                 <p className="text-white/80 text-sm sm:text-base">info@haimotion.com</p>
               </div>
 
-              {/* Address */}
-              <div className="rounded-xl p-4 sm:p-6 transition flex flex-col items-center">
+              <div className="rounded-xl p-4 sm:p-6 flex flex-col items-center">
                 <MapPin size={24} className="mb-2 sm:mb-4" />
                 <h3 className="text-lg sm:text-xl font-semibold mb-2">Office address</h3>
                 <p className="text-white/80 text-sm sm:text-base max-w-xs sm:max-w-sm md:max-w-md">
@@ -80,7 +67,7 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Let's Stay Connected Section */}
+      {/* Let's Stay Connected */}
       <div className="py-16 px-4 sm:px-6 md:px-0">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -97,7 +84,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 pb-32 gap-8 max-w-7xl mx-auto">
           {/* Info Box */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -122,17 +109,45 @@ const Contact = () => {
                 <p className="text-lg sm:text-xl font-semibold text-white">0896-2962-7075</p>
               </li>
               <li>
-                <p className="text-white/70 text-xs sm:text-sm">Skype Email</p>
-                <p className="text-lg sm:text-xl font-semibold text-white">example@yourmail.com</p>
+                <p className="text-white/70 text-xs sm:text-sm">Contact Support</p>
+                <p className="text-lg sm:text-xl font-semibold text-white">info@haimotion.com</p>
               </li>
             </ul>
+
+            {/* Social Media Links */}
             <div className="mt-6 sm:mt-8">
               <p className="text-white/70 text-xs sm:text-sm mb-2">Social Media</p>
-              <div className="flex space-x-4 text-white text-lg sm:text-xl justify-start">
-                <FaYoutube className="hover:text-red-500 cursor-pointer" />
-                <FaInstagram className="hover:text-pink-500 cursor-pointer" />
-                <FaFacebook className="hover:text-blue-500 cursor-pointer" />
-                <FaLinkedin className="hover:text-sky-500 cursor-pointer" />
+              <div className="flex space-x-4 mt-2 md:mt-0 text-white text-lg sm:text-xl">
+                <a
+                  href="https://www.youtube.com/@haimotion7962"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-500"
+                >
+                  <FaYoutube />
+                </a>
+                <a
+                  href="https://www.instagram.com/haimotion/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-pink-500"
+                >
+                  <FaInstagram />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/hai-motion/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-sky-500"
+                >
+                  <FaLinkedin />
+                </a>
+                <a
+                  href="mailto:contact.haimotion@gmail.com"
+                  className="hover:text-yellow-300"
+                >
+                  <Mail size={20} />
+                </a>
               </div>
             </div>
           </motion.div>
@@ -151,11 +166,8 @@ const Contact = () => {
               method="POST"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="w-full">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-white/70 mb-1"
-                  >
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-white/70 mb-1">
                     Full name
                   </label>
                   <input
@@ -166,11 +178,8 @@ const Contact = () => {
                     className="h-11 sm:h-12 w-full bg-white/20 placeholder:text-white/70 border border-white/30 rounded-lg px-3 sm:px-4 text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-[#BE8C35]"
                   />
                 </div>
-                <div className="w-full">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-white/70 mb-1"
-                  >
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-1">
                     Email address
                   </label>
                   <input
@@ -184,26 +193,20 @@ const Contact = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="w-full">
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-white/70 mb-1"
-                  >
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-white/70 mb-1">
                     Phone number
                   </label>
                   <input
                     type="text"
                     name="phone"
                     id="phone"
-                    placeholder="e.g. 08xx-xxxx-xxxx"
+                    placeholder="08xx-xxxx-xxxx"
                     className="h-11 sm:h-12 w-full bg-white/20 placeholder:text-white/70 border border-white/30 rounded-lg px-3 sm:px-4 text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-[#BE8C35]"
                   />
                 </div>
-                <div className="w-full">
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium text-white/70 mb-1"
-                  >
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-white/70 mb-1">
                     Subject
                   </label>
                   <input
@@ -217,10 +220,7 @@ const Contact = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-white/70 mb-1"
-                >
+                <label htmlFor="message" className="block text-sm font-medium text-white/70 mb-1">
                   Message
                 </label>
                 <textarea

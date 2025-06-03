@@ -81,8 +81,8 @@ const Preloader = () => {
   const boxVariants = {
     initial: { width: 150, height: 150 },
     widen: {
-      width: "100%",
-      transition: { duration: 1, ease: "easeInOut" },
+      width: "50%",
+      transition: { duration: 2, ease: "easeInOut" },
     },
   };
 
