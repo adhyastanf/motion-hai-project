@@ -1,7 +1,10 @@
-import ResetPasswordViewPage from "@/features/auth/reset-password-view-page";
+import ResetPasswordViewPage from '@/features/auth/reset-password-view-page';
+import { Suspense } from 'react';
 
-export default function ResetPasswordPage(){
+export default function ResetPasswordPage() {
   return (
-    <ResetPasswordViewPage />
-  )
+    <Suspense>
+      <ResetPasswordViewPage />
+    </Suspense>
+  );
 }
