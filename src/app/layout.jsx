@@ -6,7 +6,7 @@
   import { Toaster } from '@/components/ui/toaster';
 
   export const metadata = {
-    title: 'Next Shadcn',
+    title: 'Hai Motion',
     description: 'Basic dashboard with Next.js and Shadcn'
   };
 
