@@ -29,7 +29,9 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <Image src={ProfilePic} alt='Logo Hai Motion' width={60} height={60} />
+        <Link href={'/dashboard'}>
+          <Image src={ProfilePic} alt='Logo Hai Motion' width={60} height={60} />
+        </Link>
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>
@@ -57,7 +59,7 @@ export default function AppSidebar() {
                             <NotepadText size={20} /> New Project
                           </Button>
                           <Separator />
-                          <ButtonModalProject modal={modal} setModal={setModal}/>
+                          <ButtonModalProject modal={modal} setModal={setModal} />
 
                           <ScrollArea className='h-20 pr-2'>
                             {!isEmpty ? (

@@ -14,7 +14,6 @@ const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
 export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [], memberId }) {
-
   const formSchema = z.object({
     task: z.string().min(2, {
       message: 'Product name must be at least 2 characters.',
@@ -30,9 +29,13 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
     //   (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
     //   '.jpg, .jpeg, .png and .webp files are accepted.'
     // ),
-    brand: z.string().optional(),
+    brand: z.string().min(2, {
+      message: 'Brand must be at least 2 characters.',
+    }),
     assigne: z.string().optional(),
-    status: z.string().optional(),
+    status: z.string().min(1, {
+      message: 'Status is required.',
+    }),
     due: z.any().optional(),
     link: z.any().optional(),
     description: z.string().min(2, {
@@ -128,7 +131,18 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
 
   return (
     <>
-      <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} buttonTextYes='Create Task'/>
+      <ModalTask
+        title='Create Task'
+        open={modal === 'create'}
+        onClose={handleClose}
+        form={form}
+        onConfirm={onSubmit}
+        isLoading={isPending}
+        disabled={disabledForm}
+        statusOptions={statusOptions}
+        memberOptions={memberOptions}
+        buttonTextYes='Create Task'
+      />
       <ModalTask
         title='Update Task'
         open={modal === 'update'}
