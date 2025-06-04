@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 export default function ButtonModalProject({ modal, setModal, projectId, initialData, router }) {
-  console.log(projectId)
+
   const formSchema = z.object({
     project: z.string().min(2, {
       message: 'Project must be at least 2 characters.',

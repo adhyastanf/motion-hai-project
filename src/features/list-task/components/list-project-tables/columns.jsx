@@ -49,7 +49,7 @@ export const columns = [
     header: 'Link',
     cell: ({ row }) => {
       const { link } = row.original;
-      console.log(row.original);
+
       return (
         <span className='font-medium inline-block truncate'>
           {link ? (
