@@ -99,7 +99,7 @@ export default function DataKanban({ data = [], isLoading, statusOptions = [] })
         <KanbanColumn title='Done' id='done' items={columns.done}  isLoading={isLoading} />
       </div>
 
-      <DragOverlay>{activeTask ? <KanbanCard id={activeTask.id} title={activeTask.name} desc={activeTask.description} /> : null}</DragOverlay>
+      <DragOverlay>{activeTask ? <KanbanCard id={activeTask.id} title={activeTask.name} desc={activeTask.description} brand={activeTask.brand} /> : null}</DragOverlay>
     </DndContext>
   );
 }

@@ -19,7 +19,7 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, statusO
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
         <FormField
           control={form.control}
           name='task'
@@ -113,6 +113,19 @@ export default function TaskForm({ form, disabled, isLoading, onConfirm, statusO
               <FormLabel>Brand Name</FormLabel>
               <FormControl>
                 <Input placeholder='Enter brand name' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='link'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Link</FormLabel>
+              <FormControl>
+                <Input placeholder='Enter Link name' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

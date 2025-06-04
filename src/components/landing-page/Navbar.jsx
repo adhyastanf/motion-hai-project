@@ -12,7 +12,7 @@ import profilepic from "../assets/profilepic.png"
 const navLinks = [
   { title: "Home", path: "/" },
   { title: "About", path: "/about" },
-  { title: "Portfolio", path: "/portfolio" },
+  { title: "Portfolio", path: "/portofolio" },
   { title: "Contact Us", path: "/contact-us" },
 ]
 

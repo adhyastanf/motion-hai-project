@@ -1,44 +1,45 @@
 .rbc-month-row {
-    @apply min-h-[180px];
-    @apply border-t;
-    @apply border-x;
-  }
-  
-  .rbc-header {
-    @apply text-sm;
-    @apply font-normal;
-    @apply text-black;
-    @apply py-3;
-    @apply border-t-0;
-  }
-  
-  .rbc-header + .rbc-header {
-    @apply border-l-0;
-  }
-  
-  .rbc-button-link {
-    @apply text-xs;
-    @apply font-normal;
-    @apply text-muted-foreground;
-  }
-  
-  :not(.rbc-month-row ~ .rbc-month-row).rbc-month-row {
-    @apply rounded-t-md border-black border-collapse border-l-0 border-r-0;
-  }
-  
-  .rbc-month-row:last-of-type {
-    @apply border-b;
-    @apply rounded-b-md;
-  }
-  
-  .rbc-month-view {
-    @apply border border-black rounded-lg;
-  }
-  
-  .rbc-date-cell {
-    @apply p-2;
-  }
-  
-  .rbc-today {
-    @apply bg-cyan-500/30;
-  }
+  @apply min-h-[180px] border-t border-x;
+}
+
+.rbc-header {
+  @apply text-sm font-normal text-black py-3 border-t-0;
+}
+
+.rbc-header + .rbc-header {
+  @apply border-l-0;
+}
+
+.rbc-button-link {
+  @apply text-xs font-normal text-muted-foreground;
+}
+
+:not(.rbc-month-row ~ .rbc-month-row).rbc-month-row {
+  @apply rounded-t-md border-black border-collapse border-l-0 border-r-0;
+}
+
+.rbc-month-row:last-of-type {
+  @apply border-b rounded-b-md;
+}
+
+.rbc-month-view {
+  @apply border border-black rounded-lg;
+}
+
+.rbc-date-cell {
+  @apply p-2;
+}
+
+.rbc-today {
+  @apply bg-cyan-500/30;
+}
+
+/* Responsiveness & Wrapping for Event Content */
+.rbc-event {
+  @apply whitespace-normal break-words text-xs p-1 leading-snug;
+}
+
+.rbc-event-content {
+  @apply whitespace-normal break-words text-left;
+}
+

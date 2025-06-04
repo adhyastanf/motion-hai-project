@@ -15,21 +15,6 @@ import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { BoardColumn, BoardContainer } from './board-column';
 import NewSectionDialog from './new-section-dialog';
 
-const defaultCols = [
-  {
-    id: 'TODO',
-    title: 'Todo'
-  },
-  {
-    id: 'IN_PROGRESS',
-    title: 'In progress'
-  },
-  {
-    id: 'DONE',
-    title: 'Done'
-  }
-];
-
 export function KanbanBoard() {
   const columns = useTaskStore((state) => state.columns);
   const setColumns = useTaskStore((state) => state.setCols);

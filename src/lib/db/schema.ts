@@ -128,6 +128,7 @@ export const tasks = mysqlTable('tasks', {
   assigneeId: varchar('assignee_id', { length: 36 }) // 👈 Assignee baru
     .references(() => members.id, { onDelete: 'set null' }),
   brand: text('brand'),
+  link: text('link'),
   dueDate: datetime('due_date'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),

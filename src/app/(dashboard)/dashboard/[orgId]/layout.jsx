@@ -16,6 +16,7 @@ export default async function DashboardDetailLayout({ children, params }) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
   const { orgId } = await params;
 
   const queryClient = new QueryClient();

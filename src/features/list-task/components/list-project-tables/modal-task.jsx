@@ -14,7 +14,7 @@ const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
 export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [], memberId }) {
-  console.log(memberId)
+console.log(initialData)
   const formSchema = z.object({
     task: z.string().min(2, {
       message: 'Product name must be at least 2 characters.',
@@ -34,6 +34,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
     assigne: z.string().optional(),
     status: z.string().optional(),
     due: z.any().optional(),
+    link: z.any().optional(),
     description: z.string().min(2, {
       message: 'Description must be at least 2 characters.',
     }),
@@ -47,6 +48,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
     status: initialData?.statusId || '',
     due: initialData?.dueDate || null,
     description: initialData?.description || '',
+    link: initialData?.link || '',
   };
 
   const form = useForm({
@@ -56,16 +58,16 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { projectId } = useParams();
+  const { projectId, orgId } = useParams();
 
   const disabledForm = Boolean(form.watch(['task', 'description']).every(Boolean));
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (body) => {
       if (modal === 'create') {
-        return await createTask(body);
+        return await createTask({ ...body, taskId, orgId, projectId });
       } else if (modal === 'update') {
-        return await updateTask({ ...body, taskId });
+        return await updateTask({ ...body, taskId, orgId, projectId });
       } else if (modal === 'delete') {
         return await deleteTask(taskId);
       }

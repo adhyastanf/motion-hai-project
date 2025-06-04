@@ -58,7 +58,6 @@ export default function UserAuthRegisterForm() {
           toast({
             title: '"Verification link has been sent to your mail"',
           });
-          form.reset();
         },
         onError: (ctx) => {
           toast({

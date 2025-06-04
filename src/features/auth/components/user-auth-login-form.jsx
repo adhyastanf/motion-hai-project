@@ -48,7 +48,6 @@ export default function UserAuthLoginForm() {
           });
 
           router.push('/dashboard');
-          form.reset();
         },
         onError: (ctx) => {
           toast({

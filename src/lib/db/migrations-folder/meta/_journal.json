@@ -15,6 +15,13 @@
       "when": 1748791027816,
       "tag": "0001_wet_darkhawk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1749028505311,
+      "tag": "0002_parched_the_hand",
+      "breakpoints": true
     }
   ]
 }
