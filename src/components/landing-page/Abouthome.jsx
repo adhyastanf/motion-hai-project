@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import footer from "../assets/footer.png"; // Adjust path if needed
-import aboutLogo from "../assets/aboutlogo.webp"; // Correct logo path
+import nblogo from "../assets/nblogo.png"; // Correct logo path
 
 const Abouthome = () => {
   return (
@@ -50,8 +50,8 @@ const Abouthome = () => {
           transition={{ duration: 0.6 }}
         >
           <Image
-            src={aboutLogo}
-            alt="Skata Logo"
+            src={nblogo}
+            alt="Hai Motion Logo"
             width={400}
             height={200}
             className="object-contain w-full max-w-sm drop-shadow-xl"
