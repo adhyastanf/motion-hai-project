@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import UserAuthLoginForm from './user-auth-login-form';
 import UserAuthRegisterForm from './user-auth-register-form';
-import Logo from '../../../components/assets/aboutlogo.webp';
+import Logo from '../../../components/assets/nblogo.png';
 
 export default function SignViewPage({ mode }) {
   return (

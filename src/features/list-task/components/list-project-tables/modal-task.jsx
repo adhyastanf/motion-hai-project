@@ -14,7 +14,6 @@ const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
 export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [], memberId }) {
-  console.log(memberId)
   const formSchema = z.object({
     task: z.string().min(2, {
       message: 'Product name must be at least 2 characters.',
@@ -30,10 +29,15 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
     //   (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
     //   '.jpg, .jpeg, .png and .webp files are accepted.'
     // ),
-    brand: z.string().optional(),
+    brand: z.string().min(2, {
+      message: 'Brand must be at least 2 characters.',
+    }),
     assigne: z.string().optional(),
-    status: z.string().optional(),
+    status: z.string().min(1, {
+      message: 'Status is required.',
+    }),
     due: z.any().optional(),
+    link: z.any().optional(),
     description: z.string().min(2, {
       message: 'Description must be at least 2 characters.',
     }),
@@ -47,6 +51,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
     status: initialData?.statusId || '',
     due: initialData?.dueDate || null,
     description: initialData?.description || '',
+    link: initialData?.link || '',
   };
 
   const form = useForm({
@@ -56,16 +61,16 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { projectId } = useParams();
+  const { projectId, orgId } = useParams();
 
   const disabledForm = Boolean(form.watch(['task', 'description']).every(Boolean));
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (body) => {
       if (modal === 'create') {
-        return await createTask(body);
+        return await createTask({ ...body, taskId, orgId, projectId });
       } else if (modal === 'update') {
-        return await updateTask({ ...body, taskId });
+        return await updateTask({ ...body, taskId, orgId, projectId });
       } else if (modal === 'delete') {
         return await deleteTask(taskId);
       }
@@ -126,7 +131,18 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
 
   return (
     <>
-      <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} buttonTextYes='Create Task'/>
+      <ModalTask
+        title='Create Task'
+        open={modal === 'create'}
+        onClose={handleClose}
+        form={form}
+        onConfirm={onSubmit}
+        isLoading={isPending}
+        disabled={disabledForm}
+        statusOptions={statusOptions}
+        memberOptions={memberOptions}
+        buttonTextYes='Create Task'
+      />
       <ModalTask
         title='Update Task'
         open={modal === 'update'}

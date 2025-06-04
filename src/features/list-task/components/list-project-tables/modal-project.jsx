@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 export default function ButtonModalProject({ modal, setModal, projectId, initialData, router }) {
+
   const formSchema = z.object({
     project: z.string().min(2, {
       message: 'Project must be at least 2 characters.',
@@ -37,7 +38,7 @@ export default function ButtonModalProject({ modal, setModal, projectId, initial
   const { mutate, isPending } = useMutation({
     mutationFn: async (body) => {
       if (modal === 'create') {
-        return await createProject(body);
+        return await createProject({ ...body });
       } else if (modal === 'update') {
         return await updateProject({ ...body, projectId });
       } else if (modal === 'delete') {

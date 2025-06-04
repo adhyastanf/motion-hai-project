@@ -30,13 +30,10 @@ export default function TaskOverview({ data = [], isLoading }) {
 
   data.forEach((task) => {
     if (!task.assignee) return;
-
     const name = task.assignee;
-
     if (!memberMap[name]) {
       memberMap[name] = { todo: 0, inprogress: 0, done: 0 };
     }
-
     if (task.status === 'todo') memberMap[name].todo++;
     if (task.status === 'inprogress') memberMap[name].inprogress++;
     if (task.status === 'done') memberMap[name].done++;
@@ -59,10 +56,10 @@ export default function TaskOverview({ data = [], isLoading }) {
           { label: 'Unassigned', value: statusCounts.unassigned },
         ].map(({ label, value, detail, rate }) => (
           <Card key={label} className='shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg text-2xl m-0 py-3 px-4'>
-            <CardHeader className='border-gray-200 text-sm p-0 text-black/50'>{label}</CardHeader>
+            <CardHeader className='border-gray-200 text-sm p-0 text-black/50 dark:text-white/50'>{label}</CardHeader>
             <CardContent className='p-0'>
-              <p className='font-semibold p-0 mb-1'>{rate ? `${value}%` : value}</p>
-              {rate ? <Progress value={value} className='h-2 m-0' /> : <p className='border-gray-200 text-xs p-0 text-black/50'>{detail}</p>}
+              <p className='font-semibold p-0 mb-1 text-gray-900 dark:text-white'>{rate ? `${value}%` : value}</p>
+              {rate ? <Progress value={value} className='h-2 m-0' /> : <p className='text-xs text-black/50 dark:text-white/50'>{detail}</p>}
             </CardContent>
           </Card>
         ))}
@@ -72,18 +69,30 @@ export default function TaskOverview({ data = [], isLoading }) {
         {/* Pie Chart */}
         <Card className='shadow-lg rounded-lg'>
           <CardHeader className='border-gray-200'>
-            <p className='text-xl font-semibold text-gray-800'>Task Type Distribution</p>
+            <p className='text-xl font-semibold text-gray-800 dark:text-gray-100'>Task Type Distribution</p>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width='100%' height={320}>
               <PieChart>
-                <Pie data={pieData} cx='50%' cy='50%' outerRadius={110} label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`} dataKey='value' stroke='none'>
+                <Pie
+                  data={pieData}
+                  cx='50%'
+                  cy='50%'
+                  outerRadius={110}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  dataKey='value'
+                  stroke='none'
+                >
                   {pieData.map((_, index) => (
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <ReTooltip formatter={(value) => [`${value}`, 'Tasks']} contentStyle={{ backgroundColor: '#1e293b', borderRadius: 8, border: 'none' }} itemStyle={{ color: '#f9fafb' }} />
-                <ReLegend verticalAlign='bottom' height={36} wrapperStyle={{ fontWeight: '200', fontSize: 14, color: '#374151', margin: 'auto' }} />
+                <ReTooltip
+                  formatter={(value) => [`${value}`, 'Tasks']}
+                  contentStyle={{ backgroundColor: '#1f2937', borderRadius: 8, border: 'none', color: '#f9fafb' }}
+                  itemStyle={{ color: '#f9fafb' }}
+                />
+                <ReLegend verticalAlign='bottom' height={36} wrapperStyle={{ fontWeight: '200', fontSize: 14, color: 'gray' }} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -92,20 +101,24 @@ export default function TaskOverview({ data = [], isLoading }) {
         {/* Bar Chart */}
         <Card className='shadow-lg rounded-lg'>
           <CardHeader className='border-gray-200'>
-            <p className='text-xl font-semibold text-gray-800'>Team Performance by Status</p>
+            <p className='text-xl font-semibold text-gray-800 dark:text-gray-100'>Team Performance by Status</p>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width='100%' height={300}>
               <BarChart data={barData} layout='vertical' margin={{ top: 10, right: 20, bottom: 5 }}>
-                <XAxis type='number' tick={{ fill: '#6b7280', fontWeight: '200' }} axisLine={{ stroke: '#9ca3af' }} tickLine={false} />
-                <YAxis dataKey='name' type='category' tick={{ fill: '#374151', fontWeight: '200', fontSize: 12 }} axisLine={false} tickLine={false} width={120} />
-                <ReTooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ backgroundColor: '#111827', borderRadius: 6, border: 'none' }} itemStyle={{ color: '#f9fafb' }} />
+                <XAxis type='number' tick={{ fill: '#6b7280' }} axisLine={{ stroke: '#9ca3af' }} tickLine={false} />
+                <YAxis dataKey='name' type='category' tick={{ fill: '#4b5563', fontSize: 12 }} axisLine={false} tickLine={false} width={120} />
+                <ReTooltip
+                  cursor={{ fill: '#f3f4f6' }}
+                  contentStyle={{ backgroundColor: '#1f2937', borderRadius: 6, border: 'none', color: '#f9fafb' }}
+                  itemStyle={{ color: '#f9fafb' }}
+                />
                 <ReLegend
                   verticalAlign='bottom'
                   wrapperStyle={{
                     fontWeight: '200',
                     fontSize: 14,
-                    color: '#374151',
+                    color: 'gray',
                     marginBottom: 12,
                     textAlign: 'center',
                   }}
@@ -125,7 +138,6 @@ export default function TaskOverview({ data = [], isLoading }) {
 function LoadingOverview() {
   return (
     <div className='flex flex-col gap-8'>
-      {/* Summary Cards Skeleton */}
       <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6'>
         {Array.from({ length: 5 }).map((_, idx) => (
           <div key={idx} className='rounded-lg shadow-sm p-4 space-y-2'>
@@ -136,7 +148,6 @@ function LoadingOverview() {
         ))}
       </div>
 
-      {/* Charts Skeleton */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
         <div className='rounded-lg shadow-lg p-4 space-y-4'>
           <Skeleton className='h-6 w-1/3' />

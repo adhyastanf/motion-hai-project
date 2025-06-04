@@ -9,7 +9,7 @@ import KanbanCard from './kanban-card';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export function KanbanColumn({ id, title, items, isLoading }) {;
+export function KanbanColumn({ id, title, items, isLoading }) {
   const { setNodeRef } = useDroppable({ id });
 
   return (
@@ -17,13 +17,13 @@ export function KanbanColumn({ id, title, items, isLoading }) {;
       ref={setNodeRef}
       className="h-[75vh] bg-secondary flex flex-col shrink-0 snap-center"
     >
-      <CardHeader className="p-4 text-left font-semibold capitalize">
+      <CardHeader className="p-4 text-left font-semibold capitalize text-[clamp(0.8rem,2vw,1.25rem)] truncate overflow-hidden whitespace-nowrap">
         {title}
       </CardHeader>
       <Separator />
       <CardContent className="flex grow flex-col gap-4 overflow-x-hidden p-2">
         <ScrollArea className="h-full">
-        {isLoading ? (
+          {isLoading ? (
             <div className="flex flex-col gap-2">
               <Card className="p-4 space-y-2">
                 <Skeleton className="h-4 w-3/4" />
@@ -31,7 +31,10 @@ export function KanbanColumn({ id, title, items, isLoading }) {;
               </Card>
             </div>
           ) : (
-            <SortableContext items={items.map((item) => item.id)} strategy={rectSortingStrategy}>
+            <SortableContext
+              items={items.map((item) => item.id)}
+              strategy={rectSortingStrategy}
+            >
               <div className="flex flex-col gap-2">
                 {items.map((item) => (
                   <KanbanCard
@@ -39,6 +42,7 @@ export function KanbanColumn({ id, title, items, isLoading }) {;
                     id={item.id}
                     title={item.name}
                     desc={item.description}
+                    brand={item.brand}
                     assignee={item.assignee}
                   />
                 ))}

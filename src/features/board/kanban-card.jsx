@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { motion } from 'framer-motion';
 import { StickyNote } from 'lucide-react';
 
-export default function KanbanCard({ id, title, desc, assignee }) {
+export default function KanbanCard({ id, title, desc, assignee, brand }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
@@ -21,6 +21,7 @@ export default function KanbanCard({ id, title, desc, assignee }) {
             {title}
           </h4>
           <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>{desc}</p>
+          <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>{brand}</p>
           <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>{assignee}</p>
         </CardContent>
       </Card>

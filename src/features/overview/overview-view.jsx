@@ -21,7 +21,7 @@ export default function ViewOverviewWorspace({ users }) {
     <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-8'>
         <div className='flex items-center justify-between flex-col space-y-2'>
-          <h2 className='text-2xl font-bold tracking-tight'>Hi, Welcome back, {users.name}</h2>
+          <h2 className='text-2xl font-bold tracking-tight text-center'>Hi, Welcome back, {users.name}</h2>
           <h2>{format(new Date(), 'EEEE, MMMM yyyy')}</h2>
           <h2>Hai Motion</h2>
         </div>

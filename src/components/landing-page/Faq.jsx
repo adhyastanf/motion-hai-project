@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { BookOpen, Headphones } from 'lucide-react';
-import footer from '../assets/footer.png';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import footer from '../assets/footer.png'; // Adjust if needed
 
 const faqData = [
   {
@@ -143,6 +143,47 @@ const Faq = () => {
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className='flex md:hidden flex-col gap-6 mt-10'>
+          {[true, false].map((isDoc, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className='backdrop-blur-sm bg-white/10 border border-white/20 p-6 rounded-2xl shadow-md text-white flex flex-col justify-between'
+            >
+              <div className='flex flex-col items-center text-center'>
+                {isDoc ? (
+                  <>
+                    <BookOpen size={36} color='#7098C0' className='mb-2' />
+                    <h3 className='text-2xl font-bold text-[#7098C0]'>Online Documentation</h3>
+                    <p className='text-lg font-medium text-white/70 mt-2'>Well organized and up to date</p>
+                    <Link href='/about' className='w-[175px] mt-4 px-4 py-2 text-sm font-medium bg-[#7098C0] hover:bg-[#5a7fa6] rounded transition'>
+                      Online Documentation
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Headphones size={36} color='#B55527' className='mb-2' />
+                    <h3 className='text-2xl font-bold text-[#B55527]'>Dedicated Support</h3>
+                    <p className='text-lg font-medium text-white/70 mt-2'>Need support? Submit a ticket. We’ll be happy to assist you.</p>
+                    <Link href='/contact-us' className='w-fit mt-4 px-4 py-2 text-sm font-medium bg-[#B55527] hover:bg-[#9e461f] rounded transition'>
+                      Get Support
+                    </Link>
+                    <p className='text-sm text-white/50 mt-2 leading-relaxed text-center'>
+                      Support Time: Monday – Friday
+                      <br />
+                      Response Time: Maximum 24 hours
+                    </p>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>

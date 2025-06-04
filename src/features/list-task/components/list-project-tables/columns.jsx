@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { format } from 'date-fns';
-import { MoreHorizontal } from 'lucide-react';
+import { Link, MoreHorizontal } from 'lucide-react';
 
 export const columns = [
   {
@@ -16,7 +16,7 @@ export const columns = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const {status} = row.original;
+      const { status } = row.original;
       return <span className='font-medium capitalize'>{status || 'No Status'}</span>;
     },
   },
@@ -45,6 +45,25 @@ export const columns = [
     },
   },
   {
+    accessorKey: 'link',
+    header: 'Link',
+    cell: ({ row }) => {
+      const { link } = row.original;
+
+      return (
+        <span className='font-medium inline-block truncate'>
+          {link ? (
+            <a href={link} className='text-blue-600'>
+              <Link size={12} className='underline'/>
+            </a>
+          ) : (
+            'No Link'
+          )}
+        </span>
+      );
+    },
+  },
+  {
     id: 'actions',
     enableHiding: false,
     cell: ({ row, table }) => {
@@ -60,16 +79,16 @@ export const columns = [
             <DropdownMenuContent align='end'>
               <DropdownMenuItem
                 onClick={() => {
-                  table.options.meta?.setSelectedTask(task)
-                  table.options.meta?.openModal('update')
+                  table.options.meta?.setSelectedTask(task);
+                  table.options.meta?.openModal('update');
                 }}
               >
                 Edit
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  table.options.meta?.setSelectedTask(task)
-                  table.options.meta?.openModal('delete')
+                  table.options.meta?.setSelectedTask(task);
+                  table.options.meta?.openModal('delete');
                 }}
               >
                 Delete
