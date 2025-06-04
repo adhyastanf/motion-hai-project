@@ -6,7 +6,7 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"
 import { motion, AnimatePresence } from "framer-motion"
 
 // Import your images (adjust path if needed)
-import profilepic from "../assets/profilepic.png"
+import nblogo from "../assets/nblogo.png"
 
 
 const navLinks = [
@@ -90,11 +90,11 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src={profilepic}
+              src={nblogo}
               alt="Logo"
-              width={50}
+              width={100}
               height={50}
-              className="rounded-full"
+              className=""
               priority
             />
           </Link>
