@@ -7,7 +7,10 @@
 
   export const metadata = {
     title: 'Hai Motion',
-    description: 'Basic dashboard with Next.js and Shadcn'
+    description: 'Hai Motion',
+    icons: {
+      icon: '/favicon.ico'
+    }
   };
 
   const lato = Lato({

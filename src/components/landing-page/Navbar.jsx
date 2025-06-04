@@ -12,7 +12,7 @@ import nblogo from "../assets/nblogo.png"
 const navLinks = [
   { title: "Home", path: "/" },
   { title: "About", path: "/about" },
-  { title: "Portfolio", path: "/portofolio" },
+  { title: "Portofolio", path: "/portofolio" },
   { title: "Contact Us", path: "/contact-us" },
 ]
 

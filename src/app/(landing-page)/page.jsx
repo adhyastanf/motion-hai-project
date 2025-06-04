@@ -7,10 +7,14 @@ import Services from "@/components/landing-page/Services";
 import Abouthome from "@/components/landing-page/Abouthome";
 import CompanyProfile from "@/components/landing-page/Companyprofile";
 
+export const metadata = {
+  title: 'Hai Motion - Home',
+  description: 'Welcome to Hai Motion - Luxury Experiences, Redefined',
+};
 
 export default function Home() {
   return (
-    <>
+    <main>
 
     <Homehero />
     <Abouthome />
@@ -21,6 +25,6 @@ export default function Home() {
     <Faq />
     <Client />
 
-    </>
+    </main>
   );
 }
