@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "95bab027-50e9-4ec1-89dd-3121284910d8",
-  "prevId": "2d378fcd-0b3f-4122-be75-167727b0bff5",
+  "id": "99e10b6a-22a3-4292-bbdf-1a7da0e25998",
+  "prevId": "6e3da129-f4d3-4a67-8a82-1eced8bbf747",
   "tables": {
     "accounts": {
       "name": "accounts",
@@ -237,7 +237,7 @@
           "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "role": {
@@ -254,12 +254,13 @@
           "notNull": true,
           "autoincrement": false
         },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp",
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": true
         },
         "inviter_id": {
           "name": "inviter_id",
@@ -346,6 +347,15 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
+          "default": "(now())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
           "default": "(now())"
         }
       },
@@ -902,8 +912,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "priority": {
-          "name": "priority",
+        "brand": {
+          "name": "brand",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

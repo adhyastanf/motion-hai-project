@@ -114,8 +114,8 @@ export default function ButtonModalProject({ modal, setModal, projectId, initial
 
   return (
     <>
-      <ModalProject title='Create a Project' fields={fields} open={modal === 'create'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
-      <ModalProject title='Update a Project' fields={fields} open={modal === 'update'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} />
+      <ModalProject title='Create a Project' fields={fields} open={modal === 'create'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} buttonYesText='Create Project'/>
+      <ModalProject title='Update a Project' fields={fields} open={modal === 'update'} onClose={() => setModal('')} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} buttonYesText='Update Project'/>
       <AlertModal
         title={`Are you sure to delete project "${initialData?.name}"?`}
         description='This action cannot be undone. This will permanently delete your project.'

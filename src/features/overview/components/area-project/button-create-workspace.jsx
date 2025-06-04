@@ -67,5 +67,5 @@ export default function ButtonCreateWorkspace({ modal, setModal }) {
     },
   ];
 
-  return <ModalInput title='Create Workspace' fields={fields} open={modal} onClose={() => setModal(false)} form={form} onConfirm={onSubmit} isLoading={form.formState.isSubmitting} disabled={disabledForm} />;
+  return <ModalInput title='Create Workspace' fields={fields} open={modal} onClose={() => setModal(false)} form={form} onConfirm={onSubmit} isLoading={form.formState.isSubmitting} disabled={disabledForm} buttonYesText='Create Workspace' />;
 }

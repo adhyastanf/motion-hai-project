@@ -13,7 +13,8 @@ import { z } from 'zod';
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
-export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [] }) {
+export default function ButtonModalTask({ modal, setModal, taskId, initialData, memberOptions = [], statusOptions = [], memberId }) {
+  console.log(memberId)
   const formSchema = z.object({
     task: z.string().min(2, {
       message: 'Product name must be at least 2 characters.',
@@ -33,8 +34,8 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
     assigne: z.string().optional(),
     status: z.string().optional(),
     due: z.any().optional(),
-    description: z.string().min(10, {
-      message: 'Description must be at least 10 characters.',
+    description: z.string().min(2, {
+      message: 'Description must be at least 2 characters.',
     }),
   });
 
@@ -86,7 +87,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
           description: 'Your task has been deleted successfully.',
         });
       }
-      queryClient.invalidateQueries({queryKey:['list-task', projectId]});
+      queryClient.invalidateQueries({ queryKey: ['list-task', projectId] });
       setModal('');
       form.reset();
     },
@@ -125,7 +126,7 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
 
   return (
     <>
-      <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} />
+      <ModalTask title='Create Task' open={modal === 'create'} onClose={handleClose} form={form} onConfirm={onSubmit} isLoading={isPending} disabled={disabledForm} statusOptions={statusOptions} memberOptions={memberOptions} buttonTextYes='Create Task'/>
       <ModalTask
         title='Update Task'
         open={modal === 'update'}
@@ -137,6 +138,9 @@ export default function ButtonModalTask({ modal, setModal, taskId, initialData, 
         statusOptions={statusOptions}
         memberOptions={memberOptions}
         initialData={initialData}
+        buttonTextYes='Update Task'
+        memberId={memberId}
+        type='update'
       />
       <AlertModal
         title={`Are you sure to delete task "${initialData?.name}"?`}

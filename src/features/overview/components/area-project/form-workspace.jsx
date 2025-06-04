@@ -9,6 +9,7 @@ import { generateSlug } from '@/lib/format';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -30,6 +31,7 @@ export default function FormWorkspace() {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const router = useRouter()
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -57,6 +59,7 @@ export default function FormWorkspace() {
           });
           queryClient.invalidateQueries(['workspaces']);
           form.reset();
+          router.push('/dashboard')
         },
         onError: (ctx) => {
           toast({

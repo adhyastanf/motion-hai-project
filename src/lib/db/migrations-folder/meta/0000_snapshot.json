@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "2d378fcd-0b3f-4122-be75-167727b0bff5",
+  "id": "6e3da129-f4d3-4a67-8a82-1eced8bbf747",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "accounts": {
@@ -237,7 +237,7 @@
           "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "role": {
@@ -254,12 +254,13 @@
           "notNull": true,
           "autoincrement": false
         },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp",
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": true
         },
         "inviter_id": {
           "name": "inviter_id",
@@ -738,79 +739,6 @@
       },
       "checkConstraint": {}
     },
-    "task_assignees": {
-      "name": "task_assignees",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "task_id": {
-          "name": "task_id",
-          "type": "varchar(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "member_id": {
-          "name": "member_id",
-          "type": "varchar(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "assigned_at": {
-          "name": "assigned_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "task_assignees_task_id_tasks_id_fk": {
-          "name": "task_assignees_task_id_tasks_id_fk",
-          "tableFrom": "task_assignees",
-          "tableTo": "tasks",
-          "columnsFrom": [
-            "task_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "task_assignees_member_id_members_id_fk": {
-          "name": "task_assignees_member_id_members_id_fk",
-          "tableFrom": "task_assignees",
-          "tableTo": "members",
-          "columnsFrom": [
-            "member_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "task_assignees_id": {
-          "name": "task_assignees_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraint": {}
-    },
     "task_comments": {
       "name": "task_comments",
       "columns": {
@@ -968,8 +896,15 @@
           "notNull": false,
           "autoincrement": false
         },
-        "priority": {
-          "name": "priority",
+        "assignee_id": {
+          "name": "assignee_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "brand": {
+          "name": "brand",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -1021,6 +956,19 @@
           "tableTo": "task_statuses",
           "columnsFrom": [
             "status_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "tasks_assignee_id_members_id_fk": {
+          "name": "tasks_assignee_id_members_id_fk",
+          "tableFrom": "tasks",
+          "tableTo": "members",
+          "columnsFrom": [
+            "assignee_id"
           ],
           "columnsTo": [
             "id"

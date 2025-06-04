@@ -6,7 +6,6 @@ import { useGetListProject } from '@/hooks/use-query';
 import { Check, ChevronDown, GalleryVerticalEnd, Pencil } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import PageContainer from './layout/page-container';
 import { Button } from './ui/button';
 
 export function OrgSwitcher() {
@@ -33,7 +32,8 @@ export function OrgSwitcher() {
                 <GalleryVerticalEnd className='size-4' />
               </div>
               <div className='block truncate text-left'>
-                <span className='font-semibold truncate capitalize'>{defaultProject?.name || 'Pilih Proyek'}</span>
+                <p className='font-semibold truncate capitalize text-xs'>{defaultProject?.name}</p>
+                <p className='truncate capitalize text-xs'>{defaultProject?.description}</p>
               </div>
               <ChevronDown className='ml-auto size-4' />
             </Button>

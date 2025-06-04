@@ -1,17 +1,12 @@
-import { getListProject, getListTask } from '@/app/actions';
+import { getListProject } from '@/app/actions';
 import NotFound from '@/app/not-found';
 import { OrgSwitcher } from '@/components/org-switcher';
-import { auth } from '@/lib/auth';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { headers } from 'next/headers';
 
 export default async function ProjectLayout({ children, params }) {
-  const { session } = await auth.api.getSession({
-    headers: await headers(),
-  });
-
+  
   const { orgId, projectId } = await params;
-
+  
   const projects = await getListProject(orgId);
 
   const checkProject = projects.data.find((project) => project?.id === projectId);
@@ -21,6 +16,8 @@ export default async function ProjectLayout({ children, params }) {
     queryKey: ['list-project', orgId],
     queryFn: () => getListProject(orgId),
   });
+
+  
 
   return (
     <>

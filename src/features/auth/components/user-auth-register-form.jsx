@@ -5,12 +5,8 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { authClient } from '@/lib/client/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-// import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-
 import * as z from 'zod';
-// import GithubSignInButton from './github-auth-button';
 
 const formSchema = z
   .object({
@@ -29,9 +25,6 @@ const formSchema = z
 
 export default function UserAuthRegisterForm() {
   const { toast } = useToast();
-  const router = useRouter()
-  // const searchParams = useSearchParams();
-  // const callbackUrl = searchParams.get('callbackUrl');
   const defaultValues = {
     name: '',
     email: '',
@@ -53,7 +46,7 @@ export default function UserAuthRegisterForm() {
         name,
         email,
         password,
-        // callbackURL: '/dashboard',
+        callbackURL: '/dashboard',
       },
       {
         onRequest: () => {
@@ -63,9 +56,8 @@ export default function UserAuthRegisterForm() {
         },
         onSuccess: () => {
           toast({
-            title: 'You has Registered',
+            title: '"Verification link has been sent to your mail"',
           });
-          router.push('/dashboard')
           form.reset();
         },
         onError: (ctx) => {
@@ -80,75 +72,64 @@ export default function UserAuthRegisterForm() {
   };
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-2'>
-          <FormField
-            control={form.control}
-            name='name'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input type='text' placeholder='Enter your name...' disabled={isLoadingForm} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type='email' placeholder='Enter your email...' disabled={isLoadingForm} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type='password' placeholder='Enter your password...' disabled={isLoadingForm} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='confirmPassword'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type='password' placeholder='Confirm your password...' disabled={isLoadingForm} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button disabled={isLoadingForm} className='ml-auto w-full' type='submit'>
-            Submit
-          </Button>
-        </form>
-      </Form>
-      {/* <div className='relative'>
-        <div className='absolute inset-0 flex items-center'>
-          <span className='w-full border-t' />
-        </div>
-        <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-background px-2 text-muted-foreground'>Or continue with</span>
-        </div>
-      </div>
-      <GithubSignInButton /> */}
-    </>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-2'>
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input type='text' placeholder='Enter Your Name' disabled={isLoadingForm} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type='email' placeholder='Enter Your Email' disabled={isLoadingForm} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type='password' placeholder='Enter your password' disabled={isLoadingForm} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='confirmPassword'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input type='password' placeholder='Confirm Your Password' disabled={isLoadingForm} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button disabled={isLoadingForm} className='ml-auto w-full' type='submit'>
+          Register
+        </Button>
+      </form>
+    </Form>
   );
 }
