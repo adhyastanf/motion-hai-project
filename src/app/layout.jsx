@@ -6,11 +6,38 @@
   import { Toaster } from '@/components/ui/toaster';
 
   export const metadata = {
-    title: 'Hai Motion',
-    description: 'Hai Motion',
-    icons: {
-      icon: '/favicon.ico'
-    }
+    title: 'Hai Motion | Discover Creativity in Motion',
+    description: 'Hai Motion is a platform for showcasing creativity and innovation in motion. Explore, engage, and experience the next generation of motion design.',
+    robots: {
+      index: true,
+      follow: true,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    metadataBase: new URL('https://haimotion.com'), // ganti dengan domain asli
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      title: 'Hai Motion',
+      description: 'Discover Creativity in Motion.',
+      url: 'https://haimotion.com',
+      siteName: 'Hai Motion',
+      locale: 'en_US',
+      type: 'website',
+    },
+  };
+
+  export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
   };
 
   const lato = Lato({

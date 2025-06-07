@@ -3,6 +3,21 @@ import NotFound from '@/app/not-found';
 import { OrgSwitcher } from '@/components/org-switcher';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
+export const metadata = {
+  title: 'Hai Motion | Project',
+  description: 'Detail and management view of your selected project in Hai Motion dashboard.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default async function ProjectLayout({ children, params }) {
   
   const { orgId, projectId } = await params;

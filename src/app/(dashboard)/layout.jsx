@@ -3,8 +3,29 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
 
 export const metadata = {
-  title: 'Next Shadcn Dashboard Starter',
-  description: 'Basic dashboard with Next.js and Shadcn',
+  title: 'Hai Motion | Dashboard',
+  description: 'Manage your content, view insights, and control your media production workflow in the Hai Motion Dashboard.',
+  openGraph: {
+    title: 'Hai Motion | Dashboard',
+    description: 'Hai Motion Dashboard gives you control over projects, clients, and creative media content—all in one place.',
+    url: 'https://haimotion.com/dashboard',
+    siteName: 'Hai Motion',
+    locale: 'en_US',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/dashboard',
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default async function DashboardLayout({ children }) {
@@ -13,7 +34,7 @@ export default async function DashboardLayout({ children }) {
 
   return (
     <KBar>
-        <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
+      <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
     </KBar>
   );
 }
