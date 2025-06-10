@@ -8,9 +8,26 @@ import { db } from '@/lib/db/drizzle';
 import { members, organizations } from '@/lib/db/schema';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { eq } from 'drizzle-orm';
-
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+export const metadata = {
+  title: 'Hai Motion | Workspace',
+  description: 'Manage your projects, tasks, and team inside your Hai Motion workspace.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+  alternates: {
+    canonical: '/dashboard',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export default async function DashboardDetailLayout({ children, params }) {
   const session = await auth.api.getSession({
