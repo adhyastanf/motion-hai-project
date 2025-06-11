@@ -11,7 +11,7 @@ export const metadata = {
   title: 'Hai Motion - Home',
   description: 'Welcome to Hai Motion — Luxury Experiences, Redefined. We craft visual stories that elevate brands and inspire audiences.',
   openGraph: {
-    title: 'Hai Motion - Luxury Visual Storytelling',
+    title: 'Hai Motion - Creativity in Motion, Brand in Action',
     description: 'Experience stunning visual storytelling with Hai Motion. Photography, videography, and brand experiences that redefine quality.',
     url: 'https://haimotion.com',
     siteName: 'Hai Motion',

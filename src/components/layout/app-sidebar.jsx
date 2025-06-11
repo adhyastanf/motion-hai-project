@@ -65,7 +65,7 @@ export default function AppSidebar() {
                             {!isEmpty ? (
                               <div className='space-y-2'>
                                 {projects.data.map((project) => (
-                                  <Link key={project.id} href={`project/${project.id}`} className='flex items-center gap-2 text-sm capitalize hover:text-primary transition-colors duration-200'>
+                                  <Link key={project.id} href={`/dashboard/${orgId}/project/${project.id}`} className='flex items-center gap-2 text-sm capitalize hover:text-primary transition-colors duration-200'>
                                     <Avatar className='h-6 w-6'>
                                       <AvatarFallback>{project.name.charAt(0).toUpperCase()}</AvatarFallback>
                                     </Avatar>
