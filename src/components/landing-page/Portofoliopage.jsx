@@ -183,7 +183,7 @@ const Portfoliopage = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 100, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="bg-black w-full max-w-full sm:max-w-2xl md:max-w-4xl max-h-[95vh] p-5 sm:p-6 md:p-8 rounded-2xl overflow-y-auto shadow-2xl relative"
+                className="bg-black w-full max-w-full sm:max-w-2xl md:max-w-4xl max-h-[95vh] p-5 sm:p-6 md:p-8 pt-10 sm:pt-6 rounded-2xl overflow-y-auto shadow-2xl relative"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
