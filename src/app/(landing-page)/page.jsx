@@ -10,6 +10,18 @@ import CompanyProfile from '@/components/landing-page/Companyprofile';
 export const metadata = {
   title: 'Hai Motion - Home',
   description: 'Welcome to Hai Motion — Luxury Experiences, Redefined. We craft visual stories that elevate brands and inspire audiences.',
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: 'Hai Motion - Creativity in Motion, Brand in Action',
     description: 'Experience stunning visual storytelling with Hai Motion. Photography, videography, and brand experiences that redefine quality.',
@@ -28,6 +40,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
 };
+
 
 export default function Home() {
   return (
