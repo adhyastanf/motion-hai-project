@@ -5,6 +5,18 @@ export const metadata = {
   title: 'Hai Motion - Portofolio',
   description:
     'Setiap cerita yang kami produksi bukan sekadar proyek, melainkan karya yang menghubungkan brand dengan audiens lewat pesan yang kuat dan visual yang bermakna. Inilah beberapa momen berharga yang telah kami bantu wujudkan.',
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: 'Hai Motion - Portofolio',
     description:

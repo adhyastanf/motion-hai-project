@@ -1,3 +1,5 @@
+import SignViewPage from "@/features/auth/components/sigin-view";
+
 export const metadata = {
   title: 'Hai Motion | Sign Up',
   description: 'Create your Hai Motion account and get started today.',
@@ -24,3 +26,8 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
 };
+
+export default async function SignUpPage() {
+
+  return <SignViewPage mode='register' />;
+}

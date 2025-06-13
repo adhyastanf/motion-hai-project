@@ -21,7 +21,7 @@ import footer from "../assets/footer.png";
 const Contact = () => {
   return (
     <div
-      className="relative bg-[linear-gradient(to_bottom,_#B55527_0%,_#E0A53D_80%,_transparent_100%)]
+      className="relative bg-[linear-gradient(to_bottom,_#B55527_0%,_#E0A53D_80%,_black_100%)]
       text-white overflow-hidden px-4 sm:px-6 lg:px-0 py-10 sm:py-16"
     >
       {/* Decorative spinning icons */}
